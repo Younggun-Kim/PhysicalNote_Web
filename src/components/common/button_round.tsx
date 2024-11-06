@@ -17,13 +17,13 @@ interface ButtonProps {
 // 사이즈별 스타일 정의를 Record 타입으로 선언
 const sizeStyles: Record<ButtonSize, string> = {
   sm: "body-b-sm py-1 px-3",
-  md: "body-b-md py-11 px-31",
-  lg: "body-b-md py-11 px-31",
+  md: "body-b-md py-[11px] px-[31px]",
+  lg: "body-b-md py-[11px] px-[31px]",
 } as const;
 
 // 기본 버튼 스타일
 const baseButtonStyles =
-  "rounded-full bg-[#8DBE3D] text-white shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] cursor-pointer";
+  "rounded-full bg-primary text-white shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] cursor-pointer";
 
 export const RoundButton = ({
   text,

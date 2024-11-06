@@ -114,7 +114,7 @@ const Dashboard: NextPage = () => {
         <Layout>
           <div className="flex items-center space-x-[30px]">
             <h1 className="text-[28px] font-[700]">대시보드</h1>
-            <RoundButtonFactory.sm
+            <RoundButtonFactory.md
               type="button"
               text="운동시간 전송"
               onClick={() => console.log("운동시간 전송 클릭")}

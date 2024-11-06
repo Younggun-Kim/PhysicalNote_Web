@@ -13,10 +13,8 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
-      color: {
-        primary: {
-          primary: "#8DBE3D", // 기본 색상
-        },
+      colors: {
+        primary: "#8DBE3D", // 기본 색상
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],

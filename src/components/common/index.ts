@@ -1,6 +1,6 @@
 export * from "./axisWithComposition";
 export * from "./button_round";
-export * from "./button";
+export { default as Button } from "./button";
 export * from "./calendar";
 export * from "./chart";
 export * from "./datepicker";
