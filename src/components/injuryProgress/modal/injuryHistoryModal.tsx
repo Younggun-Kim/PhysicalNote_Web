@@ -4,9 +4,12 @@
 
 import ModalForm from "@/components/common/modal/modalForm";
 import { RoundButtonFactory } from "@/components/common/button_round";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { SearchCategoryType } from "@/types/common";
 import DropDownUnderLine from "@/components/common/dropdown_underline";
+import InjuryHistoryModalTable from "./injuryHistoryModalTable";
+import Api from "@/api/injuryProgress";
+import { injuryListItemResponseType } from "@/types/injuryProgress";
 
 interface InjuryHistoryModalProps {
   visible: boolean;
@@ -18,19 +21,20 @@ export const InjuryHistoryModal = ({
   setVisible,
 }: InjuryHistoryModalProps) => {
   const [selectedFilter, setSelectedFilter] = useState("all");
-  //   useEffect(() => {
-  //     if (visible) {
-  //       document.body.classList.add("modal-open");
-  //       //   getPlayerSimple();
-  //     } else {
-  //       document.body.classList.remove("modal-open");
-  //     }
+  const [data, setData] = useState<injuryListItemResponseType[]>([]);
+  useEffect(() => {
+    if (visible) {
+      document.body.classList.add("modal-open");
+      getInjuryList();
+    } else {
+      document.body.classList.remove("modal-open");
+    }
 
-  //     // 컴포넌트 언마운트 시 클래스 제거
-  //     return () => {
-  //       document.body.classList.remove("modal-open");
-  //     };
-  //   }, [visible]);
+    // 컴포넌트 언마운트 시 클래스 제거
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, [visible]);
 
   const filterList: Array<SearchCategoryType> = [
     {
@@ -57,6 +61,13 @@ export const InjuryHistoryModal = ({
     );
   };
 
+  /** API: 선수 부상자 현황 목록 */
+  const getInjuryList = async () => {
+    await Api.v2GetInjuryList("NON_CONTACT", "2024-11").then((res) => {
+      setData(res.data);
+    });
+  };
+
   /** 모달 닫기 Handler */
   const handleClose = () => {
     setVisible(false);
@@ -69,7 +80,7 @@ export const InjuryHistoryModal = ({
 
   return (
     <ModalForm onClickEvent={handleClose}>
-      <div className="px-[1rem] w-[800px]">
+      <div className="px-[1rem] w-[1000px]">
         <div className="flex size-full justify-between items-center  mb-[3.625rem]">
           <h2 className="text-h2-b">부상자현황_접촉(contract)부상</h2>
           <DropDownUnderLine
@@ -78,6 +89,9 @@ export const InjuryHistoryModal = ({
             isSize="small"
             changeText={handleFilterChanged}
           />
+        </div>
+        <div className="mb-[2rem]">
+          <InjuryHistoryModalTable data={data} />
         </div>
         <div className="flex items-center justify-end space-x-2">
           <RoundButtonFactory.md
@@ -97,6 +111,3 @@ export const InjuryHistoryModal = ({
     </ModalForm>
   );
 };
-function useEffect(arg0: () => void, arg1: boolean[]) {
-  throw new Error("Function not implemented.");
-}

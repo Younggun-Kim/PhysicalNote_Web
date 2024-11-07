@@ -11,6 +11,23 @@ const InjuryProgress = {
       return Promise.reject(err);
     }
   },
+  /** 선수 부상자 현황 목록 */
+  async v2GetInjuryList(
+    injuryType: string,
+    yearMonth: string,
+    playerGrade?: string
+  ) {
+    try {
+      let url = `${prefix}/injury/list?injuryType=${injuryType}&yearMonth=${yearMonth}`;
+      if (playerGrade) {
+        url += `&playerGrade=${playerGrade}`;
+      }
+      const result = await instanceWithToken.get(url);
+      return result;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
 };
 
 export default InjuryProgress;
