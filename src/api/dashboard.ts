@@ -44,6 +44,25 @@ const Dashboard = {
       return Promise.reject(err);
     }
   },
+  async v2PostPushUnregisteredPlayers(
+    recordDate: string,
+    userIds: number[],
+    workoutTime: string,
+    workoutType: string
+  ) {
+    try {
+      const url = `${prefix}/push/unregistered-players`;
+      const result = await instanceWithToken.post(url, {
+        recordDate,
+        userIds,
+        workoutTime,
+        workoutType,
+      });
+      return result;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
 };
 
 export default Dashboard;

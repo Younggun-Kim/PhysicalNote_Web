@@ -3,10 +3,12 @@ import ModalForm from "@/components/common/modal/modalForm";
 import { RoundButtonFactory, Button } from "@/components/common";
 import Image from "next/image";
 import Api from "@/api/player";
+import DashboardApi from "@/api/dashboard";
 import { PlayerSimpleTable } from "./playerSImpleTable";
 import { useSetRecoilState } from "recoil";
 import { playerCheckSelector } from "@/recoil/schedule/scheduleState";
 import { CheckboxType } from "@/types/schedule";
+import { getFullDateToString } from "@/utils/dateFormat";
 
 interface SendWorkoutTimeModalProps {
   isOpen: boolean;
@@ -36,6 +38,7 @@ export const SendWorkoutTimeModal = ({
   const [isSports, setIsSports] = useState(true);
   const [hour, setHour] = useState<number>();
   const [minute, setMinute] = useState<number>();
+  const [keyword, setKeyword] = useState<string>();
   const [data, setData] = useState<PlayerSimpleListData[]>();
   const setCheckbox = useSetRecoilState(playerCheckSelector);
   const [checkPlayer, setCheckPlayer] = useState<CheckboxType[]>([]);
@@ -60,8 +63,8 @@ export const SendWorkoutTimeModal = ({
   };
 
   /** API : 선수 목록 조회 */
-  const getPlayerSimple = async () => {
-    await Api.v2GetPlayerSimple("").then((res) => {
+  const getPlayerSimple = async (keyword: string = "") => {
+    await Api.v2GetPlayerSimple(keyword).then((res) => {
       const { data } = res;
       const tempData: PlayerSimpleListData[] = [];
       const initCheckbox: CheckboxType[] = [];
@@ -95,6 +98,72 @@ export const SendWorkoutTimeModal = ({
     });
   };
 
+  const formatTime = (hour: number): string => {
+    return String(hour).padStart(2, "0");
+  };
+
+  const handleSearch = () => {
+    getPlayerSimple(keyword);
+  };
+
+  const handleOnKeywordChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value);
+  };
+
+  const handleOnHourChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    if (value === "") {
+      setHour(undefined);
+      return;
+    }
+    const hour = parseInt(value);
+    if (!isNaN(hour)) {
+      setHour(hour);
+    }
+  };
+
+  const handleOnMinuteChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    if (value === "") {
+      setMinute(undefined);
+      return;
+    }
+    const minute = parseInt(value);
+    if (isNaN(minute)) return;
+    if (minute > 60 || minute < 0) {
+      alert("0 ~ 59분 사이로 입력해주세요.");
+      return;
+    }
+    setMinute(minute);
+  };
+
+  // 확인 버튼 클릭
+  const handleOnClick = async () => {
+    const recordDate = getFullDateToString(new Date());
+    const checkedIds = checkPlayer.filter((e) => e.check).map((e) => e.id);
+    const workoutTime = `${formatTime(hour ?? 0)}:${formatTime(minute ?? 0)}:00`;
+    const workoutType = isSports ? "SPORTS" : "PHYSICAL";
+
+    if (checkedIds.length == 0) {
+      alert("알림을 전송할 선수들을 선택해주주세요.");
+      return;
+    }
+
+    if (!minute || minute == 0) {
+      alert("운동 시간을 입력해주세요.");
+      return;
+    }
+
+    await DashboardApi.v2PostPushUnregisteredPlayers(
+      recordDate,
+      checkedIds,
+      workoutTime,
+      workoutType
+    ).then((res) => {
+      onClickClose();
+    });
+  };
+
   return (
     <ModalForm onClickEvent={onClickClose}>
       <div className="px-[1rem] w-[800px]">
@@ -123,17 +192,7 @@ export const SendWorkoutTimeModal = ({
                 className="w-100 h-100 border-none outline-none text-center focus:ring-0"
                 value={`${hour ?? ""}`}
                 placeholder="시간"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  const { value } = e.target;
-                  if (value === "") {
-                    setHour(undefined);
-                    return;
-                  }
-                  const hour = parseInt(value);
-                  if (!isNaN(hour)) {
-                    setHour(hour);
-                  }
-                }}
+                onChange={handleOnHourChanged}
               />
             </div>
             <div className="w-[5rem] h-[3rem] flex justify-center items-center shadow-[0_2px_8px_0px_rgba(0,0,0,0.1)] rounded-full overflow-hidden">
@@ -142,17 +201,7 @@ export const SendWorkoutTimeModal = ({
                 className="w-100 h-100 border-none outline-none text-center focus:ring-0"
                 value={`${minute ?? ""}`}
                 placeholder="분"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  const { value } = e.target;
-                  if (value === "") {
-                    setMinute(undefined);
-                    return;
-                  }
-                  const minute = parseInt(value);
-                  if (!isNaN(minute)) {
-                    setMinute(minute);
-                  }
-                }}
+                onChange={handleOnMinuteChanged}
               />
             </div>
           </div>
@@ -164,8 +213,9 @@ export const SendWorkoutTimeModal = ({
               type="text"
               className="w-44 outline-none border-none focus:ring-0 text-center"
               placeholder="이름을 입력하세요."
+              onChange={handleOnKeywordChanged}
             />
-            <button onClick={() => setIsOpen((open) => !open)}>
+            <button onClick={handleSearch}>
               <Image
                 src={"/icons/search.svg"}
                 width={24}
@@ -192,6 +242,7 @@ export const SendWorkoutTimeModal = ({
             type="button"
             text="확인"
             classnames="rounded-lg shadow-none"
+            onClick={handleOnClick}
           />
         </div>
       </div>
