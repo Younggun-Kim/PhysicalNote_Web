@@ -106,6 +106,12 @@ export const SendWorkoutTimeModal = ({
     getPlayerSimple(keyword);
   };
 
+  const handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   const handleOnKeywordChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value);
   };
@@ -214,6 +220,7 @@ export const SendWorkoutTimeModal = ({
               className="w-44 outline-none border-none focus:ring-0 text-center"
               placeholder="이름을 입력하세요."
               onChange={handleOnKeywordChanged}
+              onKeyUp={handleEnterPress}
             />
             <button onClick={handleSearch}>
               <Image
