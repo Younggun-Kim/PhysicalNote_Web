@@ -54,7 +54,7 @@ const config: Config = {
             fontWeight: "700",
           },
         ],
-        "body-body": [
+        "body-md": [
           "14px",
           {
             lineHeight: "22.4px",

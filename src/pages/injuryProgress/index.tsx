@@ -11,12 +11,15 @@ import {
 import Api from "@/api/injuryProgress";
 import { injuryProgressResponseType } from "@/types/injuryProgress";
 import { SeriesDataType } from "@/types/chart";
+import { InjuryHistoryModal } from "@/components/injuryProgress";
 
 const InjuryProgress: NextPage = () => {
   const [isPlayer, setIsPlayer] = useState(false);
   const [searchYear, setSearchYear] = useState<Date | null>(new Date());
   const [progressData, setProgressData] =
     useState<SeriesDataType[]>(seriesData);
+
+  const [historyModalVisible, setHistoryModalVisible] = useState(false);
 
   const getInjuryProgress = useCallback(async () => {
     const year = searchYear?.getFullYear().toString();
@@ -98,7 +101,11 @@ const InjuryProgress: NextPage = () => {
                 </div>
                 <div className="flex flex-1">
                   {progressData[1].data.map((el, idx) => (
-                    <div key={idx} className="text-center w-1/12 text-[14px]">
+                    <div
+                      key={idx}
+                      className="text-center w-1/12 text-[14px]"
+                      onClick={() => alert(el)}
+                    >
                       {el}
                     </div>
                   ))}
@@ -141,6 +148,12 @@ const InjuryProgress: NextPage = () => {
           </div>
         )}
       </div>
+
+      <InjuryHistoryModal
+        // visible={historyModalVisible}
+        visible={true}
+        setVisible={setHistoryModalVisible}
+      />
     </Layout>
   );
 };
