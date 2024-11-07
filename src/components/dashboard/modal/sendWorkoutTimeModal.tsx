@@ -155,7 +155,10 @@ export const SendWorkoutTimeModal = ({
       return;
     }
 
-    if (!minute || minute == 0) {
+    const notInputtedHour = !hour || hour == 0;
+    const notInputtedMinutes = !minute || minute == 0;
+    const notInputtedTime = notInputtedHour && notInputtedMinutes;
+    if (notInputtedTime) {
       alert("운동 시간을 입력해주세요.");
       return;
     }
