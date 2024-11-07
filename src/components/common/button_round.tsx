@@ -1,7 +1,7 @@
 import { cls } from "@/utils";
 import React from "react";
 
-type ButtonSize = "sm" | "md" | "lg";
+type ButtonSize = "sm" | "md" | "lg" | "wide";
 
 interface ButtonProps {
   text: string;
@@ -11,19 +11,23 @@ interface ButtonProps {
   classnames?: string;
   onClick?: () => void;
   disabled?: boolean;
+  isSelected?: boolean;
 }
 
 // 사이즈별 스타일 정의
 // 사이즈별 스타일 정의를 Record 타입으로 선언
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: "body-b-sm py-1 px-3",
-  md: "body-b-md py-[11px] px-[31px]",
-  lg: "body-b-md py-[11px] px-[31px]",
+  sm: "text-body-sm-b py-[5px] px-[13px]",
+  md: "text-body-b py-[11px] px-[31px]",
+  lg: "text-body-b py-[11px] px-[31px]",
+  wide: "text-body-b py-[11px] px-[18.5px]",
 } as const;
 
 // 기본 버튼 스타일
 const baseButtonStyles =
-  "rounded-full bg-primary text-white shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] cursor-pointer";
+  "rounded-full shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] cursor-pointer";
+const selectedStyle = "bg-primary text-white";
+const unSelectedStyle = "bg-white text-black";
 
 export const RoundButton = ({
   text,
@@ -32,13 +36,16 @@ export const RoundButton = ({
   classnames,
   onClick,
   disabled,
+  isSelected = true,
 }: ButtonProps) => {
+  const textStyle = isSelected ? selectedStyle : unSelectedStyle;
   return (
     <button
       type={type}
       onClick={onClick}
       className={cls(
         baseButtonStyles,
+        textStyle,
         sizeStyles[size ?? "md"],
         classnames || ""
       )}
@@ -61,5 +68,9 @@ export const RoundButtonFactory = {
 
   lg: (props: Omit<ButtonProps, "size">) => (
     <RoundButton {...props} size="lg" />
+  ),
+
+  wide: (props: Omit<ButtonProps, "size">) => (
+    <RoundButton {...props} size="wide" />
   ),
 };

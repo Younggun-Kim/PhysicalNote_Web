@@ -5,6 +5,7 @@ import { DailyReportDataType, WeeklyReportDataType } from "@/types/report";
 import { PlayerSimpleDataType } from "@/types/schedule";
 import { PlayerListDataType } from "@/types/player";
 import { CheckboxType } from "@/types/schedule";
+import { PlayerSimpleListData } from "@/components/dashboard/modal/modal";
 
 export interface SearchProps {
   title?: string;
@@ -40,6 +41,7 @@ export interface TableType {
     | DailyReportDataType[]
     | WeeklyReportDataType[]
     | PlayerSimpleDataType[]
+    | PlayerSimpleListData[]
     | PlayerListDataType[];
   onClickRow?: (id: number) => (e: React.MouseEvent<HTMLDivElement>) => void;
   isCheckboxUse?: boolean;

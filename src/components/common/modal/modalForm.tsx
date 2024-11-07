@@ -8,7 +8,7 @@ const ModalForm = ({ onClickEvent, children }: ModalFormProps) => {
   return (
     <div className="flex justify-center items-center z-50 fixed w-full h-full top-0 left-0 bg-[#000] bg-opacity-10">
       <div className="min-w-[500px]">
-        <div className="h-[45px] rounded-t-xl relative bg-[#fff] px-[20px] border-[1px solid #0d3471]">
+        <div className="h-[45px] rounded-t-[1.25rem] relative bg-[#fff] px-[20px] border-[1px solid #0d3471]">
           <div
             className="absolute top-[18px] right-[20px] cursor-pointer"
             onMouseEnter={() => setIsHovered(true)}
@@ -24,7 +24,7 @@ const ModalForm = ({ onClickEvent, children }: ModalFormProps) => {
             />
           </div>
         </div>
-        <div className="w-full bg-[#fff] rounded-b-xl shadow-[1px 2px 4px rgba(0, 0, 0, 0.25)] px-6 pb-8">
+        <div className="w-full bg-[#fff] rounded-b-[1.25rem] shadow-[1px 2px 4px rgba(0, 0, 0, 0.25)] px-6 pb-8">
           {children}
         </div>
       </div>

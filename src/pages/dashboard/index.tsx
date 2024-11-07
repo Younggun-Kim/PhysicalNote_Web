@@ -27,10 +27,13 @@ import { getFullDateToString } from "@/utils/dateFormat";
 import { DashboardResponseType } from "@/types/dashboard";
 import AuthLayout from "@/components/layout/authLayout";
 import { RoundButtonFactory, Button } from "@/components/common";
+import { SendWorkoutTimeModal } from "@/components/dashboard/modal/sendWorkoutTimeModal";
 
 const Dashboard: NextPage = () => {
   const [initDate, setInitDate] = useState<Date>(new Date());
   const [searchDate, setSearchDate] = useState<Date>(new Date());
+  const [isOpenSendWorkoutTimeModal, setIsOpenSendWorkoutTimeModal] =
+    useState<boolean>(false);
 
   const setTeamCondition = useSetRecoilState(teamConditionSelector);
   const setTeamCaution = useSetRecoilState(teamHooperIndexSelector);
@@ -117,7 +120,7 @@ const Dashboard: NextPage = () => {
             <RoundButtonFactory.md
               type="button"
               text="운동시간 전송"
-              onClick={() => console.log("운동시간 전송 클릭")}
+              onClick={() => setIsOpenSendWorkoutTimeModal(true)}
             />
           </div>
           <div className="flex items-center justify-end space-x-2">
@@ -184,6 +187,13 @@ const Dashboard: NextPage = () => {
           </div>
         </Layout>
       </div>
+
+      {isOpenSendWorkoutTimeModal && (
+        <SendWorkoutTimeModal
+          isOpen={isOpenSendWorkoutTimeModal}
+          setIsOpen={setIsOpenSendWorkoutTimeModal}
+        />
+      )}
     </AuthLayout>
   );
 };

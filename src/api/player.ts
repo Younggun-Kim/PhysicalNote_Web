@@ -83,6 +83,22 @@ const Player = {
       return Promise.reject(err);
     }
   },
+  /**
+   * 선수 간단 리스트 조회
+   * @param name 선수이름
+   * @returns 팀에 등록된 선수 목록
+   */
+  async v2GetPlayerSimple(name: string) {
+    try {
+      const url = `${prefix}/player/simple`;
+      const result = await instanceWithToken.get(url, {
+        params: { name },
+      });
+      return result;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
 };
 
 export default Player;

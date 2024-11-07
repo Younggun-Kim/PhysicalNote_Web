@@ -15,19 +15,24 @@
   background-size: auto;
 }
 
+/* 모달이 열렸을 때 body에 적용할 클래스 */
+.modal-open {
+  @apply overflow-hidden; /* Tailwind 사용 시 */
+}
+
 /* 스크롤바의 모양을 정의 */
 ::-webkit-scrollbar {
-  width: 10px; /* 스크롤바의 너비 */
+  width: 6px; /* 스크롤바의 너비 */
 }
 
 /* 스크롤바의 track 부분(배경)을 정의 */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; /* 스크롤바의 배경색 */
+  background: #edfbd5; /* 스크롤바의 배경색 */
 }
 
 /* 스크롤바의 thumb 부분(드래그 가능한 부분)을 정의 */
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1; /* 스크롤바의 색상 */
+  background: #8dbe3d; /* 스크롤바의 색상 */
   border-radius: 5px; /* 스크롤바의 모서리 반경 */
 }
 

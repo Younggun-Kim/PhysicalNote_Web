@@ -15,25 +15,51 @@ const config: Config = {
       },
       colors: {
         primary: "#8DBE3D", // 기본 색상
+        tertiary: "#edfbd5",
+        "gray-1": "#7d7d7d",
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],
       },
       fontSize: {
-        "body-b-sm": [
-          "12px",
+        "h2-b": [
+          "20px",
           {
-            lineHeight: "19.2x",
+            lineHeight: "32px",
             letterSpacing: "-0.05em",
             fontWeight: "700",
           },
         ],
-        "body-b-md": [
+        "body-b-sm": [
+          "12px",
+          {
+            lineHeight: "19.2px",
+            letterSpacing: "-0.05em",
+            fontWeight: "700",
+          },
+        ],
+        body: [
           "16px",
           {
             lineHeight: "25.6px",
             letterSpacing: "-0.05em",
             fontWeight: "700",
+          },
+        ],
+        "body-b": [
+          "16px",
+          {
+            lineHeight: "25.6px",
+            letterSpacing: "-0.05em",
+            fontWeight: "700",
+          },
+        ],
+        "body-body": [
+          "14px",
+          {
+            lineHeight: "22.4px",
+            letterSpacing: "-0.05em",
+            fontWeight: "400",
           },
         ],
       },
