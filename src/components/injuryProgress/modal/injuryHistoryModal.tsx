@@ -1,5 +1,5 @@
 /**
- * 부상 추이 모달
+ * 부상자 현황 모달
  */
 
 import ModalForm from "@/components/common/modal/modalForm";
@@ -10,17 +10,22 @@ import DropDownUnderLine from "@/components/common/dropdown_underline";
 import InjuryHistoryModalTable from "./injuryHistoryModalTable";
 import Api from "@/api/injuryProgress";
 import { injuryListItemResponseType } from "@/types/injuryProgress";
+import { formatInjuryType, InjuryEnum } from "@/types";
 
-interface InjuryHistoryModalProps {
+export interface InjuryHistoryModalProps {
   visible: boolean;
   setVisible: Dispatch<SetStateAction<boolean>>;
+  injuryType: InjuryEnum;
+  recordDate: string;
 }
 
 export const InjuryHistoryModal = ({
   visible,
   setVisible,
+  injuryType,
+  recordDate,
 }: InjuryHistoryModalProps) => {
-  const [selectedFilter, setSelectedFilter] = useState("all");
+  const [selectedFilter, setSelectedFilter] = useState("ALL");
   const [data, setData] = useState<injuryListItemResponseType[]>([]);
   useEffect(() => {
     if (visible) {
@@ -32,9 +37,18 @@ export const InjuryHistoryModal = ({
 
     // 컴포넌트 언마운트 시 클래스 제거
     return () => {
+      setSelectedFilter(filterList[0].key);
       document.body.classList.remove("modal-open");
     };
   }, [visible]);
+
+  // 필터 변경 시 리스트 다시 불러오기
+  useEffect(() => {
+    if (!visible) {
+      return;
+    }
+    getInjuryList();
+  }, [selectedFilter]);
 
   const filterList: Array<SearchCategoryType> = [
     {
@@ -50,7 +64,7 @@ export const InjuryHistoryModal = ({
       value: "2군",
     },
     {
-      key: "INJURY",
+      key: "INJURED",
       value: "부상자",
     },
   ];
@@ -63,9 +77,11 @@ export const InjuryHistoryModal = ({
 
   /** API: 선수 부상자 현황 목록 */
   const getInjuryList = async () => {
-    await Api.v2GetInjuryList("NON_CONTACT", "2024-11").then((res) => {
-      setData(res.data);
-    });
+    await Api.v2GetInjuryList(injuryType, recordDate, selectedFilter).then(
+      (res) => {
+        setData(res.data);
+      },
+    );
   };
 
   /** 모달 닫기 Handler */
@@ -78,11 +94,13 @@ export const InjuryHistoryModal = ({
     setSelectedFilter(category);
   };
 
+  const injuryTypeTitle: string = formatInjuryType(injuryType);
+
   return (
     <ModalForm onClickEvent={handleClose}>
       <div className="px-[1rem] w-[1000px]">
         <div className="flex size-full justify-between items-center  mb-[3.625rem]">
-          <h2 className="text-h2-b">부상자현황_접촉(contract)부상</h2>
+          <h2 className="text-h2-b">부상자현황_{injuryTypeTitle}</h2>
           <DropDownUnderLine
             dropDownList={filterList}
             defaultText={getSelectedFilterValue()}

@@ -5,8 +5,7 @@ const InjuryProgress = {
   async v1GetInjuryProgress(year: string) {
     try {
       const url = `${prefix}/injury/graph?year=${year}`;
-      const result = await instanceWithToken.get(url);
-      return result;
+      return await instanceWithToken.get(url);
     } catch (err) {
       return Promise.reject(err);
     }
@@ -15,15 +14,14 @@ const InjuryProgress = {
   async v2GetInjuryList(
     injuryType: string,
     yearMonth: string,
-    playerGrade?: string
+    playerGrade?: string,
   ) {
     try {
       let url = `${prefix}/injury/list?injuryType=${injuryType}&yearMonth=${yearMonth}`;
       if (playerGrade) {
         url += `&playerGrade=${playerGrade}`;
       }
-      const result = await instanceWithToken.get(url);
-      return result;
+      return await instanceWithToken.get(url);
     } catch (err) {
       return Promise.reject(err);
     }

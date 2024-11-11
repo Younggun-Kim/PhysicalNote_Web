@@ -19,7 +19,7 @@ export interface InjurySiteInfoProps {
 }
 
 export const InjurySiteInfo = ({
-                                   muscle, injuryLevel, recordDate, isRecovered, injuryType
+                                   muscle, injuryLevel, recordDate, injuryType
                                }: InjurySiteInfoProps) => {
 
     const muscleName: string = MuscleUtils.getMuscleName(muscle);
