@@ -1,4 +1,4 @@
-export * from "./muscleUtils";
+export * from "./muscle";
 export * from "./dateFormat";
 export * from "./strFormat";
 export * from "./tokenControl";

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import BodyCheckFrontChart from "@/components/player/detail/bodyCheckFrontChart";
 import BodyCheckBackChart from "@/components/player/detail/bodyCheckBackChart";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { playerDetailSelector } from "@/recoil/player/playerState";
 import { InjuryInfoType } from "@/types/player";
 import {
@@ -13,13 +13,17 @@ import {
 } from "@/types/enum/player";
 import { cls } from "@/utils";
 import Button from "@/components/common/button";
+import { RecoveryToggleBtn } from "@/components/common";
+import Api from "@/api/injuryProgress";
+import { PostInjuryRecoveryResponseType } from "@/types/injuryProgress";
 
 const BodyCheckInfo = () => {
-  const playerDetail = useRecoilValue(playerDetailSelector);
+  const [playerDetail, setPlayerDetail] = useRecoilState(playerDetailSelector);
   const [injuryData, setInjuryData] = useState<InjuryInfoType[]>();
   const [isOpen, setIsOpen] = useState<boolean[]>([]);
   const [frontArr, setFrontArr] = useState<Map<string, string | null>>();
   const [backArr, setBackArr] = useState<Map<string, string | null>>();
+  const [isRecovery, setIsRecovery] = useState<boolean>(false);
 
   const toggleOpen = (idx: number) => {
     const newArr = Array(isOpen.length).fill(false);
@@ -29,7 +33,7 @@ const BodyCheckInfo = () => {
 
   useEffect(() => {
     const length = playerDetail?.injuryInfo.length;
-    setInjuryData(playerDetail?.injuryInfo);
+    setFilteredInjuryData();
 
     const tempFront: Map<string, string | null> = new Map();
     const tempBack: Map<string, string | null> = new Map();
@@ -57,9 +61,59 @@ const BodyCheckInfo = () => {
     }
   }, [playerDetail]);
 
+  /** 필터 변경 시 목록 재설정 */
+  useEffect(() => {
+    setFilteredInjuryData();
+  }, [isRecovery]);
+
+  const handleFilter = (isRecovery: boolean) => {
+    setIsRecovery(isRecovery);
+  };
+
+  const setFilteredInjuryData = () => {
+    setInjuryData(
+      playerDetail?.injuryInfo.filter((data) => data.recoveryYn == isRecovery),
+    );
+  };
+
+  /** API: 선수 부상 완치하기 */
+  const postInjuryRecovery = async (userId: number, injuryId: number) => {
+    await Api.v2PostInjuryRecovery(userId, injuryId).then((res) => {
+      const { data } = res;
+      if (data as PostInjuryRecoveryResponseType) {
+        const { status, message } = data;
+        if (status) {
+          // API 호출 대신 바뀐 것만 업데이트
+          const { injuryInfo } = playerDetail;
+          const newInjuryInfo = injuryInfo.map((injury) => {
+            if (injury.id == injuryId) {
+              return { ...injury, recoveryYn: true };
+            }
+
+            return injury;
+          });
+          setPlayerDetail({ ...playerDetail, injuryInfo: newInjuryInfo });
+        } else {
+          alert(message);
+        }
+      }
+    });
+  };
+
+  const handleRecovery = (injuryId: number) => {
+    const userId: number | undefined = playerDetail?.userInfo.id;
+    if (!userId) {
+      alert("유효하지 않은 선수입니다.\n관리자에게 문의해주세요.");
+    }
+    postInjuryRecovery(userId, injuryId);
+  };
+
   return (
     <div className="w-full min-w-[900px] flex flex-col space-y-5 rounded-[25px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] py-4 px-8">
-      <div className="text-[20px] font-[700] space-x-1">부상체크</div>
+      <div className="space-x-1 flex">
+        <span className="flex-1 text-[20px] font-[700] ">부상체크</span>
+        <RecoveryToggleBtn isRecovery={isRecovery} onClick={handleFilter} />
+      </div>
       <div className="flex space-x-16">
         <div className="flex">
           <BodyCheckFrontChart injuryArr={frontArr} />
@@ -79,7 +133,7 @@ const BodyCheckInfo = () => {
                         className={cls(
                           "px-3 py-0.5 font-[400] rounded-[25px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)]",
                           `bg-[${(item.injuryLevelType && formatInjuryColor(item.injuryLevelType)) || "#8DBE3D"}]`,
-                          `text-[${item.injuryLevelType === "INJURED" ? "#fff" : "#000"}]`
+                          `text-[${item.injuryLevelType === "INJURED" ? "#fff" : "#000"}]`,
                         )}
                       >
                         {(item.injuryLevelType &&
@@ -92,17 +146,19 @@ const BodyCheckInfo = () => {
                             formatMuscleName(item.muscleType)) ||
                             "-"}
                         </div>
-                        <div className="text-[12px]">
+                        <div className="text-[12px] roun">
                           {item.recordDate || "-"}
                         </div>
                       </div>
                     </div>
-                    <Button
-                      text="열림"
-                      type="button"
-                      classnames="text-[12px] h-[25px] text-[#8DBE3D] font-[700]"
-                      onClick={() => toggleOpen(idx)}
-                    />
+                    {!item.recoveryYn && (
+                      <Button
+                        text="완치하기"
+                        type="button"
+                        classnames="text-[12px] h-[25px] text-[#8DBE3D] font-[700]"
+                        onClick={() => handleRecovery(item.id)}
+                      />
+                    )}
                   </div>
                   <div className="space-y-0.5">
                     <div className="text-[14px] font-[700]">
@@ -127,8 +183,8 @@ const BodyCheckInfo = () => {
                         통증양상
                       </div>
                       <div className="flex flex-row flex-wrap gap-3 text-[14px]">
-                        {item.painCharacteristicList.length !== 0 &&
-                          item.painCharacteristicList.map((pain, idx) => (
+                        {item.painCharacteristicList?.length !== 0 &&
+                          item.painCharacteristicList?.map((pain, idx) => (
                             <div
                               key={`pain-character${idx}`}
                               className="px-3 py-0.5 bg-[#fff] font-[400] rounded-[25px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)]"
@@ -139,8 +195,8 @@ const BodyCheckInfo = () => {
                       </div>
                       <div className="text-[14px] font-[700]">통증시기</div>
                       <div className="flex flex-row flex-wrap gap-3 text-[14px]">
-                        {item.painTimeList.length !== 0 &&
-                          item.painTimeList.map((time, idx) => (
+                        {item.painTimeList?.length !== 0 &&
+                          item.painTimeList?.map((time, idx) => (
                             <div
                               key={`time${idx}`}
                               className="px-3 py-0.5 bg-[#fff] font-[400] rounded-[25px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)]"

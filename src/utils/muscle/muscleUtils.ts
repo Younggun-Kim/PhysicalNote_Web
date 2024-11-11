@@ -1,4 +1,4 @@
-import {findMuscleKeyByValue, formatMuscleName, MuscleTypeKey} from "@/types/";
+import { findMuscleKeyByValue, formatMuscleName, MuscleTypeKey } from "@/types";
 
 /** 근육 타입 유틸들 */
 export class MuscleUtils {
