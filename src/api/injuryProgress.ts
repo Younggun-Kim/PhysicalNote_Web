@@ -1,4 +1,6 @@
 import { instanceWithToken } from "@/api";
+import { bool } from "yup";
+
 const prefix = "/admin";
 
 const InjuryProgress = {
@@ -22,6 +24,18 @@ const InjuryProgress = {
         url += `&playerGrade=${playerGrade}`;
       }
       return await instanceWithToken.get(url);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+  /** 선수 부상 완치하기 */
+  async v2PostInjuryRecovery(userId: number, injuryId: number) {
+    try {
+      const url = `${prefix}/injury/${userId}/${injuryId}/recovery`;
+      return await instanceWithToken.post(url, {
+        userId: userId,
+        injuryId: injuryId,
+      });
     } catch (err) {
       return Promise.reject(err);
     }

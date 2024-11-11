@@ -9,7 +9,10 @@ import { SearchCategoryType } from "@/types/common";
 import DropDownUnderLine from "@/components/common/dropdown_underline";
 import InjuryHistoryModalTable from "./injuryHistoryModalTable";
 import Api from "@/api/injuryProgress";
-import { injuryListItemResponseType } from "@/types/injuryProgress";
+import {
+  injuryListItemResponseType,
+  PostInjuryRecoveryResponseType,
+} from "@/types/injuryProgress";
 import { formatInjuryType, InjuryEnum } from "@/types";
 
 export interface InjuryHistoryModalProps {
@@ -84,6 +87,21 @@ export const InjuryHistoryModal = ({
     );
   };
 
+  /** API: 선수 부상 완치하기 */
+  const postInjuryRecovery = async (userId: number, injuryId: number) => {
+    await Api.v2PostInjuryRecovery(userId, injuryId).then((res) => {
+      const { data } = res;
+      if (data as PostInjuryRecoveryResponseType) {
+        const { status, message } = data;
+        if (status) {
+          getInjuryList();
+        } else {
+          alert(message);
+        }
+      }
+    });
+  };
+
   /** 모달 닫기 Handler */
   const handleClose = () => {
     setVisible(false);
@@ -109,7 +127,10 @@ export const InjuryHistoryModal = ({
           />
         </div>
         <div className="mb-[2rem]">
-          <InjuryHistoryModalTable data={data} />
+          <InjuryHistoryModalTable
+            data={data}
+            onRecovery={postInjuryRecovery}
+          />
         </div>
         <div className="flex items-center justify-end space-x-2">
           <RoundButtonFactory.md

@@ -41,13 +41,18 @@ const columnData = [
 
 interface InjuryHistoryModalTableProps {
   data?: injuryListItemResponseType[];
+  onRecovery: (userId: number, injuryId: number) => void;
 }
 
 /** 부상자 현황 테이블 */
-const InjuryHistoryModalTable = ({ data }: InjuryHistoryModalTableProps) => {
+const InjuryHistoryModalTable = ({
+  data,
+  onRecovery,
+}: InjuryHistoryModalTableProps) => {
   const getGrade = (grade: string): string => {
     return searchCategoryList.find((item) => item.key == grade)?.value ?? "";
   };
+
   return (
     <>
       <table className="w-full">
@@ -100,9 +105,10 @@ const InjuryHistoryModalTable = ({ data }: InjuryHistoryModalTableProps) => {
                   injuries={item.injuries}
                 />
                 <RecoveredRow key={`rowData${idx}5`} injuries={item.injuries} />
-                <RecoveryBtbRow
+                <RecoveryBtnRow
                   key={`rowData${idx}6`}
-                  injuries={item.injuries}
+                  injuries={item}
+                  onClick={(injuryId: number) => onRecovery(item.id, injuryId)}
                 />
                 <DetailBtnRow key={`rowData${idx}7`} injuries={item.injuries} />
               </tr>
@@ -175,17 +181,28 @@ const RecoveredRow = ({ injuries }: InjuriesOnly) => {
   );
 };
 
-const RecoveryBtbRow = ({ injuries }: InjuriesOnly, key: Key) => {
+interface RecoveryBtnRowProps {
+  key: Key;
+  injuries: InjuriesOnly;
+  onClick: (injuryId: number) => void;
+}
+
+const RecoveryBtnRow = ({ key, injuries, onClick }: RecoveryBtnRowProps) => {
   return (
     <td key={key} className="w-[10%]">
-      {injuries.map(({ isRecovered }, index) => (
+      {injuries.injuries.map(({ isRecovered, injuryId }, index) => (
         <div key={index} className="py-4">
           <div className="h-20 flex items-center justify-center">
             {isRecovered ? (
               <div></div>
             ) : (
               <div className="border-[1px] border-solid border-tertiary rounded-full py-0.5 px-1.5">
-                <button className="text-body-sm text-gray-1">완치하기</button>
+                <button
+                  className="text-body-sm text-gray-1"
+                  onClick={() => onClick(injuryId)}
+                >
+                  완치하기
+                </button>
               </div>
             )}
           </div>
