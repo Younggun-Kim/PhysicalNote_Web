@@ -18,7 +18,7 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 interface ChartProps {
@@ -35,7 +35,7 @@ interface ChartProps {
     responsive: boolean;
     plugins: {
       legend: {
-        position: string;
+        position: "center" | "left" | "top" | "right" | "bottom" | "chartArea";
       };
       title: {
         display: boolean;
