@@ -6,6 +6,7 @@ import { PlayerSimpleDataType } from "@/types/schedule";
 import { PlayerListDataType } from "@/types/player";
 import { CheckboxType } from "@/types/schedule";
 import { PlayerSimpleListData } from "@/components/dashboard/modal/modal";
+import { injuryListItemResponseType } from "../injuryProgress";
 
 export interface SearchProps {
   title?: string;
@@ -42,7 +43,8 @@ export interface TableType {
     | WeeklyReportDataType[]
     | PlayerSimpleDataType[]
     | PlayerSimpleListData[]
-    | PlayerListDataType[];
+    | PlayerListDataType[]
+    | injuryListItemResponseType[];
   onClickRow?: (id: number) => (e: React.MouseEvent<HTMLDivElement>) => void;
   isCheckboxUse?: boolean;
   isSelectedCheckbox?: boolean;

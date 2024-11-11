@@ -15,13 +15,23 @@ const config: Config = {
       },
       colors: {
         primary: "#8DBE3D", // 기본 색상
+        secondary: "#C6E19B", // 기본 색상
         tertiary: "#edfbd5",
         "gray-1": "#7d7d7d",
+        level: {
+          0: "#8DBE3D",
+          1: "#B7d487",
+          2: "#FBDD73",
+          3: "#FFC808",
+          4: "#F27C21",
+          5: "#FF0000",
+        },
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],
       },
       fontSize: {
+        // Heading2 styles
         "h2-b": [
           "20px",
           {
@@ -30,14 +40,8 @@ const config: Config = {
             fontWeight: "700",
           },
         ],
-        "body-b-sm": [
-          "12px",
-          {
-            lineHeight: "19.2px",
-            letterSpacing: "-0.05em",
-            fontWeight: "700",
-          },
-        ],
+
+        // Body styles
         body: [
           "16px",
           {
@@ -54,12 +58,39 @@ const config: Config = {
             fontWeight: "700",
           },
         ],
-        "body-body": [
+        "body-sm": [
+          "12px",
+          {
+            lineHeight: "19.2px",
+            letterSpacing: "-0.05em",
+            fontWeight: "400",
+          },
+        ],
+        // Body Small styles
+        "body-sm-b": [
+          "12px",
+          {
+            lineHeight: "19.2px",
+            letterSpacing: "-0.05em",
+            fontWeight: "700",
+          },
+        ],
+
+        // Body Medium styles
+        "body-md": [
           "14px",
           {
             lineHeight: "22.4px",
             letterSpacing: "-0.05em",
             fontWeight: "400",
+          },
+        ],
+        "body-md-b": [
+          "14px",
+          {
+            lineHeight: "22.4px",
+            letterSpacing: "-0.05em",
+            fontWeight: "700",
           },
         ],
       },

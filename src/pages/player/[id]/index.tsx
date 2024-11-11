@@ -16,6 +16,7 @@ import Api from "@/api/player";
 import { getFullDateToString } from "@/utils/dateFormat";
 import { useRecoilState } from "recoil";
 import { playerDetailSelector } from "@/recoil/player/playerState";
+import Image from "next/image";
 
 const ManagePlayerDetail: NextPage = () => {
   const router = useRouter();
@@ -52,7 +53,7 @@ const ManagePlayerDetail: NextPage = () => {
 
     await Api.v1GetPlayerDetail(
       Number(id),
-      getFullDateToString(searchDate)
+      getFullDateToString(searchDate),
     ).then((res) => {
       const { data } = res;
       if (data) {
@@ -65,6 +66,9 @@ const ManagePlayerDetail: NextPage = () => {
     setInitDate(new Date());
   };
 
+  /** 뒤로가기 */
+  const handleBack = () => router.back();
+
   useEffect(() => {
     getPlayerDetail();
   }, [searchDate]);
@@ -73,6 +77,13 @@ const ManagePlayerDetail: NextPage = () => {
     <div className="min-w-[2000px]">
       <Layout>
         <div className="flex items-center space-x-[30px]">
+          <Image
+            src={"/icons/chevron-left.svg"}
+            alt="뒤로가기"
+            width={30}
+            height={30}
+            onClick={handleBack}
+          />
           <h1 className="text-[28px] font-[700]">선수관리</h1>{" "}
         </div>
         <div className="flex items-center justify-end space-x-2 mb-10">

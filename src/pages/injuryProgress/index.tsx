@@ -11,12 +11,20 @@ import {
 import Api from "@/api/injuryProgress";
 import { injuryProgressResponseType } from "@/types/injuryProgress";
 import { SeriesDataType } from "@/types/chart";
+import { InjuryHistoryModal } from "@/components/injuryProgress";
+import { InjuryEnum } from "@/types";
 
 const InjuryProgress: NextPage = () => {
   const [isPlayer, setIsPlayer] = useState(false);
   const [searchYear, setSearchYear] = useState<Date | null>(new Date());
   const [progressData, setProgressData] =
     useState<SeriesDataType[]>(seriesData);
+
+  const [historyModalVisible, setHistoryModalVisible] = useState(false);
+  const [historyModalInjury, setHistoryModalInjury] =
+    useState<InjuryEnum>("NONE");
+  const [historyModalRecordDate, setHistoryModalRecordDate] =
+    useState<string>("");
 
   const getInjuryProgress = useCallback(async () => {
     const year = searchYear?.getFullYear().toString();
@@ -55,6 +63,17 @@ const InjuryProgress: NextPage = () => {
     getInjuryProgress();
   }, [searchYear]);
 
+  const openHistoryModal = (injuryType: InjuryEnum, idx: number) => {
+    if (!searchYear) {
+      return;
+    }
+    const month = `${idx + 1}`.padStart(2, "0");
+    const recordDate = `${searchYear.getFullYear()}-${month}`;
+    setHistoryModalRecordDate(recordDate);
+    setHistoryModalInjury(injuryType);
+    setHistoryModalVisible(true);
+  };
+
   return (
     <Layout>
       <div className="flex items-center space-x-[30px]">
@@ -83,7 +102,11 @@ const InjuryProgress: NextPage = () => {
                 </div>
                 <div className="flex flex-1">
                   {progressData[0].data.map((el, idx) => (
-                    <div key={idx} className="text-center w-1/12 text-[14px]">
+                    <div
+                      key={idx}
+                      className="text-center w-1/12 text-[14px]"
+                      onClick={() => openHistoryModal("NON_CONTACT", idx)}
+                    >
                       {el}
                     </div>
                   ))}
@@ -98,7 +121,11 @@ const InjuryProgress: NextPage = () => {
                 </div>
                 <div className="flex flex-1">
                   {progressData[1].data.map((el, idx) => (
-                    <div key={idx} className="text-center w-1/12 text-[14px]">
+                    <div
+                      key={idx}
+                      className="text-center w-1/12 text-[14px]"
+                      onClick={() => openHistoryModal("CONTACT", idx)}
+                    >
                       {el}
                     </div>
                   ))}
@@ -115,7 +142,11 @@ const InjuryProgress: NextPage = () => {
                 </div>
                 <div className="flex flex-1">
                   {progressData[3].data.map((el, idx) => (
-                    <div key={idx} className="text-center w-1/12 text-[14px]">
+                    <div
+                      key={idx}
+                      className="text-center w-1/12 text-[14px]"
+                      onClick={() => openHistoryModal("DISEASE", idx)}
+                    >
                       {el}
                     </div>
                   ))}
@@ -141,6 +172,15 @@ const InjuryProgress: NextPage = () => {
           </div>
         )}
       </div>
+
+      {historyModalVisible && (
+        <InjuryHistoryModal
+          visible={historyModalVisible}
+          setVisible={setHistoryModalVisible}
+          injuryType={historyModalInjury}
+          recordDate={historyModalRecordDate}
+        />
+      )}
     </Layout>
   );
 };

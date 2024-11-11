@@ -16,3 +16,4 @@ export * from "./tabBar01";
 export * from "./table";
 export * from "./timepicker";
 export * from "./sized_box";
+export * from "./recoveryToggleBtn";

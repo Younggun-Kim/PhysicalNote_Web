@@ -1,4 +1,5 @@
 import { Column } from "react-table";
+import { bool } from "yup";
 
 export interface PlayerListResponseType {
   id: number;
@@ -84,7 +85,7 @@ export interface PlayerDetailResponseType {
   intensityInfo: IntensityInfoType[];
   riskInfo: RiskInfoType;
   urineResponseDto: UrineInfoType;
-  feedBackInfo: FeedBackInfoType;
+  feedBackInfo: FeedBackInfoType | null;
   weekIntensityGraph: IntensityGraphType[];
   weekHooperIndexGraph: HooperIndexGraphType;
   weekWorkoutTimeGraph: WorkoutTimeGraphType[];
@@ -187,9 +188,10 @@ export interface InjuryInfoType {
   recordDate: string | null;
   injuryLevelType: string | null; // 고통 정도
   injuryLevelString: string | null; // 고통 텍스트
-  painCharacteristicList: Array<string>; // 통증 양상
-  painTimeList: Array<string>; // 통증 시기
+  painCharacteristicList?: Array<string>; // 통증 양상
+  painTimeList?: Array<string>; // 통증 시기
   comment: string | null; // 부상 코멘트
+  recoveryYn: boolean;
 }
 
 export interface HooperGraphType {

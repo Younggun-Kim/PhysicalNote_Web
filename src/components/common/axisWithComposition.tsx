@@ -42,7 +42,12 @@ const AxisWithComposition = ({
         <BarPlot />
         <LinePlot />
         <ChartsTooltip />
-        <ChartsXAxis axisId="quarters" labelFontSize={18} />
+        <ChartsXAxis
+          axisId="quarters"
+          labelStyle={{
+            fontSize: 18,
+          }}
+        />
         <ChartsYAxis axisId={`${yAxisIds[0].id}`} />
         <ChartsYAxis
           axisId={`${yAxisIds.length > 2 ? yAxisIds[2].id : yAxisIds[1].id}`}
