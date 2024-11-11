@@ -1,4 +1,4 @@
-import { ComponentType, ReactElement } from "react";
+import { ComponentType } from "react";
 import { MuscleTypeKey } from "@/types";
 import {
   FrontBodyExternalOblique,
@@ -129,6 +129,7 @@ const FrontLeftLeg: Record<MuscleTypeKey, ComponentType<MuscleSvgProps>> = {
   GRACILIS: FrontLeftLegGracilis,
   ILIACUS: FrontLeftLegIliacus,
   ILIOTIBIAL_BAND: FrontLeftLegIliotibialBand,
+  SEMIMEMBRANOSUS: FrontLeftLegIliotibialBand,
   LATERAL_GASTROCNEMIUS: FrontLeftLegLateralGastrocnemius,
   MEDIAL_GASTROCNEMIUS: FrontLeftLegMedialGastrocnemius,
   PERONEUS_BREVIS: FrontLeftLegPeroneusBrevis,
@@ -149,6 +150,7 @@ const FrontRightLeg: Record<MuscleTypeKey, ComponentType<MuscleSvgProps>> = {
   GRACILIS: FrontRightLegGracilis,
   ILIACUS: FrontRightLegIliacus,
   ILIOTIBIAL_BAND: FrontRightLegIliotibialBand,
+  SEMIMEMBRANOSUS: FrontRightLegIliotibialBand,
   LATERAL_GASTROCNEMIUS: FrontRightLegLateralGastrocnemius,
   MEDIAL_GASTROCNEMIUS: FrontRightLegMedialGastrocnemius,
   PERONEUS_BREVIS: FrontRightLegPeroneusBrevis,
@@ -194,6 +196,7 @@ const BackLeftLeg: Record<MuscleTypeKey, ComponentType<MuscleSvgProps>> = {
   GLUTEUS: BackLeftLegGluteus,
   GRACILIS: BackLeftLegGracilis,
   ILIOTIBIAL_BAND: BackLeftLegIliotibialBand,
+  SEMIMEMBRANOSUS: BackLeftLegIliotibialBand,
   RECTUS_FEMORIS: BackLeftLegRectusFemoris,
   SARTORIUS: BackLeftLegSartorius,
   SOLEUS: BackLeftLegSoleus,
@@ -205,6 +208,7 @@ const BackRightLeg: Record<MuscleTypeKey, ComponentType<MuscleSvgProps>> = {
   GLUTEUS: BackRightLegGluteus,
   GRACILIS: BackRightLegGracilis,
   ILIOTIBIAL_BAND: BackRightLegIliotibialBand,
+  SEMIMEMBRANOSUS: BackRightLegIliotibialBand,
   RECTUS_FEMORIS: BackRightLegRectusFemoris,
   SARTORIUS: BackRightLegSartorius,
   SOLEUS: BackRightLegSoleus,
@@ -218,7 +222,7 @@ export const MuscleImgMap: Record<
   앞_왼팔: FrontLeftArm,
   앞_오른팔: FrontRightArm,
   "앞_왼쪽 다리": FrontLeftLeg,
-  "앞_오른쪽 다리": FrontRightArm,
+  "앞_오른쪽 다리": FrontRightLeg,
 
   뒤_몸통: BackBody,
   뒤_왼팔: BackLeftArm,

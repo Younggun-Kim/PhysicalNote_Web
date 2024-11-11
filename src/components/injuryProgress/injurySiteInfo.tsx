@@ -4,7 +4,6 @@
 
 import { MuscleTypeKey } from "@/types";
 import { cls, MuscleImgMap, MuscleUtils } from "@/utils";
-import { FrontBodyExternalOblique } from "@/components/muscleSvg/front/body/external_oblique";
 import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
 
 export interface InjurySiteInfoProps {
@@ -20,6 +19,8 @@ export interface InjurySiteInfoProps {
   isRecovered: boolean;
   /** 부상타입 */
   injuryType: string;
+  /** 질병 설명 */
+  description: string;
 }
 
 export const EmptyImageView = ({ color }: MuscleSvgProps) => {
@@ -31,22 +32,33 @@ export const InjurySiteInfo = ({
   injuryLevel,
   recordDate,
   injuryType,
+  description,
 }: InjurySiteInfoProps) => {
   const muscleName: string = MuscleUtils.getMuscleName(muscle);
 
-  const MuscleImage = MuscleImgMap[bodyPart][muscle] || EmptyImageView;
+  const isDisease = injuryType.includes("질병");
+  const MuscleImage = isDisease
+    ? EmptyImageView
+    : MuscleImgMap[bodyPart][muscle] || EmptyImageView;
   return (
     <div className="flex justify-center items-center py-4">
       <div className="w-20 h-20 overflow-hidden mr-3">
-        {/*<img src="https://picsum.photos/200/300" alt={muscleName} />*/}
-        <MuscleImage color={MuscleUtils.levelToBgColor(injuryLevel)} />
+        {isDisease && <img src="/images/pills.fill.svg" alt={muscleName} />}
+
+        {!isDisease && (
+          <MuscleImage color={MuscleUtils.levelToBgColor(injuryLevel)} />
+        )}
       </div>
       <div className="flex flex-col">
         <div className={"flex gap-1"}>
-          <span className="text-body-md-b">{muscleName}</span>
-          <InjuryLevelBadge level={injuryLevel} />
+          <span className="text-body-md-b">
+            {isDisease ? injuryType : muscleName}
+          </span>
+          {!isDisease && <InjuryLevelBadge level={injuryLevel} />}
         </div>
-        <span className="text-body-sm">{injuryType}</span>
+        <span className="text-body-sm">
+          {isDisease ? description : injuryType}
+        </span>
         <span className="text-body-sm text-gray-1">{recordDate}</span>
       </div>
     </div>
@@ -68,12 +80,13 @@ export const InjuryLevelBadge = ({ level }: InjuryLevelBadgeProps) => {
     "bg-level-4",
     "bg-level-5",
   ];
+  const clamp = (num: number): number => (num < 0 ? 0 : num > 5 ? 5 : num);
   return (
     <div
       className={cls(
         "py-[2px] px-[6.5px] text-body-sm rounded-full text-center",
         textColor,
-        `bg-[${MuscleUtils.levelToBgColor(level)}]`,
+        bgColors[clamp(level)],
       )}
     >
       {level}단계

@@ -166,6 +166,7 @@ const InjuryLocationRow = ({ injuries }: InjuriesOnly) => {
             muscle={muscleKey}
             recordDate={injury.recordDate}
             injuryType={injury.type}
+            description={injury.description}
           />
         );
       })}
