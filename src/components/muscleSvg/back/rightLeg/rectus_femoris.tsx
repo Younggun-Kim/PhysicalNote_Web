@@ -1,5 +1,7 @@
-/** 뒤 오른쪽다리 대퇴이두근 */
-export const BackRightLegRectusFemoris = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 오른쪽다리 대퇴이두근 */
+export const BackRightLegRectusFemoris = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

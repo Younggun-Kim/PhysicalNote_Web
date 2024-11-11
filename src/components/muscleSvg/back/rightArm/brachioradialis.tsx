@@ -1,5 +1,7 @@
-/** 뒤 오른쪽팔 완요골근 */
-export const BackRightArmBrachioradialis = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 오른쪽팔 완요골근 */
+export const BackRightArmBrachioradialis = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

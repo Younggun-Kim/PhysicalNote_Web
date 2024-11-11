@@ -1,5 +1,7 @@
-/** 뒤 왼쪽다리 비복근 */
-export const BackLeftLegGracilis = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 왼쪽다리 비복근 */
+export const BackLeftLegGracilis = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

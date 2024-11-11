@@ -1,5 +1,7 @@
-/** 뒤 몸 광배근 */
-export const BackBodyLatissimus = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 몸 광배근 */
+export const BackBodyLatissimus = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

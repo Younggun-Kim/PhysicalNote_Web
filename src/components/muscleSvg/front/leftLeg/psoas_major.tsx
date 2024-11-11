@@ -1,5 +1,8 @@
-/** 앞 왼쪽 다리 대요근 */
-export const FrontLeftPsoasMajor = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+import { FrontLeftLegPeroneusLongus } from "@/components/muscleSvg";
+
+/**  앞 왼쪽 다리 대요근 */
+export const FrontLeftLegPsoasMajor = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

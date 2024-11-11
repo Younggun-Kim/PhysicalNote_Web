@@ -1,5 +1,7 @@
-/** 뒤 오른쪽다리 가자미근 */
-export const BackRightLegSartorius = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 오른쪽다리 가자미근 */
+export const BackRightLegSartorius = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

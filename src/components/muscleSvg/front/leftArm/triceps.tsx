@@ -1,5 +1,7 @@
-/** 앞 왼쪽 삼두근 */
-export const FrontLeftArmTriceps = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  앞 왼쪽 삼두근 */
+export const FrontLeftArmTriceps = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

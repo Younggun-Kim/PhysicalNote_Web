@@ -3,10 +3,13 @@
  */
 
 import { MuscleTypeKey } from "@/types";
-import { cls, MuscleUtils } from "@/utils";
+import { cls, MuscleImgMap, MuscleUtils } from "@/utils";
 import { FrontBodyExternalOblique } from "@/components/muscleSvg/front/body/external_oblique";
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
 
 export interface InjurySiteInfoProps {
+  /** 몸 부위 */
+  bodyPart: string;
   /** 근육 타입 */
   muscle: MuscleTypeKey;
   /** 부상 레벨 */
@@ -19,18 +22,24 @@ export interface InjurySiteInfoProps {
   injuryType: string;
 }
 
+export const EmptyImageView = ({ color }: MuscleSvgProps) => {
+  return <div className="w-20 h-20 bg-gray-1"></div>;
+};
 export const InjurySiteInfo = ({
+  bodyPart,
   muscle,
   injuryLevel,
   recordDate,
   injuryType,
 }: InjurySiteInfoProps) => {
   const muscleName: string = MuscleUtils.getMuscleName(muscle);
+
+  const MuscleImage = MuscleImgMap[bodyPart][muscle] || EmptyImageView;
   return (
     <div className="flex justify-center items-center py-4">
       <div className="w-20 h-20 overflow-hidden mr-3">
         {/*<img src="https://picsum.photos/200/300" alt={muscleName} />*/}
-        <FrontBodyExternalOblique color={"#F27C21"} />
+        <MuscleImage color={MuscleUtils.levelToBgColor(injuryLevel)} />
       </div>
       <div className="flex flex-col">
         <div className={"flex gap-1"}>
@@ -59,13 +68,12 @@ export const InjuryLevelBadge = ({ level }: InjuryLevelBadgeProps) => {
     "bg-level-4",
     "bg-level-5",
   ];
-  const bgColor = `bg-level-${level}`;
   return (
     <div
       className={cls(
         "py-[2px] px-[6.5px] text-body-sm rounded-full text-center",
         textColor,
-        bgColors[level],
+        `bg-[${MuscleUtils.levelToBgColor(level)}]`,
       )}
     >
       {level}단계

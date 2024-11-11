@@ -1,5 +1,8 @@
-/** 앞 왼쪽 다리 가자미근 */
-export const FrontLeftSartorius = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+import { FrontLeftLegPeroneusLongus } from "@/components/muscleSvg";
+
+/**  앞 왼쪽 다리 가자미근 */
+export const FrontLeftLegSartorius = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

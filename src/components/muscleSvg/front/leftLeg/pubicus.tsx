@@ -1,5 +1,8 @@
-/** 앞 왼쪽 다리 치골근 */
-export const FrontLeftPubicus = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+import { FrontLeftLegPeroneusLongus } from "@/components/muscleSvg";
+
+/**  앞 왼쪽 다리 치골근 */
+export const FrontLeftLegPubicus = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

@@ -160,6 +160,7 @@ const InjuryLocationRow = ({ injuries }: InjuriesOnly) => {
         return (
           <InjurySiteInfo
             key={index}
+            bodyPart={`${bodyPart}_${body}`}
             injuryLevel={injury.level}
             isRecovered={injury.isRecovered}
             muscle={muscleKey}

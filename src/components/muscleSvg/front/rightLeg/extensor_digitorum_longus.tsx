@@ -1,5 +1,9 @@
-/** 앞 오른쪽 다리 장지신근 */
-export const FrontRightLegExtensorDigitorumLongus = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  앞 오른쪽 다리 장지신근 */
+export const FrontRightLegExtensorDigitorumLongus = ({
+  color,
+}: MuscleSvgProps) => {
   return (
     <svg
       width="75"

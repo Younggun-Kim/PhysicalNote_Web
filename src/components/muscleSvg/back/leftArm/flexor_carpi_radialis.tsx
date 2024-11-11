@@ -1,5 +1,7 @@
-/** 뒤 왼쪽팔 주근 */
-export const BackLeftArmFlexorCarpiRadialis = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 왼쪽팔 주근 */
+export const BackLeftArmFlexorCarpiRadialis = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

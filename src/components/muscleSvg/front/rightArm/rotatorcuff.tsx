@@ -1,5 +1,7 @@
-/** 앞 오른쪽 회전근개 */
-export const FrontRightArmRotatorcuff = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  앞 오른쪽 회전근개 */
+export const FrontRightArmRotatorcuff = ({ color }: MuscleSvgProps) => {
   return (
     <svg
       width="75"

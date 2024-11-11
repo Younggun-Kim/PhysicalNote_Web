@@ -1,5 +1,7 @@
-/** 앞 왼쪽 원회내근 */
-export const FrontLeftArmPronatorTeres = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  앞 왼쪽 원회내근 */
+export const FrontLeftArmPronatorTeres = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

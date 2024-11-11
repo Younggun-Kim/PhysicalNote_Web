@@ -1,5 +1,8 @@
-/** 앞 왼쪽 다리 장경인대 */
-export const FrontLeftSemimembranosus = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+import { FrontLeftLegPeroneusLongus } from "@/components/muscleSvg";
+
+/**  앞 왼쪽 다리 장경인대 */
+export const FrontLeftLegSemimembranosus = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

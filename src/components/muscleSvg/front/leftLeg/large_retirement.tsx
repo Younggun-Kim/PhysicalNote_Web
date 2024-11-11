@@ -1,5 +1,7 @@
-/** 앞 왼쪽 다리 대퇴직근 */
-export const FrontLeftLegLargeRetirement = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  앞 왼쪽 다리 대퇴직근 */
+export const FrontLeftLegLargeRetirement = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

@@ -1,5 +1,7 @@
-/** 뒤 왼쪽팔 충지신근 */
-export const BackLeftArmExtensorCarpiUlnaris = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 왼쪽팔 충지신근 */
+export const BackLeftArmExtensorCarpiUlnaris = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

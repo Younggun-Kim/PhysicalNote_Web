@@ -1,5 +1,7 @@
-/** 앞 오른쪽 장장근 */
-export const FrontRightArmSerratusAnterior = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  앞 오른쪽 장장근 */
+export const FrontRightArmSerratusAnterior = ({ color }: MuscleSvgProps) => {
   return (
     <svg
       width="75"

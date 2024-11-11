@@ -1,5 +1,7 @@
-/** 뒤 몸 대완근 */
-export const BackBodyQuadratusLumborum = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 몸 대완근 */
+export const BackBodyQuadratusLumborum = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

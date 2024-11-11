@@ -1,7 +1,9 @@
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
 /**
  * 앞 왼쪽 팔 완요골근
  */
-export const FrontLeftArmBrachioradialis = (color: string) => {
+export const FrontLeftArmBrachioradialis = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

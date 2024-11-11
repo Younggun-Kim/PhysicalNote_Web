@@ -1,5 +1,7 @@
-/** 앞 왼쪽 삼각근 */
-export const FrontLeftArmDeltoid = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  앞 왼쪽 삼각근 */
+export const FrontLeftArmDeltoid = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

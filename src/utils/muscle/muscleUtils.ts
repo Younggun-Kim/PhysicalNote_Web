@@ -11,4 +11,20 @@ export class MuscleUtils {
   static findMuscleBy(value: string): MuscleTypeKey | undefined {
     return findMuscleKeyByValue[value];
   }
+
+  /** 부상 레벨을 배경 색상으로 */
+  static levelToBgColor = (level: number): string => {
+    const clamp = (num: number): number => (num < 0 ? 0 : num > 5 ? 5 : num);
+
+    return (
+      {
+        0: "#8DBE3D",
+        1: "#B7d487",
+        2: "#FBDD73",
+        3: "#FFC808",
+        4: "#F27C21",
+        5: "#FF0000",
+      }[clamp(level)] ?? "#7d7d7d"
+    );
+  };
 }

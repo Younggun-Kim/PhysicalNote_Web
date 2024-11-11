@@ -1,5 +1,7 @@
-/** 뒤 오른쪽팔 척추수근신근 */
-export const BackRightArmPalmarisLongus = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 오른쪽팔 척추수근신근 */
+export const BackRightArmPalmarisLongus = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

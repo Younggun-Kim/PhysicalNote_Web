@@ -1,2 +1,2 @@
-export * from "./muscleSvg";
+export * from "./muscleImgMap";
 export * from "./muscleUtils";

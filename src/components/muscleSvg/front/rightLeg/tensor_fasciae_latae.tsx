@@ -1,5 +1,7 @@
-/** 앞 오른쪽 다리 대퇴근막장근 */
-export const FrontRightTensorFasciaeLatae = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  앞 오른쪽 다리 대퇴근막장근 */
+export const FrontRightLegTensorFasciaeLatae = ({ color }: MuscleSvgProps) => {
   return (
     <svg
       width="75"

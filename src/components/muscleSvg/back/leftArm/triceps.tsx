@@ -1,5 +1,7 @@
-/** 뒤 왼쪽팔 삼두근 */
-export const BackLeftArmTriceps = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 왼쪽팔 삼두근 */
+export const BackLeftArmTriceps = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

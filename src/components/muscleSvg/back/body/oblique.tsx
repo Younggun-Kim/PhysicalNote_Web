@@ -1,5 +1,7 @@
-/** 뒤 몸 소원근 */
-export const BackBodyOblique = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 몸 소원근 */
+export const BackBodyOblique = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

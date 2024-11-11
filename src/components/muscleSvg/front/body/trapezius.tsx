@@ -1,6 +1,6 @@
 import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
 
-/** 앞 승모근 */
+/**  앞 승모근 */
 export const FrontBodyTrapezius = ({ color }: MuscleSvgProps) => {
   return (
     <>

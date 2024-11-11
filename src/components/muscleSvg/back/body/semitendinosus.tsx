@@ -1,5 +1,7 @@
-/** 뒤 몸 척추기립근 */
-export const BackBodySemitendinosus = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 몸 척추기립근 */
+export const BackBodySemitendinosus = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

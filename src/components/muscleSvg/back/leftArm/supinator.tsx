@@ -1,5 +1,7 @@
-/** 뒤 왼쪽팔 요측수근신근 */
-export const BackLeftArmSupinator = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 왼쪽팔 요측수근신근 */
+export const BackLeftArmSupinator = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

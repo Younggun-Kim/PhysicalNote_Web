@@ -1,5 +1,7 @@
-/** 뒤 오른쪽다리 대내전근 */
-export const BackRightLegAdductorMagnus = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 오른쪽다리 대내전근 */
+export const BackRightLegAdductorMagnus = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

@@ -1,9 +1,7 @@
-interface Props {
-  color: string;
-}
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
 
-/** 앞 대흉근 */
-export const FrontBodyPectoralisMajor = ({ color }: Props) => {
+/**  앞 대흉근 */
+export const FrontBodyPectoralisMajor = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

@@ -1,5 +1,7 @@
-/** 앞 오른쪽 다리 장골근 */
-export const FrontRightLegIliacus = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  앞 오른쪽 다리 장골근 */
+export const FrontRightLegIliacus = ({ color }: MuscleSvgProps) => {
   return (
     <svg
       width="75"

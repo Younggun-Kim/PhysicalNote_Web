@@ -1,5 +1,7 @@
-/** 뒤 왼쪽다리 반건반막양근 */
-export const BackLeftLegBicepsFemoris = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 왼쪽다리 반건반막양근 */
+export const BackLeftLegBicepsFemoris = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

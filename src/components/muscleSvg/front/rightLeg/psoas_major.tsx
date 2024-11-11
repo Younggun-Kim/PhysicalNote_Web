@@ -1,5 +1,7 @@
-/** 앞 오른쪽 다리 대요근 */
-export const FrontRightPsoasMajor = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  앞 오른쪽 다리 대요근 */
+export const FrontRightLegPsoasMajor = ({ color }: MuscleSvgProps) => {
   return (
     <svg
       width="75"

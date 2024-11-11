@@ -1,5 +1,7 @@
-/** 뒤 왼쪽다리 둔근 */
-export const BackLeftLegGluteus = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  뒤 왼쪽다리 둔근 */
+export const BackLeftLegGluteus = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

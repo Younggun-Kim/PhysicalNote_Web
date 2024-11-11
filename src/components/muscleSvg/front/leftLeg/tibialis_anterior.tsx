@@ -1,5 +1,8 @@
-/** 앞 왼쪽 다리 전경골근 */
-export const FrontLeftTibialisAnterior = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+import { FrontLeftLegPeroneusLongus } from "@/components/muscleSvg";
+
+/**  앞 왼쪽 다리 전경골근 */
+export const FrontLeftLegTibialisAnterior = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

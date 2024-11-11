@@ -1,5 +1,7 @@
-/** 앞 왼쪽 다리 장경인대 */
-export const FrontLeftLegIliotibialBand = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  앞 왼쪽 다리 장경인대 */
+export const FrontLeftLegIliotibialBand = ({ color }: MuscleSvgProps) => {
   return (
     <>
       <svg

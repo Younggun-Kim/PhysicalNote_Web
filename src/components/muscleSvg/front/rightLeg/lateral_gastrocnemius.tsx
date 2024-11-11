@@ -1,5 +1,9 @@
-/** 앞 오른쪽 다리 외측광근 */
-export const FrontRightLegLateralGastrocnemius = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+
+/**  앞 오른쪽 다리 외측광근 */
+export const FrontRightLegLateralGastrocnemius = ({
+  color,
+}: MuscleSvgProps) => {
   return (
     <svg
       width="75"

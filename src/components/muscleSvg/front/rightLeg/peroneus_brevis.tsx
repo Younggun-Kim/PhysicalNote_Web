@@ -1,5 +1,8 @@
-/** 앞 오른쪽 다리 장비골근 */
-export const FrontRightPeroneusBrevis = (color: string) => {
+import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
+import { FrontRightLegMedialGastrocnemius } from "@/components/muscleSvg";
+
+/**  앞 오른쪽 다리 장비골근 */
+export const FrontRightLegPeroneusBrevis = ({ color }: MuscleSvgProps) => {
   return (
     <svg
       width="75"
