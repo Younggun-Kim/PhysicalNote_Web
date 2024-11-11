@@ -42,15 +42,21 @@ const columnData = [
 interface InjuryHistoryModalTableProps {
   data?: injuryListItemResponseType[];
   onRecovery: (userId: number, injuryId: number) => void;
+  moveDetail: (userId: number) => void;
 }
 
 /** 부상자 현황 테이블 */
 const InjuryHistoryModalTable = ({
   data,
   onRecovery,
+  moveDetail,
 }: InjuryHistoryModalTableProps) => {
   const getGrade = (grade: string): string => {
     return searchCategoryList.find((item) => item.key == grade)?.value ?? "";
+  };
+
+  const handleClickDetail = (id: number) => {
+    moveDetail(id);
   };
 
   return (
@@ -107,10 +113,14 @@ const InjuryHistoryModalTable = ({
                 <RecoveredRow key={`rowData${idx}5`} injuries={item.injuries} />
                 <RecoveryBtnRow
                   key={`rowData${idx}6`}
-                  injuries={item}
+                  data={item}
                   onClick={(injuryId: number) => onRecovery(item.id, injuryId)}
                 />
-                <DetailBtnRow key={`rowData${idx}7`} injuries={item.injuries} />
+                <DetailBtnRow
+                  key={`rowData${idx}7`}
+                  data={item}
+                  onClick={() => handleClickDetail(item.id)}
+                />
               </tr>
             );
           })}
@@ -183,14 +193,14 @@ const RecoveredRow = ({ injuries }: InjuriesOnly) => {
 
 interface RecoveryBtnRowProps {
   key: Key;
-  injuries: InjuriesOnly;
+  data: InjuriesOnly;
   onClick: (injuryId: number) => void;
 }
 
-const RecoveryBtnRow = ({ key, injuries, onClick }: RecoveryBtnRowProps) => {
+const RecoveryBtnRow = ({ key, data, onClick }: RecoveryBtnRowProps) => {
   return (
     <td key={key} className="w-[10%]">
-      {injuries.injuries.map(({ isRecovered, injuryId }, index) => (
+      {data.injuries.map(({ isRecovered, injuryId }, index) => (
         <div key={index} className="py-4">
           <div className="h-20 flex items-center justify-center">
             {isRecovered ? (
@@ -212,14 +222,22 @@ const RecoveryBtnRow = ({ key, injuries, onClick }: RecoveryBtnRowProps) => {
   );
 };
 
-const DetailBtnRow = ({ injuries }: InjuriesOnly, key: Key) => {
+interface DetailBtnRowProps {
+  key: Key;
+  data: InjuriesOnly;
+  onClick: () => void;
+}
+
+const DetailBtnRow = ({ key, data, onClick }: DetailBtnRowProps) => {
   return (
     <td key={key} className="w-[10%]">
-      {injuries.map(({ isRecovered }, index) => (
+      {data.injuries.map(({ isRecovered }, index) => (
         <div key={index} className="py-4">
           <div className="h-20 flex items-center justify-center">
             <div className="border-[1px] border-solid border-tertiary rounded-full py-0.5 px-1.5">
-              <button className="text-body-sm text-gray-1">상세보기</button>
+              <button className="text-body-sm text-gray-1" onClick={onClick}>
+                상세보기
+              </button>
             </div>
           </div>
         </div>

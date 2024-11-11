@@ -14,6 +14,7 @@ import {
   PostInjuryRecoveryResponseType,
 } from "@/types/injuryProgress";
 import { formatInjuryType, InjuryEnum } from "@/types";
+import { useRouter } from "next/router";
 
 export interface InjuryHistoryModalProps {
   visible: boolean;
@@ -28,6 +29,7 @@ export const InjuryHistoryModal = ({
   injuryType,
   recordDate,
 }: InjuryHistoryModalProps) => {
+  const router = useRouter();
   const [selectedFilter, setSelectedFilter] = useState("ALL");
   const [data, setData] = useState<injuryListItemResponseType[]>([]);
   useEffect(() => {
@@ -112,6 +114,12 @@ export const InjuryHistoryModal = ({
     setSelectedFilter(category);
   };
 
+  /** 선수관리 상세 이동 */
+  const handleMoveDetail = (userId: number) => {
+    handleClose();
+    router.push(`/player/${userId}`);
+  };
+
   const injuryTypeTitle: string = formatInjuryType(injuryType);
 
   return (
@@ -130,6 +138,7 @@ export const InjuryHistoryModal = ({
           <InjuryHistoryModalTable
             data={data}
             onRecovery={postInjuryRecovery}
+            moveDetail={handleMoveDetail}
           />
         </div>
         <div className="flex items-center justify-end space-x-2">
