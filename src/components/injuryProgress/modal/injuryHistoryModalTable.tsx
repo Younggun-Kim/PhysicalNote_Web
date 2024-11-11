@@ -1,105 +1,201 @@
-import { searchCategoryList } from "@/constants/mock/searchCategoryList";
-import { TableRowType } from "@/types/common";
-import { injuryListItemResponseType } from "@/types/injuryProgress";
-import { cls } from "@/utils";
-import { ReactElement } from "react";
+import {searchCategoryList} from "@/constants/mock/searchCategoryList";
+import {injuryListItemResponseType} from "@/types/injuryProgress";
+import {cls, MuscleUtils} from "@/utils";
+import {ReactElement} from "react";
+import {InjurySiteInfo} from "@/components/injuryProgress/injurySiteInfo";
 
 const columnData = [
-  {
-    Header: "No",
-    accessor: "no",
-  },
-  {
-    Header: "선수이름",
-    accessor: "name",
-  },
-  {
-    Header: "소속",
-    accessor: "belongto",
-  },
-  {
-    Header: "포지션",
-    accessor: "position",
-  },
-  {
-    Header: "부상위치",
-    accessor: "injury",
-  },
-  {
-    Header: "부상현황",
-    accessor: "isRecovered",
-  },
-  {
-    Header: "",
-    accessor: "",
-  },
-  {
-    Header: "",
-    accessor: "",
-  },
+    {
+        Header: "No.",
+        accessor: "w-[5%]",
+    },
+    {
+        Header: "선수이름",
+        accessor: "w-[10%]",
+    },
+    {
+        Header: "소속",
+        accessor: "w-[10%]",
+    },
+    {
+        Header: "포지션",
+        accessor: "w-[10%]",
+    },
+    {
+        Header: "부상위치",
+        accessor: "w-[35%]",
+    },
+    {
+        Header: "부상현황",
+        accessor: "w-[10%]",
+    },
+    {
+        Header: "",
+        accessor: "w-[10%]",
+    },
+    {
+        Header: "",
+        accessor: "w-[10%]",
+    },
 ];
 
 interface InjuryHistoryModalTableProps {
-  data?: injuryListItemResponseType[];
+    data?: injuryListItemResponseType[];
 }
 
-const InjuryHistoryModalTable = ({ data }: InjuryHistoryModalTableProps) => {
-  const getGrade = (grade: string): string => {
-    return searchCategoryList.find((item) => item.key == grade)?.value ?? "";
-  };
-  return (
-    <>
-      <table className="w-full">
-        <thead>
-          <tr>
-            {columnData.map((column, idx) => (
-              <th
-                key={`column${idx}`}
-                className={cls("min-w-[110px] py-[20px] text-[14px]")}
-              >
-                <div className="flex items-center justify-center">
-                  <span className="text-body-md text-gray-1">
-                    {column.Header?.toString()}
-                  </span>
-                </div>
-              </th>
-            ))}
-          </tr>
-        </thead>
+const InjuryHistoryModalTable = ({data}: InjuryHistoryModalTableProps) => {
+    const getGrade = (grade: string): string => {
+        return searchCategoryList.find((item) => item.key == grade)?.value ?? "";
+    };
+    return (
+        <>
+            <table className="w-full">
+                <thead>
+                <tr className="w-full table">
+                    {columnData.map((column, idx) => (
+                        <th
+                            key={`column${idx}`}
+                            className={cls(
+                                "min-w-[50px] py-[20px] text-[14px]",
+                                column.accessor,
+                            )}
+                        >
+                            <div className="flex items-center justify-center">
+                              <span className="text-body-md text-gray-1">
+                                {column.Header?.toString()}
+                              </span>
+                            </div>
+                        </th>
+                    ))}
+                </tr>
+                </thead>
 
-        <tbody>
-          {data?.map((item: injuryListItemResponseType, idx: any) => {
-            return (
-              <tr>
-                <CustomTableRow key={`rowData${idx}0`} value={idx + 1} />
-                <CustomTableRow key={`rowData${idx}1`} value={item.name} />
-                <CustomTableRow
-                  key={`rowData${idx}2`}
-                  value={getGrade(item.playerGrade)}
-                />
-                <CustomTableRow
-                  key={`rowData${idx}3`}
-                  value={item.positions.join("/")}
-                />
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </>
-  );
+                <tbody className="w-full block max-h-[60vh] overflow-y-scroll">
+                {[...data ?? [], ...data ?? [], ...data ?? [], ...data ?? [], ...data ?? [], ...data ?? [], ...data ?? [], ...data ?? [], ...data ?? [], ...data ?? [], ...data ?? [], ...data ?? [], ...data ?? []]?.map((item: injuryListItemResponseType, idx: any) => {
+                    return (
+                        <tr className="w-full table">
+                            <CustomTableRow key={`rowData${idx}0`} value={idx + 1} classNames="w-[5%]"/>
+                            <CustomTableRow key={`rowData${idx}1`} value={item.name} classNames="w-[10%]"/>
+                            <CustomTableRow
+                                key={`rowData${idx}2`}
+                                value={getGrade(item.playerGrade)}
+                                classNames="w-[10%]"
+                            />
+                            <CustomTableRow
+                                key={`rowData${idx}3`}
+                                value={item.positions.join("/")}
+                                classNames="w-[10%]"
+                            />
+                            <InjuryLocationRow
+                                key={`rowData${idx}4`}
+                                injuries={item.injuries}
+                            />
+                            <RecoveredRow
+                                key={`rowData${idx}5`}
+                                injuries={item.injuries}
+                            />
+                            <RecoveryBtbRow
+                                key={`rowData${idx}6`}
+                                injuries={item.injuries}
+                            />
+                            <DetailBtnRow
+                                key={`rowData${idx}7`}
+                                injuries={item.injuries}
+                            />
+                        </tr>
+                    );
+                })}
+                </tbody>
+            </table>
+        </>
+    );
 };
 
 interface CustomTableRowProps {
-  value: string | ReactElement;
+    value: string | ReactElement;
+    classNames?: string | undefined;
 }
-const CustomTableRow = ({ value }: CustomTableRowProps) => {
-  return (
-    <td className="py-[20px] text-body-md text-center whitespace-normal">
-      <div>
-        <span>{value}</span>
-      </div>
-    </td>
-  );
+
+const CustomTableRow = ({value, classNames}: CustomTableRowProps) => {
+    return (
+        <td className={cls(
+            "whitespace-normal align-top min-w-50",
+            classNames ?? ''
+        )}>
+            <div className="text-body-md text-center h-20 flex items-center justify-center my-4">
+                {value}
+            </div>
+        </td>
+    );
 };
+
+type InjuriesOnly = Pick<injuryListItemResponseType, 'injuries'>;
+const InjuryLocationRow = ({injuries}: InjuriesOnly) => {
+
+
+    return <td className="w-[35%]">
+        {injuries.map((injury) => {
+            const {location} = injury;
+            const [bodyPart, body, muscle] = location.split('_');
+            const muscleKey = MuscleUtils.findMuscleBy(muscle) || "NONE";
+
+            return (<InjurySiteInfo
+                injuryLevel={injury.level}
+                isRecovered={injury.isRecovered}
+                muscle={muscleKey}
+                recordDate={injury.recordDate}
+                injuryType={injury.type}
+            />)
+        })}
+    </td>
+}
+
+const RecoveredRow = ({injuries}: InjuriesOnly) => {
+    return <td className="w-[10%]">
+        {injuries.map(({isRecovered}) =>
+            <div className="py-4">
+                <div className={
+                    cls(
+                        "h-20 flex items-center justify-center text-body-md",
+                        isRecovered ? "text-primary" : "text-black",
+                    )
+                }>
+                    {isRecovered ? "완치" : "진행"}
+                </div>
+            </div>
+        )}
+    </td>
+}
+
+const RecoveryBtbRow = ({injuries}: InjuriesOnly) => {
+    return <td className="w-[10%]">
+        {injuries.map(({isRecovered}) =>
+            <div className="py-4">
+                <div className="h-20 flex items-center justify-center">
+                    {isRecovered ? <div></div> :
+                        <div className="border-[1px] border-solid border-tertiary rounded-full py-0.5 px-1.5">
+                            <button className='text-body-sm text-gray-1'>완치하기</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        )}
+    </td>
+}
+
+
+const DetailBtnRow = ({injuries}: InjuriesOnly) => {
+    return <td className="w-[10%]">
+        {injuries.map(({isRecovered}) =>
+            <div className="py-4">
+                <div className="h-20 flex items-center justify-center">
+                    <div className="border-[1px] border-solid border-tertiary rounded-full py-0.5 px-1.5">
+                        <button className='text-body-sm text-gray-1'>상세보기</button>
+                    </div>
+                </div>
+            </div>
+        )}
+    </td>
+}
+
 export default InjuryHistoryModalTable;
