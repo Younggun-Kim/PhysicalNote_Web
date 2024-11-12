@@ -19,9 +19,11 @@ export interface injuryListItemResponseType {
       description: string;
       isRecovered: boolean;
       level: number;
-      location: string;
       recordDate: string;
       type: string;
+      distinctionType: string;
+      bodyPart: string;
+      muscleType: string;
     },
   ];
 }

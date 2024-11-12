@@ -153,17 +153,17 @@ const InjuryLocationRow = ({ injuries }: InjuriesOnly) => {
   return (
     <td className="w-[35%]">
       {injuries.map((injury, index) => {
-        const { location } = injury;
-        const [bodyPart, body, muscle] = location.split("_");
-        const muscleKey = MuscleUtils.findMuscleBy(muscle) || "NONE";
+        const { distinctionType, bodyPart, muscleType } = injury;
+        const distinctionTypeKor = distinctionType === "FRONT" ? "앞" : "뒤";
+        const bodyPartKor = MuscleUtils.bodyPartToKor(bodyPart);
 
         return (
           <InjurySiteInfo
             key={index}
-            bodyPart={`${bodyPart}_${body}`}
+            bodyPart={`${distinctionTypeKor}_${bodyPartKor}`}
             injuryLevel={injury.level}
             isRecovered={injury.isRecovered}
-            muscle={muscleKey}
+            muscle={muscleType}
             recordDate={injury.recordDate}
             injuryType={injury.type}
             description={injury.description}

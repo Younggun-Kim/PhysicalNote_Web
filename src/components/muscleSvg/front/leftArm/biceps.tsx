@@ -1,7 +1,5 @@
 import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
 
-import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
-
 /**  앞 왼쪽 이두근 */
 export const FrontLeftArmBiceps = ({ color }: MuscleSvgProps) => {
   return (
