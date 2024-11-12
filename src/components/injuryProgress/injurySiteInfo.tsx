@@ -26,6 +26,7 @@ export interface InjurySiteInfoProps {
 export const EmptyImageView = ({ color }: MuscleSvgProps) => {
   return <div className="w-20 h-20 bg-gray-1"></div>;
 };
+
 export const InjurySiteInfo = ({
   bodyPart,
   muscle,
@@ -35,7 +36,6 @@ export const InjurySiteInfo = ({
   description,
 }: InjurySiteInfoProps) => {
   const muscleName: string = MuscleUtils.getMuscleName(muscle);
-
   const isDisease = injuryType.includes("질병");
   const MuscleImage = isDisease
     ? EmptyImageView
@@ -44,7 +44,6 @@ export const InjurySiteInfo = ({
     <div className="flex justify-center items-center py-4">
       <div className="w-20 h-20 overflow-hidden mr-3">
         {isDisease && <img src="/images/pills.fill.svg" alt={muscleName} />}
-
         {!isDisease && (
           <MuscleImage color={MuscleUtils.levelToBgColor(injuryLevel)} />
         )}

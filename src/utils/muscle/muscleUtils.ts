@@ -27,4 +27,17 @@ export class MuscleUtils {
       }[clamp(level)] ?? "#7d7d7d"
     );
   };
+
+  /** BodyPart to kor */
+  static bodyPartToKor = (bodyPart: string): string => {
+    return (
+      {
+        TORSO: "몸통",
+        LEG_LEFT: "왼쪽 다리",
+        LEG_RIGHT: "오른쪽 다리",
+        ARM_LEFT: "왼팔",
+        ARM_RIGHT: "오른팔",
+      }[bodyPart] ?? ""
+    );
+  };
 }
