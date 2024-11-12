@@ -41,13 +41,15 @@ const columnData = [
 
 interface InjuryHistoryModalTableProps {
   data?: injuryListItemResponseType[];
-  onRecovery: (userId: number, injuryId: number) => void;
+  selectedInjuryIds: number[];
+  onRecovery: (injuryId: number) => void;
   moveDetail: (userId: number) => void;
 }
 
 /** 부상자 현황 테이블 */
 const InjuryHistoryModalTable = ({
   data,
+  selectedInjuryIds,
   onRecovery,
   moveDetail,
 }: InjuryHistoryModalTableProps) => {
@@ -114,7 +116,8 @@ const InjuryHistoryModalTable = ({
                 <RecoveryBtnRow
                   key={`rowData${idx}6`}
                   data={item}
-                  onClick={(injuryId: number) => onRecovery(item.id, injuryId)}
+                  selectedInjuryIds={selectedInjuryIds}
+                  onClick={(injuryId: number) => onRecovery(injuryId)}
                 />
                 <DetailBtnRow
                   key={`rowData${idx}7`}
@@ -194,21 +197,33 @@ const RecoveredRow = ({ injuries }: InjuriesOnly) => {
 };
 
 interface RecoveryBtnRowProps {
-  key: Key;
   data: InjuriesOnly;
+  selectedInjuryIds: number[];
   onClick: (injuryId: number) => void;
 }
 
-const RecoveryBtnRow = ({ key, data, onClick }: RecoveryBtnRowProps) => {
+const RecoveryBtnRow = ({
+  data,
+  selectedInjuryIds,
+  onClick,
+}: RecoveryBtnRowProps) => {
+  const isSelected = (id: number) => selectedInjuryIds.includes(id);
+  const getBgColor = (id: number) =>
+    isSelected(id) ? "bg-tertiary" : "bg-white";
   return (
-    <td key={key} className="w-[10%]">
+    <td className="w-[10%]">
       {data.injuries.map(({ isRecovered, injuryId }, index) => (
         <div key={index} className="py-4">
           <div className="h-20 flex items-center justify-center">
             {isRecovered ? (
               <div></div>
             ) : (
-              <div className="border-[1px] border-solid border-tertiary rounded-full py-0.5 px-1.5">
+              <div
+                className={cls(
+                  "border-[1px] border-solid border-tertiary rounded-full py-0.5 px-1.5",
+                  getBgColor(injuryId),
+                )}
+              >
                 <button
                   className="text-body-sm text-gray-1"
                   onClick={() => onClick(injuryId)}
@@ -225,14 +240,13 @@ const RecoveryBtnRow = ({ key, data, onClick }: RecoveryBtnRowProps) => {
 };
 
 interface DetailBtnRowProps {
-  key: Key;
   data: InjuriesOnly;
   onClick: () => void;
 }
 
-const DetailBtnRow = ({ key, data, onClick }: DetailBtnRowProps) => {
+const DetailBtnRow = ({ data, onClick }: DetailBtnRowProps) => {
   return (
-    <td key={key} className="w-[10%]">
+    <td className="w-[10%]">
       {data.injuries.map(({ isRecovered }, index) => (
         <div key={index} className="py-4">
           <div className="h-20 flex items-center justify-center">

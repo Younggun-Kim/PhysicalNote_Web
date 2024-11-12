@@ -77,8 +77,8 @@ const BodyCheckInfo = () => {
   };
 
   /** API: 선수 부상 완치하기 */
-  const postInjuryRecovery = async (userId: number, injuryId: number) => {
-    await Api.v2PostInjuryRecovery(userId, injuryId).then((res) => {
+  const postInjuryRecovery = async (injuryId: number) => {
+    await Api.v2PostInjuryRecovery([injuryId]).then((res) => {
       const { data } = res;
       if (data as PostInjuryRecoveryResponseType) {
         const { status, message } = data;
@@ -100,12 +100,10 @@ const BodyCheckInfo = () => {
     });
   };
 
-  const handleRecovery = (injuryId: number) => {
-    const userId: number | undefined = playerDetail?.userInfo.id;
-    if (!userId) {
-      alert("유효하지 않은 선수입니다.\n관리자에게 문의해주세요.");
+  const handleRecovery = async (injuryId: number) => {
+    if (confirm("선택하신 부상을 완치하시겠습니까?")) {
+      await postInjuryRecovery(injuryId);
     }
-    postInjuryRecovery(userId, injuryId);
   };
 
   return (

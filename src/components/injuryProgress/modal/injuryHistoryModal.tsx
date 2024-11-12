@@ -32,6 +32,8 @@ export const InjuryHistoryModal = ({
   const router = useRouter();
   const [selectedFilter, setSelectedFilter] = useState("ALL");
   const [data, setData] = useState<injuryListItemResponseType[]>([]);
+  const [selectedInjuryIds, setSelectedInjuryIds] = useState<number[]>([]);
+
   useEffect(() => {
     if (visible) {
       document.body.classList.add("modal-open");
@@ -90,17 +92,28 @@ export const InjuryHistoryModal = ({
   };
 
   /** API: 선수 부상 완치하기 */
-  const postInjuryRecovery = async (userId: number, injuryId: number) => {
-    await Api.v2PostInjuryRecovery(userId, injuryId).then((res) => {
+  const postInjuryRecovery = async (injuryIds: number[]) => {
+    await Api.v2PostInjuryRecovery(injuryIds).then((res) => {
       const { data } = res;
       if (data as PostInjuryRecoveryResponseType) {
         const { status, message } = data;
         if (status) {
+          alert("수정 완료 되었습니다.");
           getInjuryList();
         } else {
           alert(message);
         }
       }
+    });
+  };
+
+  /** 완치하기 클릭 Handler */
+  const handleRecovery = (injuryId: number) => {
+    setSelectedInjuryIds((prev) => {
+      if (prev.includes(injuryId)) {
+        return prev.filter((id) => id !== injuryId);
+      }
+      return [...prev, injuryId];
     });
   };
 
@@ -120,6 +133,18 @@ export const InjuryHistoryModal = ({
     router.push(`/player/${userId}`);
   };
 
+  /** 확인 버튼 클릭 */
+  const handleSubmit = async () => {
+    if (selectedInjuryIds.length == 0) {
+      alert("완치할 부상을 선택해주세요.");
+      return;
+    }
+
+    if (confirm("선택하신 부상을 완치하시겠습니까?")) {
+      await postInjuryRecovery(selectedInjuryIds);
+    }
+  };
+
   const injuryTypeTitle: string = formatInjuryType(injuryType);
 
   return (
@@ -137,7 +162,8 @@ export const InjuryHistoryModal = ({
         <div className="mb-[2rem]">
           <InjuryHistoryModalTable
             data={data}
-            onRecovery={postInjuryRecovery}
+            selectedInjuryIds={selectedInjuryIds}
+            onRecovery={handleRecovery}
             moveDetail={handleMoveDetail}
           />
         </div>
@@ -152,7 +178,7 @@ export const InjuryHistoryModal = ({
             type="button"
             text="확인"
             classnames="rounded-lg shadow-none"
-            onClick={() => {}}
+            onClick={handleSubmit}
           />
         </div>
       </div>

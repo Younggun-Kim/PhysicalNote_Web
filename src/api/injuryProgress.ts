@@ -29,12 +29,11 @@ const InjuryProgress = {
     }
   },
   /** 선수 부상 완치하기 */
-  async v2PostInjuryRecovery(userId: number, injuryId: number) {
+  async v2PostInjuryRecovery(injuryIds: number[]) {
     try {
-      const url = `${prefix}/injury/${userId}/${injuryId}/recovery`;
+      const url = `${prefix}/injury/recovery`;
       return await instanceWithToken.post(url, {
-        userId: userId,
-        injuryId: injuryId,
+        injuryIds: injuryIds,
       });
     } catch (err) {
       return Promise.reject(err);
