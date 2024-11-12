@@ -1,5 +1,4 @@
 import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
-import { FrontLeftLegPeroneusLongus } from "@/components/muscleSvg";
 
 /**  앞 왼쪽 다리 대퇴근막장근 */
 export const FrontLeftLegTensorFasciaeLatae = ({ color }: MuscleSvgProps) => {

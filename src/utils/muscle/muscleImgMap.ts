@@ -91,6 +91,8 @@ import {
   BackRightLegSoleus,
   FrontLeftLegLargeRetirement,
   FrontRightLegLargeRetirement,
+  FrontRightLegPeroneusLongus,
+  FrontLeftLegPeroneusLongus,
 } from "@/components/muscleSvg";
 import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
 
@@ -143,6 +145,7 @@ const FrontLeftLeg: Record<MuscleTypeKey, ComponentType<MuscleSvgProps>> = {
   TERES_MAJOR: FrontLeftLegTeresMajor,
   TIBIALIS_ANTERIOR: FrontLeftLegTibialisAnterior,
   LARGE_RETIREMENT: FrontLeftLegLargeRetirement,
+  PERONEUS_LONGUS: FrontLeftLegPeroneusLongus,
 };
 
 const FrontRightLeg: Record<MuscleTypeKey, ComponentType<MuscleSvgProps>> = {
@@ -165,6 +168,7 @@ const FrontRightLeg: Record<MuscleTypeKey, ComponentType<MuscleSvgProps>> = {
   TERES_MAJOR: FrontRightLegTeresMajor,
   TIBIALIS_ANTERIOR: FrontRightLegTibialisAnterior,
   LARGE_RETIREMENT: FrontRightLegLargeRetirement,
+  PERONEUS_LONGUS: FrontRightLegPeroneusLongus,
 };
 
 const BackBody: Record<MuscleTypeKey, ComponentType<MuscleSvgProps>> = {
