@@ -40,6 +40,7 @@ Next.js, TypeScript 를 이용해 Front-end 개발
 | 에러검출 | Eslint            |
 | API 통신 | Axios             |
 
+
 ### ✔ 추가 라이브러리 & 버전 정보
 
 | **항목**     | **버전 정보**          |
