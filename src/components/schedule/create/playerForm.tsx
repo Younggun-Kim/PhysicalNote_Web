@@ -19,7 +19,7 @@ interface PlayerFormType {
 
 const PlayerForm = ({ checkPlayer }: PlayerFormType) => {
   const [searchGrader, setSearchGrader] = useRecoilState(
-    searchPlayerGraderSelector
+    searchPlayerGraderSelector,
   );
   const setCheckbox = useSetRecoilState(playerCheckSelector);
 
@@ -81,7 +81,7 @@ const PlayerForm = ({ checkPlayer }: PlayerFormType) => {
 
         setData([...tempContent]);
         setTotalLen(totalElements);
-      }
+      },
     );
   };
 
