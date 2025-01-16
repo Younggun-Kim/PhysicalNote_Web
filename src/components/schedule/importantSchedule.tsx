@@ -47,7 +47,7 @@ const ImportantSchedule = () => {
       getGrader(),
       getDateToString(recordDate),
       currentPage,
-      itemPerPage
+      itemPerPage,
     ).then((res) => {
       const { content, totalElements } = res.data;
       setEvents([...content]);
@@ -105,7 +105,7 @@ const ImportantSchedule = () => {
               next={next}
               prev={prev}
             />
-            <Link href={`/schedule/create`}>
+            <Link href={`/schedule/create?important=true`}>
               <Button
                 text="기록하기"
                 type="button"
