@@ -48,7 +48,7 @@ const Report: NextPage = () => {
 
   const getDailyReport = async (
     currentPage: number = 0,
-    itemPerPage: number = 10,
+    itemPerPage: number = 100,
   ) => {
     const date = getFullDateToString(searchDate);
     const queryParams: ReportRequestType = {
@@ -87,7 +87,7 @@ const Report: NextPage = () => {
 
   const getWeeklyReport = async (
     currentPage: number = 0,
-    itemPerPage: number = 10,
+    itemPerPage: number = 100,
   ) => {
     const date = getFullDateToString(searchDate);
     const queryParams: ReportRequestType = {
@@ -143,7 +143,7 @@ const Report: NextPage = () => {
   };
 
   const getInitData = () => {
-    reportType === "days" ? getDailyReport(0, 10) : getWeeklyReport(0, 10);
+    reportType === "days" ? getDailyReport(0, 100) : getWeeklyReport(0, 100);
     setPage(0);
   };
 
