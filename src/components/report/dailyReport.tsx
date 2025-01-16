@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Table from "@/components/common/table";
-import Pagination from "@/components/common/pagination";
 import usePagination from "@/utils/hooks/usePagination";
 import { DailyReportDataType, DailyReportType } from "@/types/report";
 import Api from "@/api/privateData";
@@ -16,7 +15,7 @@ const DailyReport = ({
   const [page, setPage] = useState<number>(0);
   const [data, setData] = useState<DailyReportDataType[]>(dailyData);
   const [totalLength, setTotalLength] = useState<number>(totalLen);
-  const [isChecked, setIsChecked] = useState<boolean>(true);
+  const [isChecked, _] = useState<boolean>(true);
 
   // pagination
   const itemPerPage = 10;
@@ -41,7 +40,7 @@ const DailyReport = ({
   // 중요 선수 등록/삭제 (즐겨찾기)
   const handleImportantCheck = async (
     id: number,
-    e: React.MouseEvent<HTMLDivElement>
+    e: React.MouseEvent<HTMLDivElement>,
   ) => {
     e.preventDefault();
     setData((prevData) =>
@@ -51,7 +50,7 @@ const DailyReport = ({
         }
 
         return item;
-      })
+      }),
     );
 
     await Api.v1UpdateImportantPlayer(id).then((res) => {
@@ -89,14 +88,14 @@ const DailyReport = ({
             isSelectedCheckbox={isChecked}
             onSelect={handleImportantCheck}
           />
-          <Pagination
-            currentPage={currentPage}
-            totalPage={totalPages}
-            onPageChange={handlePageChange}
-            setPage={setPage}
-            next={next}
-            prev={prev}
-          />
+          {/*<Pagination*/}
+          {/*  currentPage={currentPage}*/}
+          {/*  totalPage={totalPages}*/}
+          {/*  onPageChange={handlePageChange}*/}
+          {/*  setPage={setPage}*/}
+          {/*  next={next}*/}
+          {/*  prev={prev}*/}
+          {/*/>*/}
         </>
       ) : (
         <div className="flex items-center justify-center w-full py-10 font-bold">

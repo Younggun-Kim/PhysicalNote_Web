@@ -95,7 +95,7 @@ const WeeklyReport = ({
   } = usePagination(
     (pageChart) => setPageChart(pageChart),
     itemPerPageChart,
-    totalItemsChart
+    totalItemsChart,
   );
 
   const nextChart = () => {
@@ -132,7 +132,7 @@ const WeeklyReport = ({
       await ReportApi.v1GetHooperIndexReport(
         queryParams,
         currentPageChart,
-        itemPerPageChart
+        itemPerPageChart,
       ).then((res) => {
         const { content, totalElements } = res.data;
 
@@ -152,7 +152,7 @@ const WeeklyReport = ({
       await ReportApi.v1GetBodyFatReport(
         queryParams,
         currentPageChart,
-        itemPerPageChart
+        itemPerPageChart,
       ).then((res) => {
         const { content, totalElements } = res.data;
 
@@ -172,7 +172,7 @@ const WeeklyReport = ({
       await ReportApi.v1GetWeightReport(
         queryParams,
         currentPageChart,
-        itemPerPageChart
+        itemPerPageChart,
       ).then((res) => {
         const { content, totalElements } = res.data;
 
@@ -192,7 +192,7 @@ const WeeklyReport = ({
       await ReportApi.v1GetMuscleSorenessReport(
         queryParams,
         currentPageChart,
-        itemPerPageChart
+        itemPerPageChart,
       ).then((res) => {
         const { content, totalElements } = res.data;
 
@@ -212,7 +212,7 @@ const WeeklyReport = ({
       await ReportApi.v1GetWorkLoadReport(
         queryParams,
         currentPageChart,
-        itemPerPageChart
+        itemPerPageChart,
       ).then((res) => {
         const { content, totalElements } = res.data;
 
@@ -234,7 +234,7 @@ const WeeklyReport = ({
   // 중요 선수 등록/삭제 (즐겨찾기)
   const handleImportantCheck = async (
     id: number,
-    e: React.MouseEvent<HTMLDivElement>
+    e: React.MouseEvent<HTMLDivElement>,
   ) => {
     e.preventDefault();
     setData((prevData) =>
@@ -244,7 +244,7 @@ const WeeklyReport = ({
         }
 
         return item;
-      })
+      }),
     );
 
     await PrivateApi.v1UpdateImportantPlayer(id).then((res) => {
@@ -339,14 +339,6 @@ const WeeklyReport = ({
             data={data || []}
             isSelectedCheckbox={isChecked}
             onSelect={handleImportantCheck}
-          />
-          <Pagination
-            currentPage={currentPage}
-            totalPage={totalPages}
-            onPageChange={handlePageChange}
-            setPage={setPage}
-            next={next}
-            prev={prev}
           />
         </div>
       ) : (
