@@ -1,5 +1,5 @@
-import * as FileSaver from "file-saver";
-import * as XLSX from "xlsx";
+// import * as FileSaver from "file-saver";
+// import * as XLSX from "xlsx";
 import Button from "../common/button";
 import { getFullSimpleDateToString } from "@/utils";
 import { DailyReportDataType, WeeklyReportDataType } from "@/types/report";
@@ -48,30 +48,30 @@ const XlsxDownload = ({
     ]);
   };
 
-  const makeXlsxFile = (filename: string) => {
-    const workbook = XLSX.utils.book_new();
-    const columnData = isWeekly ? weeklyColumnData : dailyColumnData;
-    const columnHeader = columnData.map((c) => c.Header);
-    const data = isWeekly ? convertWeeklyToXlsxRow() : convertDailyToXlsxRow();
-
-    const worksheet = XLSX.utils.aoa_to_sheet([columnHeader, ...data]);
-    const excelFileType =
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    const excelBuffer = XLSX.write(workbook, {
-      bookType: "xlsx",
-      type: "array",
-    });
-    return new Blob([excelBuffer], { type: excelFileType });
+  const makeXlsxFile = () => {
+    // const workbook = XLSX.utils.book_new();
+    // const columnData = isWeekly ? weeklyColumnData : dailyColumnData;
+    // const columnHeader = columnData.map((c) => c.Header);
+    // const data = isWeekly ? convertWeeklyToXlsxRow() : convertDailyToXlsxRow();
+    //
+    // const worksheet = XLSX.utils.aoa_to_sheet([columnHeader, ...data]);
+    // const excelFileType =
+    //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    // XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    // const excelBuffer = XLSX.write(workbook, {
+    //   bookType: "xlsx",
+    //   type: "array",
+    // });
+    // return new Blob([excelBuffer], { type: excelFileType });
   };
 
   const handleClick = () => {
     const excelFileExtension = ".xlsx";
     const excelFileName = isWeekly ? "주간" : "일간";
     const fullFileName = `${getFullSimpleDateToString(recordDate)}_${excelFileName}_레포트${excelFileExtension}`;
-    const xlsxFile = makeXlsxFile(fullFileName);
+    const xlsxFile = makeXlsxFile();
 
-    FileSaver.saveAs(xlsxFile, fullFileName);
+    // FileSaver.saveAs(xlsxFile, fullFileName);
   };
   return (
     <Button

@@ -1,6 +1,7 @@
+const withTM = require("next-transpile-modules");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",
   reactStrictMode: true,
   transpilePackages: ["@mui/x-charts"],
   webpack: (config) => {
@@ -12,13 +13,8 @@ const nextConfig = {
   },
   env: {
     ENV_PREFIX_PATH: process.env.ENV_PREFIX_PATH,
-    // ENV_SERVER_PATH: process.env.ENV_SERVER_PATH,
   },
   typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
     ignoreBuildErrors: true,
   },
   async redirects() {
@@ -30,17 +26,19 @@ const nextConfig = {
       },
     ];
   },
-
   trailingSlash: true,
   images: {
     loader: "akamai",
     path: "/",
     domains: ["https://dfg817v7j6xks.cloudfront.netprofile"],
   },
-  // i18n: {
-  //   locales: ["ko", "en"],
-  //   defaultLocale: "ko",
-  // },
 };
 
-module.exports = nextConfig;
+module.exports = withTM([
+  "antd",
+  "rc-picker",
+  "rc-util",
+  "@ant-design/icons",
+  "rc-pagination",
+  "rc-notification",
+])(nextConfig);

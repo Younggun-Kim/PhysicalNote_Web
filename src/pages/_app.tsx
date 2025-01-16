@@ -5,6 +5,7 @@ import { RecoilRoot } from "recoil";
 import { Toaster } from "react-hot-toast";
 import fetcher from "@/api/fetcher";
 import "@/styles/globals.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

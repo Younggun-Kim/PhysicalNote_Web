@@ -17,7 +17,6 @@ import PrivateApi from "@/api/privateData";
 import ReportApi from "@/api/report";
 import { showToast } from "@/utils";
 import {
-  WeeklyChartDataType,
   ReportRequestType,
   SearchFilterType,
   HooperIndexResponseType,
@@ -70,27 +69,12 @@ const WeeklyReport = ({
   const { currentPage, totalPages, currentItems, handlePageChange } =
     usePagination((page) => setPage(page), itemPerPage, totalItems);
 
-  const next = () => {
-    if (currentPage + 1 < totalPages) {
-      handlePageChange(currentPage + 1);
-    }
-    getWeeklyEvent(currentPage, itemPerPage);
-  };
-
-  const prev = () => {
-    if (currentPage > 0) {
-      handlePageChange(currentPage - 1);
-    }
-    getWeeklyEvent(currentPage, itemPerPage);
-  };
-
   // pagination - chart
   const itemPerPageChart = 10;
   const totalItemsChart = totalLengthChart;
   const {
     currentPage: currentPageChart,
     totalPages: totalPagesChart,
-    currentItems: currentItemsChart,
     handlePageChange: handlePageChangeChart,
   } = usePagination(
     (pageChart) => setPageChart(pageChart),
