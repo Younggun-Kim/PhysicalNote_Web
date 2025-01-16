@@ -15,7 +15,7 @@ const DailyReport = ({
   const [page, setPage] = useState<number>(0);
   const [data, setData] = useState<DailyReportDataType[]>(dailyData);
   const [totalLength, setTotalLength] = useState<number>(totalLen);
-  const [isChecked, _] = useState<boolean>(true);
+  const [isChecked, setIsChecked] = useState<boolean>(true);
 
   // pagination
   const itemPerPage = 10;
