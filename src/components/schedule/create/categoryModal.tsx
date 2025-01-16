@@ -113,7 +113,18 @@ const CategoryModal = ({
 
   const getCategoryColorList = async () => {
     await Api.v1GetCategoryColor().then((res) => {
-      setCategoryList([...res.data]);
+      if (isEdit) {
+        setCategoryList([
+          {
+            colorCode: category.colorCode,
+            colorCodeValue: category.colorCodeValue,
+          },
+          ...res.data,
+        ]);
+      } else {
+        setCategoryList([...res.data]);
+      }
+
       onCheckCategory(category.colorCode);
     });
   };
@@ -132,6 +143,7 @@ const CategoryModal = ({
   useEffect(() => {
     getCategoryColorList();
     setName(category.name);
+    setTextCnt(category.name.length);
   }, []);
 
   return (

@@ -102,6 +102,7 @@ export interface CategoryListType {
   id: number;
   name: string;
   colorCode: string;
+  colorCodeValue: string;
 }
 
 export interface CategoryModalProps {
