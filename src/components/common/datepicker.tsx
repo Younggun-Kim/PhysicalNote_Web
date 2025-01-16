@@ -43,7 +43,7 @@ const DatePickerComponent = ({
       <div className="calendar-wrapper">
         <DatePicker
           showIcon
-          toggleCalendarOnIconClick={true}
+          // toggleCalendarOnIconClick={true}
           icon={
             <Image
               src="/images/arrow_down.svg"
@@ -75,7 +75,7 @@ const DatePickerComponent = ({
       <div className="calendar-wrapper">
         <DatePicker
           showIcon
-          toggleCalendarOnIconClick
+          // toggleCalendarOnIconClick
           icon={
             <Image
               src="/images/arrow_down.svg"
@@ -107,7 +107,7 @@ const DatePickerComponent = ({
       <div className="calendar-wrapper">
         <DatePicker
           showIcon
-          toggleCalendarOnIconClick
+          // toggleCalendarOnIconClick
           icon={
             <Image
               src="/images/arrow_down.svg"
@@ -134,7 +134,7 @@ const DatePickerComponent = ({
     <div className="calendar-wrapper">
       <DatePicker
         showIcon
-        toggleCalendarOnIconClick
+        // toggleCalendarOnIconClick
         icon={
           <Image
             src="/images/arrow_down.svg"
