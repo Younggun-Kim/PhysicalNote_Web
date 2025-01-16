@@ -2,6 +2,7 @@ const withTM = require("next-transpile-modules");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "export",
   reactStrictMode: true,
   transpilePackages: ["@mui/x-charts"],
   webpack: (config) => {
