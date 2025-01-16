@@ -21,12 +21,12 @@ const CategoryModal = ({
 }: CategoryModalProps) => {
   const [category, setCategory] = useRecoilState(categorySelector);
   const [selectCategory, setSelectCategory] = useRecoilState(
-    selectCategorySelector
+    selectCategorySelector,
   );
   const [name, setName] = useState<string>("");
   const [textCnt, setTextCnt] = useState<number>(0);
   const [categoryList, setCategoryList] = useState<CategoryColorResponseType[]>(
-    []
+    [],
   );
   const [checkList, setCheckList] = useState<boolean[]>([]);
 
@@ -67,15 +67,27 @@ const CategoryModal = ({
     }
 
     try {
-      await Api.v1AddCategory(params).then((res) => {
-        const { status, data } = res;
-        if (status === 200) {
-          showToast("목록이 등록되었습니다.");
-          handleEvent();
-          setSelectCategory(data.id);
-          setIsOpen(false);
-        }
-      });
+      if (isEdit) {
+        await Api.v1UpdateCategory(category.id, params).then((res) => {
+          const { status, data } = res;
+          if (status === 200) {
+            showToast("목록이 수정되었습니다.");
+            handleEvent();
+            setSelectCategory(data.id);
+            setIsOpen(false);
+          }
+        });
+      } else {
+        await Api.v1AddCategory(params).then((res) => {
+          const { status, data } = res;
+          if (status === 200) {
+            showToast("목록이 등록되었습니다.");
+            handleEvent();
+            setSelectCategory(data.id);
+            setIsOpen(false);
+          }
+        });
+      }
     } catch {
       showToast("목록 색상을 선택해주세요.");
     }
@@ -112,7 +124,7 @@ const CategoryModal = ({
 
   useEffect(() => {
     const check = categoryList.map(
-      (item) => item.colorCode === category.colorCode
+      (item) => item.colorCode === category.colorCode,
     );
     setCheckList(check);
   }, [category, categoryList]);

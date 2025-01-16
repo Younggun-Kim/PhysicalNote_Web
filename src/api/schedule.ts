@@ -1,4 +1,5 @@
 import { instanceWithToken } from "@/api";
+
 const prefix = "/admin";
 import { CategoryType, ScheduleRequestType } from "@/types/schedule";
 
@@ -36,7 +37,7 @@ const Schedule = {
     playerGrade: string,
     recordDate: string,
     page: number,
-    size: number
+    size: number,
   ) {
     try {
       const url = `${prefix}/calendar/daily`;
@@ -52,7 +53,7 @@ const Schedule = {
     playerGrade: string,
     recordMonth: string,
     page: number,
-    size: number
+    size: number,
   ) {
     try {
       const url = `${prefix}/calendar/monthly`;
@@ -80,6 +81,14 @@ const Schedule = {
       const url = `${prefix}/calendar_category`;
       const result = await instanceWithToken.post(url, { ...category });
       return result;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+  async v1UpdateCategory(categoryId: number, category: CategoryType) {
+    try {
+      const url = `${prefix}/calendar_category/${categoryId}`;
+      return await instanceWithToken.put(url, { ...category });
     } catch (err) {
       return Promise.reject(err);
     }
