@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Table from "@/components/common/table";
-import Pagination from "@/components/common/pagination";
 import usePagination from "@/utils/hooks/usePagination";
 import { DailyReportDataType, DailyReportType } from "@/types/report";
 import Api from "@/api/privateData";
 import { showToast } from "@/utils";
 import { dailyColumnData } from "@/constants/mock/report";
+import HeaderFixTable from "../common/headerFixTable";
 
 const DailyReport = ({
   initPage,
@@ -41,7 +41,7 @@ const DailyReport = ({
   // 중요 선수 등록/삭제 (즐겨찾기)
   const handleImportantCheck = async (
     id: number,
-    e: React.MouseEvent<HTMLDivElement>
+    e: React.MouseEvent<HTMLDivElement>,
   ) => {
     e.preventDefault();
     setData((prevData) =>
@@ -51,7 +51,7 @@ const DailyReport = ({
         }
 
         return item;
-      })
+      }),
     );
 
     await Api.v1UpdateImportantPlayer(id).then((res) => {
@@ -82,22 +82,12 @@ const DailyReport = ({
   return (
     <>
       {data.length !== 0 ? (
-        <>
-          <Table
-            columns={dailyColumnData}
-            data={data || []}
-            isSelectedCheckbox={isChecked}
-            onSelect={handleImportantCheck}
-          />
-          <Pagination
-            currentPage={currentPage}
-            totalPage={totalPages}
-            onPageChange={handlePageChange}
-            setPage={setPage}
-            next={next}
-            prev={prev}
-          />
-        </>
+        <HeaderFixTable
+          columns={dailyColumnData}
+          data={data || []}
+          isSelectedCheckbox={isChecked}
+          onSelect={handleImportantCheck}
+        />
       ) : (
         <div className="flex items-center justify-center w-full py-10 font-bold">
           데이터가 없습니다.

@@ -23,6 +23,7 @@ import {
   SearchFilterType,
 } from "@/types/report";
 import { getFullDateToString } from "@/utils/dateFormat";
+import XlsxDownload from "@/components/report/xlsxDownload";
 
 const Report: NextPage = () => {
   const [reportType, setReportType] = useState<"days" | "weeks">("days");
@@ -47,7 +48,7 @@ const Report: NextPage = () => {
 
   const getDailyReport = async (
     currentPage: number = 0,
-    itemPerPage: number = 10
+    itemPerPage: number = 100,
   ) => {
     const date = getFullDateToString(searchDate);
     const queryParams: ReportRequestType = {
@@ -80,13 +81,13 @@ const Report: NextPage = () => {
 
         setDailyData(tempData);
         setTotalLen(totalElements);
-      }
+      },
     );
   };
 
   const getWeeklyReport = async (
     currentPage: number = 0,
-    itemPerPage: number = 10
+    itemPerPage: number = 100,
   ) => {
     const date = getFullDateToString(searchDate);
     const queryParams: ReportRequestType = {
@@ -119,7 +120,7 @@ const Report: NextPage = () => {
 
         setWeeklyData(tempData);
         setTotalLen(totalElements);
-      }
+      },
     );
   };
 
@@ -142,7 +143,7 @@ const Report: NextPage = () => {
   };
 
   const getInitData = () => {
-    reportType === "days" ? getDailyReport(0, 10) : getWeeklyReport(0, 10);
+    reportType === "days" ? getDailyReport(0, 100) : getWeeklyReport(0, 100);
     setPage(0);
   };
 
@@ -165,7 +166,15 @@ const Report: NextPage = () => {
   return (
     <div className="min-w-[1850px]">
       <Layout>
-        <h1 className="text-[28px] font-[700]">리포트</h1>
+        <div className="flex gap-5 items-center">
+          <h1 className="text-[28px] font-[700]">리포트</h1>
+          <XlsxDownload
+            recordDate={searchDate}
+            isWeekly={reportType === "weeks"}
+            dailyData={dailyData}
+            weeklyData={weeklyData}
+          />
+        </div>
         <Search onClickSubmit={getInitData} />
         <div className="flex items-center justify-end space-x-2">
           <Button
@@ -205,7 +214,7 @@ const Report: NextPage = () => {
               "w-1/2 flex items-center justify-center cursor-pointer",
               reportType === "days"
                 ? "bg-[#C6E19B] text-white"
-                : "text-[#8DBE3D]"
+                : "text-[#8DBE3D]",
             )}
           >
             일간
@@ -216,7 +225,7 @@ const Report: NextPage = () => {
               "w-1/2 flex items-center justify-center cursor-pointer",
               reportType === "weeks"
                 ? "bg-[#C6E19B] text-white"
-                : "text-[#8DBE3D]"
+                : "text-[#8DBE3D]",
             )}
           >
             주간

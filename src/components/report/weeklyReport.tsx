@@ -17,7 +17,6 @@ import PrivateApi from "@/api/privateData";
 import ReportApi from "@/api/report";
 import { showToast } from "@/utils";
 import {
-  WeeklyChartDataType,
   ReportRequestType,
   SearchFilterType,
   HooperIndexResponseType,
@@ -27,6 +26,7 @@ import {
   WorkLoadResponseType,
 } from "@/types/report";
 import { getFullDateToString } from "@/utils/dateFormat";
+import HeaderFixTable from "@/components/common/headerFixTable";
 
 type ExtendedAxisConfig = AxisConfig & { categoryGapRatio?: number };
 
@@ -70,32 +70,17 @@ const WeeklyReport = ({
   const { currentPage, totalPages, currentItems, handlePageChange } =
     usePagination((page) => setPage(page), itemPerPage, totalItems);
 
-  const next = () => {
-    if (currentPage + 1 < totalPages) {
-      handlePageChange(currentPage + 1);
-    }
-    getWeeklyEvent(currentPage, itemPerPage);
-  };
-
-  const prev = () => {
-    if (currentPage > 0) {
-      handlePageChange(currentPage - 1);
-    }
-    getWeeklyEvent(currentPage, itemPerPage);
-  };
-
   // pagination - chart
   const itemPerPageChart = 10;
   const totalItemsChart = totalLengthChart;
   const {
     currentPage: currentPageChart,
     totalPages: totalPagesChart,
-    currentItems: currentItemsChart,
     handlePageChange: handlePageChangeChart,
   } = usePagination(
     (pageChart) => setPageChart(pageChart),
     itemPerPageChart,
-    totalItemsChart
+    totalItemsChart,
   );
 
   const nextChart = () => {
@@ -132,7 +117,7 @@ const WeeklyReport = ({
       await ReportApi.v1GetHooperIndexReport(
         queryParams,
         currentPageChart,
-        itemPerPageChart
+        itemPerPageChart,
       ).then((res) => {
         const { content, totalElements } = res.data;
 
@@ -152,7 +137,7 @@ const WeeklyReport = ({
       await ReportApi.v1GetBodyFatReport(
         queryParams,
         currentPageChart,
-        itemPerPageChart
+        itemPerPageChart,
       ).then((res) => {
         const { content, totalElements } = res.data;
 
@@ -172,7 +157,7 @@ const WeeklyReport = ({
       await ReportApi.v1GetWeightReport(
         queryParams,
         currentPageChart,
-        itemPerPageChart
+        itemPerPageChart,
       ).then((res) => {
         const { content, totalElements } = res.data;
 
@@ -192,7 +177,7 @@ const WeeklyReport = ({
       await ReportApi.v1GetMuscleSorenessReport(
         queryParams,
         currentPageChart,
-        itemPerPageChart
+        itemPerPageChart,
       ).then((res) => {
         const { content, totalElements } = res.data;
 
@@ -212,7 +197,7 @@ const WeeklyReport = ({
       await ReportApi.v1GetWorkLoadReport(
         queryParams,
         currentPageChart,
-        itemPerPageChart
+        itemPerPageChart,
       ).then((res) => {
         const { content, totalElements } = res.data;
 
@@ -234,7 +219,7 @@ const WeeklyReport = ({
   // 중요 선수 등록/삭제 (즐겨찾기)
   const handleImportantCheck = async (
     id: number,
-    e: React.MouseEvent<HTMLDivElement>
+    e: React.MouseEvent<HTMLDivElement>,
   ) => {
     e.preventDefault();
     setData((prevData) =>
@@ -244,7 +229,7 @@ const WeeklyReport = ({
         }
 
         return item;
-      })
+      }),
     );
 
     await PrivateApi.v1UpdateImportantPlayer(id).then((res) => {
@@ -334,19 +319,11 @@ const WeeklyReport = ({
       )}
       {data.length !== 0 ? (
         <div className="flex flex-col mt-20 space-y-10">
-          <Table
+          <HeaderFixTable
             columns={weeklyColumnData}
             data={data || []}
             isSelectedCheckbox={isChecked}
             onSelect={handleImportantCheck}
-          />
-          <Pagination
-            currentPage={currentPage}
-            totalPage={totalPages}
-            onPageChange={handlePageChange}
-            setPage={setPage}
-            next={next}
-            prev={prev}
           />
         </div>
       ) : (

@@ -1,9 +1,7 @@
-import React, { useState, useEffect, MouseEventHandler } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
-import { setHours, setMinutes } from "date-fns";
 
 interface CalendarProps {
   calendarType?: string;
@@ -45,7 +43,7 @@ const DatePickerComponent = ({
       <div className="calendar-wrapper">
         <DatePicker
           showIcon
-          toggleCalendarOnIconClick
+          // toggleCalendarOnIconClick={true}
           icon={
             <Image
               src="/images/arrow_down.svg"
@@ -56,14 +54,17 @@ const DatePickerComponent = ({
               style={{ width: "100%", height: "auto" }}
             />
           }
-          showMonthYearPicker
           locale={ko}
+          minDate={startDate}
           maxDate={today}
           selected={year}
           dateFormat="yyyy년 MM월"
           onChange={(date) => {
             setYear(date);
           }}
+          shouldCloseOnSelect={true}
+          showMonthYearPicker={true}
+          showMonthYearDropdown={undefined}
         />
       </div>
     );
@@ -74,7 +75,7 @@ const DatePickerComponent = ({
       <div className="calendar-wrapper">
         <DatePicker
           showIcon
-          toggleCalendarOnIconClick
+          // toggleCalendarOnIconClick
           icon={
             <Image
               src="/images/arrow_down.svg"
@@ -94,6 +95,8 @@ const DatePickerComponent = ({
             setYear(date);
           }}
           placeholderText="연도 입력"
+          shouldCloseOnSelect={true}
+          showMonthYearDropdown={undefined}
         />
       </div>
     );
@@ -104,7 +107,7 @@ const DatePickerComponent = ({
       <div className="calendar-wrapper">
         <DatePicker
           showIcon
-          toggleCalendarOnIconClick
+          // toggleCalendarOnIconClick
           icon={
             <Image
               src="/images/arrow_down.svg"
@@ -120,6 +123,8 @@ const DatePickerComponent = ({
           onChange={(date) => {
             if (date) setStartDate(date);
           }}
+          shouldCloseOnSelect={true}
+          showMonthYearDropdown={undefined}
         />
       </div>
     );
@@ -129,7 +134,7 @@ const DatePickerComponent = ({
     <div className="calendar-wrapper">
       <DatePicker
         showIcon
-        toggleCalendarOnIconClick
+        // toggleCalendarOnIconClick
         icon={
           <Image
             src="/images/arrow_down.svg"
@@ -146,6 +151,8 @@ const DatePickerComponent = ({
         onChange={(date) => {
           if (date) setStartDate(date);
         }}
+        shouldCloseOnSelect={true}
+        showMonthYearDropdown={undefined}
       />
     </div>
   );
