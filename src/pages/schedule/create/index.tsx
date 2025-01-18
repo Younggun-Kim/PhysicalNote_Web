@@ -27,18 +27,20 @@ import {
 import { getFullDateToString } from "@/utils/dateFormat";
 import { showToast } from "@/utils";
 import useDebounce from "@/utils/hooks/useDebounce";
+import { useSearchParams } from "next/navigation";
 
 const CreateSchedule: NextPage = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [searchGrader, setSearchGrader] = useRecoilState(
-    searchPlayerGraderState
+    searchPlayerGraderState,
   );
   const [searchKeyword, setSearchKeyword] = useRecoilState(
-    addressKeywordSelector
+    addressKeywordSelector,
   );
   const [category, setCategory] = useRecoilState(categorySelector);
   const [selectCategory, setSelectCategory] = useRecoilState(
-    selectCategorySelector
+    selectCategorySelector,
   );
   const [imageFiles, setImageFiles] = useRecoilState(imageFilesSelector);
 
@@ -50,7 +52,7 @@ const CreateSchedule: NextPage = () => {
   const [title, setTitle] = useState<string>("");
   const [titleTextCnt, setTitleTextCnt] = useState<number>(0);
   const [previewList, setPreviewList] = useState<Array<AddressResponseType>>(
-    []
+    [],
   );
   const [playerList, setPlayerList] = useState<Array<string>>([]);
   const [playerIdList, setPlayerIdList] = useState<Array<number>>([]);
@@ -76,9 +78,9 @@ const CreateSchedule: NextPage = () => {
     setSelectCategory(-1);
     setImageFiles([]);
     setSearchKeyword("");
-    setImportantPlayer(false);
+    setImportantPlayer(searchParams.get("important") == "true");
     setPlayers("");
-    setCategory({ id: -1, name: "", colorCode: "" });
+    setCategory({ id: -1, name: "", colorCode: "", colorCodeValue: "" });
   };
 
   const getTitleTextCnt = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,7 +117,7 @@ const CreateSchedule: NextPage = () => {
   const isValidationSchedule = (
     title: string,
     categoryId: number,
-    playerIds: Array<number>
+    playerIds: Array<number>,
   ) => {
     if (!title) {
       showToast("일정 이름을 입력하세요.");

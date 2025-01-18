@@ -27,6 +27,7 @@ import {
   categorySelector,
   imageFilesSelector,
   imageUrlsSelector,
+  playerCheckSelector,
   selectCategorySelector,
 } from "@/recoil/schedule/scheduleState";
 import { getFullDateToString } from "@/utils/dateFormat";
@@ -38,15 +39,17 @@ const CreateSchedule: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const [searchGrader, setSearchGrader] = useRecoilState(
-    searchPlayerGraderState
+    searchPlayerGraderState,
   );
   const [searchKeyword, setSearchKeyword] = useRecoilState(
-    addressKeywordSelector
+    addressKeywordSelector,
   );
   const [category, setCategory] = useRecoilState(categorySelector);
   const [selectCategory, setSelectCategory] = useRecoilState(
-    selectCategorySelector
+    selectCategorySelector,
   );
+  const [checkedPlayerIds, setCheckedPlayerIds] =
+    useRecoilState(playerCheckSelector);
   const [imageFiles, setImageFiles] = useRecoilState(imageFilesSelector);
   const setImageUrls = useSetRecoilState(imageUrlsSelector);
 
@@ -59,7 +62,7 @@ const CreateSchedule: NextPage = () => {
   const [title, setTitle] = useState<string>("");
   const [titleTextCnt, setTitleTextCnt] = useState<number>(0);
   const [previewList, setPreviewList] = useState<Array<AddressResponseType>>(
-    []
+    [],
   );
   const [playerList, setPlayerList] = useState<Array<string>>([]);
   const [playerIdList, setPlayerIdList] = useState<Array<number>>([]);
@@ -67,6 +70,7 @@ const CreateSchedule: NextPage = () => {
   const [content, setContent] = useState<string>("");
   const [players, setPlayers] = useState<string>("");
   const [checkbox, setCheckbox] = useState<CheckboxType[]>([]);
+  const [initPlayerIds, setInitPlayerIds] = useState<number[]>([]);
 
   const debouncedQuery = useDebounce(searchKeyword, 250);
 
@@ -87,7 +91,7 @@ const CreateSchedule: NextPage = () => {
     setSearchKeyword("");
     setImportantPlayer(false);
     setPlayers("");
-    setCategory({ id: -1, name: "", colorCode: "" });
+    setCategory({ id: -1, name: "", colorCode: "", colorCodeValue: "'" });
   };
 
   const getTitleTextCnt = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,7 +128,7 @@ const CreateSchedule: NextPage = () => {
   const isValidationSchedule = (
     title: string,
     categoryId: number,
-    playerIds: Array<number>
+    playerIds: Array<number>,
   ) => {
     if (!title) {
       showToast("일정 이름을 입력하세요.");
@@ -230,6 +234,20 @@ const CreateSchedule: NextPage = () => {
     }
   };
 
+  /**
+   * Player Id로 체크박스 설정
+   */
+  const checkById = (
+    checkboxes: CheckboxType[],
+    checkedIds: number[],
+  ): CheckboxType[] => {
+    const idSet = new Set(checkedIds);
+    return checkboxes.map((item) => ({
+      ...item,
+      check: idSet.has(item.id) ? true : item.check,
+    }));
+  };
+
   const getInitSchedule = async () => {
     if (!id) {
       router.replace("/schedule");
@@ -248,21 +266,24 @@ const CreateSchedule: NextPage = () => {
         importantYn,
       } = res.data;
 
-      const playerArr: Array<string> = [];
+      // const playerArr: Array<string> = [];
       const playerIdArr: Array<number> = [];
       userSimpleInfo.map((item: UserSimpleInfoType) => {
-        playerArr.push(item.name);
+        // playerArr.push(item.name);
         playerIdArr.push(item.id);
       });
 
       setSelectCategory(-1);
-      setSearchKeyword("");
+      setSearchKeyword(address);
       setImportantPlayer(importantYn);
       setTitle(name);
       setContent(content);
       setInitStartTime(getTimeFormat(startTime));
       setInitEndTime(getTimeFormat(endTime));
       setImageUrls(images);
+      setInitPlayerIds(playerIdArr);
+
+      setCheckedPlayerIds(checkById(checkedPlayerIds, playerIdArr));
     });
   };
 
