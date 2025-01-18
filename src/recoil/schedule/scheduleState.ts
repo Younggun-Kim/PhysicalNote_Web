@@ -41,6 +41,7 @@ const categoryState = atom<CategoryListType>({
     id: -1,
     name: "",
     colorCode: "",
+    colorCodeValue: "",
   },
 });
 
