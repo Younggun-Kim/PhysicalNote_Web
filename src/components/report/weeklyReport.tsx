@@ -26,6 +26,7 @@ import {
   WorkLoadResponseType,
 } from "@/types/report";
 import { getFullDateToString } from "@/utils/dateFormat";
+import HeaderFixTable from "@/components/common/headerFixTable";
 
 type ExtendedAxisConfig = AxisConfig & { categoryGapRatio?: number };
 
@@ -318,7 +319,7 @@ const WeeklyReport = ({
       )}
       {data.length !== 0 ? (
         <div className="flex flex-col mt-20 space-y-10">
-          <Table
+          <HeaderFixTable
             columns={weeklyColumnData}
             data={data || []}
             isSelectedCheckbox={isChecked}

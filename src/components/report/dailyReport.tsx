@@ -5,6 +5,7 @@ import { DailyReportDataType, DailyReportType } from "@/types/report";
 import Api from "@/api/privateData";
 import { showToast } from "@/utils";
 import { dailyColumnData } from "@/constants/mock/report";
+import HeaderFixTable from "../common/headerFixTable";
 
 const DailyReport = ({
   initPage,
@@ -81,22 +82,12 @@ const DailyReport = ({
   return (
     <>
       {data.length !== 0 ? (
-        <>
-          <Table
-            columns={dailyColumnData}
-            data={data || []}
-            isSelectedCheckbox={isChecked}
-            onSelect={handleImportantCheck}
-          />
-          {/*<Pagination*/}
-          {/*  currentPage={currentPage}*/}
-          {/*  totalPage={totalPages}*/}
-          {/*  onPageChange={handlePageChange}*/}
-          {/*  setPage={setPage}*/}
-          {/*  next={next}*/}
-          {/*  prev={prev}*/}
-          {/*/>*/}
-        </>
+        <HeaderFixTable
+          columns={dailyColumnData}
+          data={data || []}
+          isSelectedCheckbox={isChecked}
+          onSelect={handleImportantCheck}
+        />
       ) : (
         <div className="flex items-center justify-center w-full py-10 font-bold">
           데이터가 없습니다.
