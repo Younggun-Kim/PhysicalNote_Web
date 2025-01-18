@@ -80,7 +80,7 @@ const CreateSchedule: NextPage = () => {
     setSearchKeyword("");
     setImportantPlayer(searchParams.get("important") == "true");
     setPlayers("");
-    setCategory({ id: -1, name: "", colorCode: "" });
+    setCategory({ id: -1, name: "", colorCode: "", colorCodeValue: "" });
   };
 
   const getTitleTextCnt = (e: React.ChangeEvent<HTMLInputElement>) => {

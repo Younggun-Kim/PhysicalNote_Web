@@ -104,7 +104,7 @@ const PlayerForm = ({ checkPlayer }: PlayerFormType) => {
   return (
     <>
       {data.length !== 0 ? (
-        <div className="w-full mt-20 bg-white py-4 my-4 px-4 rounded-[4px]">
+        <div className="w-full mt-32 bg-white py-4 my-4 px-4 rounded-[4px]">
           <Table
             columns={columnData}
             data={data || []}

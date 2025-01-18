@@ -91,7 +91,7 @@ const CreateSchedule: NextPage = () => {
     setSearchKeyword("");
     setImportantPlayer(false);
     setPlayers("");
-    setCategory({ id: -1, name: "", colorCode: "" });
+    setCategory({ id: -1, name: "", colorCode: "", colorCodeValue: "'" });
   };
 
   const getTitleTextCnt = (e: React.ChangeEvent<HTMLInputElement>) => {
