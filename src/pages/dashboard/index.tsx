@@ -21,6 +21,7 @@ import {
   trainingLoadGraphSelector,
   teamNoteSelector,
   trainingDurationGraphSelector,
+  weeklyRpeSelector,
 } from "@/recoil/dashboard/dashboardState";
 import Api from "@/api/dashboard";
 import { getFullDateToString } from "@/utils/dateFormat";
@@ -40,10 +41,11 @@ const Dashboard: NextPage = () => {
   const setTeamInjury = useSetRecoilState(teamInjurySelector);
   const setTodayTrainingPlan = useSetRecoilState(todayTrainingPlanSelector);
   const setWeeklyWorkload = useSetRecoilState(weeklyWorkloadSelector);
+  const setWeeklyRpe = useSetRecoilState(weeklyRpeSelector);
   const setTrainingBalance = useSetRecoilState(trainingBalanceSelector);
   const setTrainingLoadGraph = useSetRecoilState(trainingLoadGraphSelector);
   const setTrainingDurationGraph = useSetRecoilState(
-    trainingDurationGraphSelector
+    trainingDurationGraphSelector,
   );
   const setTeamNote = useSetRecoilState(teamNoteSelector);
 
@@ -72,6 +74,7 @@ const Dashboard: NextPage = () => {
       setTeamCondition({ ...result.teamConditionInfo });
       setTodayTrainingPlan([...result.todayTrainingPlanInfo]);
       setWeeklyWorkload(result.weeklyWorkloadInfo);
+      setWeeklyRpe(result.weeklyWorkoutAnalysisInfo);
       setTrainingBalance({ ...result.trainingBalanceInfo });
       setTeamNote({ ...result.teamNoteInfo });
       setTrainingLoadGraph([...result.trainingLoadGraphInfo]);
@@ -87,7 +90,7 @@ const Dashboard: NextPage = () => {
           content,
           totalElements,
         });
-      }
+      },
     );
   };
 

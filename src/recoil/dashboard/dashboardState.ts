@@ -8,6 +8,7 @@ import {
   TrainingBalanceInfoType,
   TrainingLoadGraphInfoType,
   WeeklyWorkLoadInfoType,
+  WeeklyWorkAnalysisInfoType,
 } from "@/types/dashboard";
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
@@ -109,10 +110,12 @@ const weeklyWorkloadState = atom<WeeklyWorkLoadInfoType>({
       {
         value: 480,
         xvalue: "화(02월 13일)",
+        hooperIndex: 4,
       },
       {
         value: 1080,
         xvalue: "수(02월 14일)",
+        hooperIndex: 6,
       },
     ],
   },
@@ -127,6 +130,27 @@ const weeklyWorkloadSelector = selector<WeeklyWorkLoadInfoType>({
   set: ({ set }, newValue) => {
     set(weeklyWorkloadState, newValue);
   },
+});
+
+const weeklyRpeState = atom<WeeklyWorkAnalysisInfoType>({
+  key: "weeklyRpeState",
+  default: {
+    stringOfWeekly: "2025년 1월 3주차",
+    workoutInfoList: [
+      {
+        xvalue: "화(MD",
+        workoutMinutes: 76,
+        intensityLevel: 4,
+      },
+    ],
+  },
+});
+
+/** 대시보드 - 주간데이터 - RPE */
+const weeklyRpeSelector = selector<WeeklyWorkAnalysisInfoType>({
+  key: "weeklyRpeSelector",
+  get: ({ get }) => get(weeklyRpeState),
+  set: ({ set }, newValue) => set(weeklyRpeState, newValue),
 });
 
 const trainingBalanceState = atom<TrainingBalanceInfoType>({
@@ -168,18 +192,22 @@ const trainingLoadGraphState = atom<TrainingLoadGraphInfoType[]>({
         {
           value: 780,
           xvalue: "2주차",
+          hooperIndex: 0,
         },
         {
           value: 4179.5,
           xvalue: "3주차",
+          hooperIndex: 0,
         },
         {
           value: 150,
           xvalue: "4주차",
+          hooperIndex: 0,
         },
         {
           value: 2445,
           xvalue: "5주차",
+          hooperIndex: 0,
         },
       ],
     },
@@ -206,18 +234,22 @@ const trainingDurationGraphState = atom<TrainingLoadGraphInfoType[]>({
         {
           value: 780,
           xvalue: "2주차",
+          hooperIndex: 0,
         },
         {
           value: 4179.5,
           xvalue: "3주차",
+          hooperIndex: 0,
         },
         {
           value: 150,
           xvalue: "4주차",
+          hooperIndex: 0,
         },
         {
           value: 2445,
           xvalue: "5주차",
+          hooperIndex: 0,
         },
       ],
     },
@@ -266,6 +298,8 @@ export {
   todayTrainingPlanSelector,
   weeklyWorkloadState,
   weeklyWorkloadSelector,
+  weeklyRpeState,
+  weeklyRpeSelector,
   trainingBalanceState,
   trainingBalanceSelector,
   trainingLoadGraphState,
