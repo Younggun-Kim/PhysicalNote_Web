@@ -8,11 +8,7 @@ import { ChartsXAxis } from "@mui/x-charts/ChartsXAxis";
 import { ChartsYAxis } from "@mui/x-charts/ChartsYAxis";
 import { ChartsGrid } from "@mui/x-charts/ChartsGrid";
 import { axisClasses } from "@mui/x-charts/ChartsAxis";
-import {
-  AxisWithCompositionProps,
-  isSeriesDataType,
-  SeriesDataType,
-} from "@/types/chart";
+import { AxisWithCompositionProps, isSeriesDataType } from "@/types/chart";
 
 const AxisWithComposition = ({
   xAxisData,

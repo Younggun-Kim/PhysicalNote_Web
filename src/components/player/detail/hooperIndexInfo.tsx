@@ -2,8 +2,17 @@ import React, { useState, useEffect } from "react";
 import { AxisConfig, BarChart } from "@mui/x-charts";
 import { useRecoilValue } from "recoil";
 import { playerDetailSelector } from "@/recoil/player/playerState";
+import { MakeOptional } from "@mui/x-charts/models/helpers";
+import {
+  ChartsXAxisProps,
+  ChartsYAxisProps,
+  ScaleName,
+} from "@mui/x-charts/models/axis";
 
-type ExtendedAxisConfig = AxisConfig & { categoryGapRatio?: number };
+type ExtendedMakeOptional = MakeOptional<
+  AxisConfig<ScaleName, any, ChartsYAxisProps>,
+  "id"
+> & { categoryGapRatio?: number };
 
 const HooperIndexInfo = () => {
   const playerDetail = useRecoilValue(playerDetailSelector);
@@ -42,28 +51,28 @@ const HooperIndexInfo = () => {
       playerDetail?.hooperIndexInfo;
 
     const element1 = document.querySelector(
-      ".MuiBarElement-root:first-child"
+      ".MuiBarElement-root:first-child",
     ) as HTMLElement;
     if (element1) {
       element1.style.fill = getLevelToColor(sleep);
     }
 
     const element2 = document.querySelector(
-      ".MuiBarElement-root:nth-child(2)"
+      ".MuiBarElement-root:nth-child(2)",
     ) as HTMLElement;
     if (element2) {
       element2.style.fill = getLevelToColor(stress);
     }
 
     const element3 = document.querySelector(
-      ".MuiBarElement-root:nth-child(3)"
+      ".MuiBarElement-root:nth-child(3)",
     ) as HTMLElement;
     if (element3) {
       element3.style.fill = getLevelToColor(fatigue);
     }
 
     const element4 = document.querySelector(
-      ".MuiBarElement-root:nth-child(4)"
+      ".MuiBarElement-root:nth-child(4)",
     ) as HTMLElement;
     if (element4) {
       element4.style.fill = getLevelToColor(muscleSoreness);
@@ -93,17 +102,15 @@ const HooperIndexInfo = () => {
                 color: "#C6E19B",
               },
             ]}
-            yAxis={
-              [
-                {
-                  scaleType: "band",
-                  data: ["수면의 질", "스트레스", "피로", "근육통"],
-                  categoryGapRatio: 0.8,
-                  position: "top",
-                  hideTooltip: true,
-                },
-              ] as ExtendedAxisConfig[]
-            }
+            yAxis={[
+              {
+                scaleType: "band",
+                data: ["수면의 질", "스트레스", "피로", "근육통"],
+                categoryGapRatio: 0.8,
+                hideTooltip: true,
+                position: "left",
+              } as ExtendedMakeOptional,
+            ]}
             xAxis={[
               {
                 data: [10, 20, 30, 40, 50, 60, 70],

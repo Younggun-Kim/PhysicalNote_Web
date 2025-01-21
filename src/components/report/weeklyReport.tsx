@@ -27,8 +27,13 @@ import {
 } from "@/types/report";
 import { getFullDateToString } from "@/utils/dateFormat";
 import HeaderFixTable from "@/components/common/headerFixTable";
+import { MakeOptional } from "@mui/x-charts/models/helpers";
+import { ChartsXAxisProps, ScaleName } from "@mui/x-charts/models/axis";
 
-type ExtendedAxisConfig = AxisConfig & { categoryGapRatio?: number };
+type ExtendedMakeOptional = MakeOptional<
+  AxisConfig<ScaleName, any, ChartsXAxisProps>,
+  "id"
+> & { categoryGapRatio?: number };
 
 const WeeklyReport = ({
   initPage,
@@ -294,15 +299,13 @@ const WeeklyReport = ({
                       color: "#C6E19B",
                     },
                   ]}
-                  xAxis={
-                    [
-                      {
-                        scaleType: "band",
-                        data: xLabels,
-                        categoryGapRatio: 0.8,
-                      },
-                    ] as ExtendedAxisConfig[]
-                  }
+                  xAxis={[
+                    {
+                      scaleType: "band",
+                      data: xLabels,
+                      categoryGapRatio: 0.8,
+                    } as ExtendedMakeOptional,
+                  ]}
                 />
               </Box>
             </div>
