@@ -68,7 +68,7 @@ const WeeklyWorkLoad = () => {
   }, [chartType]);
 
   return (
-    <div className="flex flex-col col-span-5">
+    <div className="flex flex-col">
       <div className="flex justify-between items-center text-[15px] font-[700] space-x-2">
         <div>
           <span>■ 주간 트레이닝 부하</span>

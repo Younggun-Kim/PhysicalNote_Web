@@ -14,7 +14,7 @@ const EnabledTextBtn = ({ text, isEnabled, onClick }: Props) => {
   return (
     <Button
       type="button"
-      classnames={`shadow-none text-base font-normal px-0 hover:bg-white ${style}`}
+      classnames={`shadow-none text-base font-normal px-0 hover:bg-white underline ${style}`}
       text={text}
       onClick={onClick}
     />

@@ -8,6 +8,7 @@ import {
 import { getSeriesDataMaxvalue, SeriesDataType } from "@/types/chart";
 import { cls } from "@/utils";
 import { yAxisIds } from "@/constants/mock/dashboard";
+import EnabledTextBtn from "@/components/dashboard/enabledTextBtn";
 
 const TrainingLoadGraph = () => {
   const trainingLoadGraphInfo = useRecoilValue(trainingLoadGraphSelector);
@@ -104,33 +105,16 @@ const TrainingLoadGraph = () => {
             ■ 월간 트레이닝 부하
           </span>
           <div className="flex ml-4 text-[15px] font-[700] space-x-4">
-            <div
+            <EnabledTextBtn
+              text={"TSB Training Load & HI"}
+              isEnabled={trainingType === "load"}
               onClick={() => setTrainingType("load")}
-              className="cursor-pointer"
-            >
-              <span
-                className={cls(
-                  trainingType === "load" ? "text-[#000]" : "text-[#CBCCCD]",
-                )}
-              >
-                TSB Training Load & HI
-              </span>
-            </div>
-            <div
+            />
+            <EnabledTextBtn
+              text={"TSB Training Duration & RPE"}
+              isEnabled={trainingType === "duration"}
               onClick={() => setTrainingType("duration")}
-              className="cursor-pointer"
-            >
-              <em
-                className={cls(
-                  "not-italic font-[700]",
-                  trainingType === "duration"
-                    ? "text-[#000]"
-                    : "text-[#CBCCCD]",
-                )}
-              >
-                TSB Training Duration & RPE
-              </em>
-            </div>
+            />
           </div>
         </div>
         <div className="space-y-3">
