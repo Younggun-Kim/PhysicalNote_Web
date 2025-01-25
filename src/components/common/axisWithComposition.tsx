@@ -80,6 +80,7 @@ const AxisWithComposition = ({
           labelStyle={{
             fontSize: 18,
           }}
+          disableTicks={true}
         />
         <ChartsYAxis
           axisId={`${yAxisIds[0].id}`}

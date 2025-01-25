@@ -5,7 +5,7 @@ export interface DashboardResponseType {
   weeklyWorkoutAnalysisInfo: WeeklyWorkAnalysisInfoType;
   trainingBalanceInfo: TrainingBalanceInfoType;
   trainingLoadGraphInfo: TrainingLoadGraphInfoType[];
-  trainingDurationGraphInfo: TrainingLoadGraphInfoType[];
+  trainingDurationGraphInfo: TrainingDurationGraphInfoType[];
   teamNoteInfo: TeamNoteInfoType;
 }
 
@@ -146,6 +146,15 @@ export interface TrainingBalanceInfoType {
 export interface TrainingLoadGraphInfoType {
   monthOfString: string;
   weeklyGraphInfo: WorkLoadInfoType[];
+}
+
+export interface TrainingDurationGraphInfoType {
+  monthOfString: string;
+  weeklyGraphInfo: {
+    value: number;
+    xvalue: string;
+    intensityLevel: number;
+  }[];
 }
 
 // 비고 정보

@@ -49,7 +49,7 @@ const WeeklyWorkLoad = () => {
           curve: "linear",
           yAxisKey: yAxisIds[1].id,
           data: tempLineValue,
-          color: "#FF9F43",
+          color: "#7d7d7d",
         },
       ]);
     }
@@ -60,7 +60,7 @@ const WeeklyWorkLoad = () => {
     let tempData: WeeklyWorkLoadInfoType = weeklyWorkLoad;
     if (chartType == "DR") {
       tempData = workoutAnalysisToLoad(weeklyRpe);
-      tempYAxisInterval = [0, 2, 4, 6, 8, 10];
+      tempYAxisInterval = [0, 5, 10];
     }
 
     setChartData(tempData);

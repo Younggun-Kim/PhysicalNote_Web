@@ -5,14 +5,14 @@ import {
   trainingDurationGraphSelector,
   trainingLoadGraphSelector,
 } from "@/recoil/dashboard/dashboardState";
-import { SeriesDataType } from "@/types/chart";
+import { getSeriesDataMaxvalue, SeriesDataType } from "@/types/chart";
 import { cls } from "@/utils";
 import { yAxisIds } from "@/constants/mock/dashboard";
 
 const TrainingLoadGraph = () => {
   const trainingLoadGraphInfo = useRecoilValue(trainingLoadGraphSelector);
   const trainingDurationGraphInfo = useRecoilValue(
-    trainingDurationGraphSelector
+    trainingDurationGraphSelector,
   );
   const [progressData, setProgressData] = useState<SeriesDataType[]>([]); // trainingLoad
   const [progressData2, setProgressData2] = useState<SeriesDataType[]>([]); // trainingDuration
@@ -40,7 +40,7 @@ const TrainingLoadGraph = () => {
         const { monthOfString, weeklyGraphInfo } = info;
         weeklyGraphInfo?.map((item) => {
           tempLoadValue.push(item.value);
-          tempTotalCount.push(item.value);
+          tempTotalCount.push(item.hooperIndex);
           xAxisList.push(`${monthOfString} ${item.xvalue}`);
         });
       });
@@ -57,7 +57,7 @@ const TrainingLoadGraph = () => {
           curve: "linear",
           yAxisKey: "totalCount",
           data: tempTotalCount,
-          color: "#FF9F43",
+          color: "#7d7d7d",
         },
       ]);
       setXAxis(xAxisList);
@@ -72,7 +72,7 @@ const TrainingLoadGraph = () => {
         const { monthOfString, weeklyGraphInfo } = info;
         weeklyGraphInfo?.map((item) => {
           tempLoadValue.push(item.value);
-          tempTotalCount.push(item.value);
+          tempTotalCount.push(item.intensityLevel);
           xAxisList.push(`${monthOfString} ${item.xvalue}`);
         });
       });
@@ -89,7 +89,7 @@ const TrainingLoadGraph = () => {
           curve: "linear",
           yAxisKey: "totalCount",
           data: tempTotalCount,
-          color: "#FF0000",
+          color: "#7d7d7d",
         },
       ]);
       setXAxis2(xAxisList);
@@ -99,10 +99,10 @@ const TrainingLoadGraph = () => {
   return (
     <div className="grid grid-cols-12 space-x-10">
       <div className="flex flex-col col-span-12 space-y-4">
-        <span className="text-[15px] font-[400] space-x-2">
-          ■ 훈련부하 모니터링
-        </span>
-        <div className="space-y-3">
+        <div className="flex justify-between">
+          <span className="text-[15px] font-[400] space-x-2">
+            ■ 월간 트레이닝 부하
+          </span>
           <div className="flex ml-4 text-[15px] font-[700] space-x-4">
             <div
               onClick={() => setTrainingType("load")}
@@ -110,10 +110,10 @@ const TrainingLoadGraph = () => {
             >
               <span
                 className={cls(
-                  trainingType === "load" ? "text-[#000]" : "text-[#CBCCCD]"
+                  trainingType === "load" ? "text-[#000]" : "text-[#CBCCCD]",
                 )}
               >
-                TSB Training Load
+                TSB Training Load & HI
               </span>
             </div>
             <div
@@ -123,13 +123,17 @@ const TrainingLoadGraph = () => {
               <em
                 className={cls(
                   "not-italic font-[700]",
-                  trainingType === "duration" ? "text-[#000]" : "text-[#CBCCCD]"
+                  trainingType === "duration"
+                    ? "text-[#000]"
+                    : "text-[#CBCCCD]",
                 )}
               >
-                TSB Training Duration
+                TSB Training Duration & RPE
               </em>
             </div>
           </div>
+        </div>
+        <div className="space-y-3">
           <div className="rounded-[25px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)]">
             {(trainingType === "load" && progressData.length !== 0) ||
             (trainingType === "duration" && progressData2.length !== 0) ? (
@@ -138,9 +142,27 @@ const TrainingLoadGraph = () => {
                 seriesData={
                   trainingType === "load" ? progressData : progressData2
                 }
-                yAxisIds={yAxisIds}
+                yAxisIds={[
+                  {
+                    ...yAxisIds[0],
+                    min: 0,
+                    max: getSeriesDataMaxvalue(
+                      trainingType === "load"
+                        ? progressData[0]
+                        : progressData2[0],
+                    ),
+                  },
+                  {
+                    ...yAxisIds[1],
+                    min: 0,
+                    max: trainingType === "load" ? 28 : 10,
+                  },
+                ]}
                 height={260}
                 margin={{ left: 60, right: 60 }}
+                yAxisInterval={
+                  trainingType === "load" ? [0, 7, 14, 21, 28] : [0, 5, 10]
+                }
               />
             ) : (
               <div className="min-h-[260px] flex items-center justify-center w-full py-10 font-bold">

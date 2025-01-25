@@ -3,11 +3,7 @@ import { AxisConfig, BarChart } from "@mui/x-charts";
 import { useRecoilValue } from "recoil";
 import { playerDetailSelector } from "@/recoil/player/playerState";
 import { MakeOptional } from "@mui/x-charts/models/helpers";
-import {
-  ChartsXAxisProps,
-  ChartsYAxisProps,
-  ScaleName,
-} from "@mui/x-charts/models/axis";
+import { ChartsYAxisProps, ScaleName } from "@mui/x-charts/models/axis";
 
 type ExtendedMakeOptional = MakeOptional<
   AxisConfig<ScaleName, any, ChartsYAxisProps>,

@@ -9,6 +9,7 @@ import {
   TrainingLoadGraphInfoType,
   WeeklyWorkLoadInfoType,
   WeeklyWorkAnalysisInfoType,
+  TrainingDurationGraphInfoType,
 } from "@/types/dashboard";
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
@@ -225,7 +226,7 @@ const trainingLoadGraphSelector = selector<TrainingLoadGraphInfoType[]>({
   },
 });
 
-const trainingDurationGraphState = atom<TrainingLoadGraphInfoType[]>({
+const trainingDurationGraphState = atom<TrainingDurationGraphInfoType[]>({
   key: "trainingDurationGraphState",
   default: [
     {
@@ -234,38 +235,40 @@ const trainingDurationGraphState = atom<TrainingLoadGraphInfoType[]>({
         {
           value: 780,
           xvalue: "2주차",
-          hooperIndex: 0,
+          intensityLevel: 0,
         },
         {
           value: 4179.5,
           xvalue: "3주차",
-          hooperIndex: 0,
+          intensityLevel: 0,
         },
         {
           value: 150,
           xvalue: "4주차",
-          hooperIndex: 0,
+          intensityLevel: 0,
         },
         {
           value: 2445,
           xvalue: "5주차",
-          hooperIndex: 0,
+          intensityLevel: 0,
         },
       ],
     },
   ],
 });
 
-const trainingDurationGraphSelector = selector<TrainingLoadGraphInfoType[]>({
-  key: "trainingDurationGraphSelector",
-  get: ({ get }) => {
-    const note = get(trainingDurationGraphState);
-    return note;
+const trainingDurationGraphSelector = selector<TrainingDurationGraphInfoType[]>(
+  {
+    key: "trainingDurationGraphSelector",
+    get: ({ get }) => {
+      const note = get(trainingDurationGraphState);
+      return note;
+    },
+    set: ({ set }, newValue) => {
+      set(trainingDurationGraphState, newValue);
+    },
   },
-  set: ({ set }, newValue) => {
-    set(trainingDurationGraphState, newValue);
-  },
-});
+);
 
 const teamNoteState = atom<TeamNoteInfoType>({
   key: "teamNoteState",
