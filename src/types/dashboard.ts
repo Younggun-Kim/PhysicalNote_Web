@@ -140,6 +140,7 @@ export interface TrainingBalanceInfoType {
   lastEightWeekValue: number;
   lastEightWeekBalanceValue: number;
   lastEightWeekValueOfString: string;
+  peekLoadValue: number;
 }
 
 // 훈련 부하 모니터링 정보
