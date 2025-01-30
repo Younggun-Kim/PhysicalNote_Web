@@ -5,6 +5,7 @@ import { TeamNoteInfoType, TeamNoteType } from "@/types/dashboard";
 import { getFullDateToString } from "@/utils/dateFormat";
 import Api from "@/api/dashboard";
 import { showToast } from "@/utils";
+import useDebounce from "@/utils/hooks/useDebounce";
 
 const TeamNote = ({ searchDate }: TeamNoteType) => {
   const teamNote = useRecoilValue(teamNoteSelector);
@@ -15,6 +16,8 @@ const TeamNote = ({ searchDate }: TeamNoteType) => {
   const [text, setText] = useState<string>(""); // type : textarea
   const [htmlContent, setHtmlContent] = useState<string>(""); // text -> html
   const [date, setDate] = useState<string>("");
+
+  const debounceQuery = useDebounce(htmlContent, 500);
 
   const handleClick = () => {
     updateTeamNote();
@@ -30,6 +33,10 @@ const TeamNote = ({ searchDate }: TeamNoteType) => {
     const santizedHtml = DOMPurify.sanitize(text.replace(/\n/g, "<br>"));
     setHtmlContent(santizedHtml);
   };*/
+
+  useEffect(() => {
+    if (debounceQuery) handleClick();
+  }, [debounceQuery]);
 
   const updateTeamNote = async () => {
     await Api.v1UpdateTeamNote(htmlContent, date).then((res) => {
@@ -58,9 +65,9 @@ const TeamNote = ({ searchDate }: TeamNoteType) => {
   }, [searchDate]);
 
   return (
-    <div className="grid grid-rows-1 w-full">
+    <div className="w-full h-full flex flex-col gap-2.5">
       <span className="text-[15px] font-[700]">■ 비고</span>
-      <div className="flex flex-col justify-between w-full p-5 h-[260px] rounded-[25px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] text-[15px] font-[400]">
+      <div className="flex flex-col justify-between w-full p-5 min-h-[260px] h-full rounded-[25px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] text-[15px] font-[400]">
         <div
           className="w-full h-[180px] overflow-y-scroll bg-transparent border-none resize-none outline-none p-0 focus:border-transparent focus:ring-0"
           contentEditable

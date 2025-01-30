@@ -41,7 +41,7 @@
 
 .react-datepicker__calendar-icon {
   height: 13px !important;
-  vertical-align: -0.125em em;
+  vertical-align: -0.125em;
   width: 13px !important;
   cursor: pointer;
 }

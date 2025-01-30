@@ -21,6 +21,7 @@ import {
   trainingLoadGraphSelector,
   teamNoteSelector,
   trainingDurationGraphSelector,
+  weeklyRpeSelector,
 } from "@/recoil/dashboard/dashboardState";
 import Api from "@/api/dashboard";
 import { getFullDateToString } from "@/utils/dateFormat";
@@ -40,10 +41,11 @@ const Dashboard: NextPage = () => {
   const setTeamInjury = useSetRecoilState(teamInjurySelector);
   const setTodayTrainingPlan = useSetRecoilState(todayTrainingPlanSelector);
   const setWeeklyWorkload = useSetRecoilState(weeklyWorkloadSelector);
+  const setWeeklyRpe = useSetRecoilState(weeklyRpeSelector);
   const setTrainingBalance = useSetRecoilState(trainingBalanceSelector);
   const setTrainingLoadGraph = useSetRecoilState(trainingLoadGraphSelector);
   const setTrainingDurationGraph = useSetRecoilState(
-    trainingDurationGraphSelector
+    trainingDurationGraphSelector,
   );
   const setTeamNote = useSetRecoilState(teamNoteSelector);
 
@@ -72,6 +74,7 @@ const Dashboard: NextPage = () => {
       setTeamCondition({ ...result.teamConditionInfo });
       setTodayTrainingPlan([...result.todayTrainingPlanInfo]);
       setWeeklyWorkload(result.weeklyWorkloadInfo);
+      setWeeklyRpe(result.weeklyWorkoutAnalysisInfo);
       setTrainingBalance({ ...result.trainingBalanceInfo });
       setTeamNote({ ...result.teamNoteInfo });
       setTrainingLoadGraph([...result.trainingLoadGraphInfo]);
@@ -87,7 +90,7 @@ const Dashboard: NextPage = () => {
           content,
           totalElements,
         });
-      }
+      },
     );
   };
 
@@ -173,16 +176,21 @@ const Dashboard: NextPage = () => {
             </div>
             <div className="flex flex-col space-y-2">
               <h2 className="text-[20px] font-[500]">운동부하 밸런스</h2>
-              <div className="grid grid-cols-12 space-x-10">
-                <WeeklyWorkLoad />
-                <div className="flex col-span-7 space-x-10">
+              <div className="grid grid-cols-12 gap-10">
+                <div className="col-span-5 row-span-1">
+                  <WeeklyWorkLoad />
+                </div>
+                <div className="col-span-4 row-span-1">
                   <TrainingBalance />
+                </div>
+                <div className="col-span-3 row-span-2">
                   <TeamNote searchDate={searchDate} />
                 </div>
+
+                <div className="flex flex-col col-span-9 row-span-1">
+                  <TrainingLoadGraph />
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <TrainingLoadGraph />
             </div>
           </div>
         </Layout>

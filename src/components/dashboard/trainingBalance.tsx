@@ -2,116 +2,132 @@ import React, { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { trainingBalanceSelector } from "@/recoil/dashboard/dashboardState";
 import { TrainingBalanceInfoType } from "@/types/dashboard";
+import { Bar, CartesianGrid, LabelList, XAxis } from "recharts";
+import { BarChart, Tooltip } from "recharts";
+
+interface BalanceChartType {
+  name: string;
+  value: number;
+  fill: string;
+  labelColor: string;
+}
+
+const balanceToString = (value: number): string => {
+  if (value < 0.8) {
+    return "낮습니다.";
+  } else if (value < 1.5) {
+    return "보통입니다.";
+  } else {
+    return "높습니다.";
+  }
+};
+
+const balanceToColor = (value: number): string => {
+  if (value < 0.8) {
+    return "#FFCFA1";
+  } else if (value < 1.5) {
+    return "#8DBE3D80";
+  } else {
+    return "#FF434380";
+  }
+};
+
+const BalanceItem = ({ value }: { value: number }) => {
+  return (
+    <div className="flex items-center gap-2.5">
+      <span className="font-sans font-normal text-sm text-black">With Av4</span>
+      <div
+        className={`w-[63px] h-[22px] bg-[${balanceToColor(value)}] flex justify-center items-center rounded-full`}
+      >
+        {value.toFixed(1)}
+      </div>
+      <p className="font-sans font-normal text-xs text-black">
+        <span>부상위험이</span>
+        <span className="text-primary">{balanceToString(value)}</span>
+      </p>
+    </div>
+  );
+};
 
 const TrainingBalance = () => {
   const trainingBalanceInfo = useRecoilValue(trainingBalanceSelector);
   const [trainingBalance, setTrainingBalance] =
     useState<TrainingBalanceInfoType>(trainingBalanceInfo);
 
-  interface BalanceLabelType {
-    value: number;
-    type: string;
-  }
-  const BalanceLabel = ({ value, type }: BalanceLabelType) => {
-    return (
-      <>
-        {type === "부족" && (
-          value === 0 ? 
-          <div className="text-[12px] font-[700]">데이터 부족</div> : 
-          <div className="px-2 bg-[#FFCFA1] rounded-[5px] font-[700]">
-            {value.toFixed(2)}
-          </div>
-        )}
-        {type === "충분" && (
-          <div className="px-2 bg-[#C7DF9F] rounded-[5px] font-[700]">
-            {value.toFixed(2)}
-          </div>
-        )}
-        {type === "과다" && (
-          <div className="px-2 bg-[#FFA1A1] rounded-[5px] font-[700]">
-            {value.toFixed(2)}
-          </div>
-        )}
-      </>
-    );
-  };
+  const [data, setData] = useState<BalanceChartType[]>([]);
 
   useEffect(() => {
     if (trainingBalanceInfo) {
       setTrainingBalance(trainingBalanceInfo);
+      const {
+        thisWeekValue,
+        lastTwoWeekValue,
+        lastFourWeekValue,
+        lastEightWeekValue,
+      } = trainingBalanceInfo;
+
+      setData([
+        {
+          name: "이번주",
+          value: thisWeekValue,
+          fill: "#C6E19B",
+          labelColor: "#000",
+        },
+        {
+          name: "지난주",
+          value: lastTwoWeekValue,
+          fill: "#EDFBD5",
+          labelColor: "#7d7d7d",
+        },
+        {
+          name: "지난4주",
+          value: lastFourWeekValue,
+          fill: "#EDFBD5",
+          labelColor: "#7d7d7d",
+        },
+        {
+          name: "지난8주",
+          value: lastEightWeekValue,
+          fill: "#EDFBD5",
+          labelColor: "#7d7d7d",
+        },
+      ]);
     }
   }, [trainingBalanceInfo]);
 
   return (
-    <div className="grid grid-rows-1 min-w-[475px]">
-      <div className="text-[15px] font-[700] space-x-2">
-        <span>■ 트레이닝 밸런스</span>
-      </div>
-      <div className="w-full">
-        <span className="text-[15px] font-[400]">
-          {`[ 이번주 운동부하 평균 : ${Math.ceil(trainingBalance.thisWeekValue)} ]`}
+    <div className="flex flex-col gap-2.5 min-w-[475px]">
+      <div className="flex justify-between items-center space-x-8">
+        <span className="text-[15px] font-[700]">■ 트레이닝 밸런스</span>
+        <span className="font-sans font-normal text-primary text-sm">
+          시즌 Peak Load(해당 wk넘버) :{" "}
+          {trainingBalance?.peekLoadValue?.toFixed(1)}
         </span>
-        <div className="flex space-x-10 mt-6 mb-5">
-          <div className="w-full h-[42px] flex justify-around items-center rounded-[25px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)]">
-            <div>{`지난 2주 (${Math.ceil(trainingBalance.lastTwoWeekValue)})`}</div>
-            <BalanceLabel
-              value={trainingBalance.lastTwoWeekBalanceValue}
-              type={trainingBalance.lastTwoWeekValueOfString}
-            />
-          </div>
-          <div className="w-full h-[42px] flex justify-around items-center rounded-[25px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)]">
-            <div>{`지난 4주 (${Math.ceil(trainingBalance.lastFourWeekValue)})`}</div>
-            <BalanceLabel
-              value={trainingBalance.lastFourWeekBalanceValue}
-              type={trainingBalance.lastFourWeekValueOfString}
-            />
-          </div>
-        </div>
-        <div className="flex space-x-10 mb-9">
-          <div className="w-full h-[42px] flex justify-around items-center rounded-[25px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)]">
-            <div>{`지난 6주 (${Math.ceil(trainingBalance.lastSixWeekValue)})`}</div>
-            <BalanceLabel
-              value={trainingBalance.lastSixWeekBalanceValue}
-              type={trainingBalance.lastSixWeekOfString}
-            />
-          </div>
-          <div className="w-full h-[42px] flex justify-around items-center rounded-[25px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)]">
-            <div>{`지난 8주 (${Math.ceil(trainingBalance.lastEightWeekValue)})`}</div>
-            <BalanceLabel
-              value={trainingBalance.lastEightWeekBalanceValue}
-              type={trainingBalance.lastEightWeekValueOfString}
-            />
-          </div>
-        </div>
-        <div className="w-full text-[15px] p-2 rounded-[25px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] space-y-1">
-          <div className="flex space-x-1">
-            <div className="w-[103px] flex justify-center px-2 bg-[#FFCFA1] rounded-[5px] font-[700]">
-              ＜0.80
-            </div>
-            <div>훈련부하 부족으로 상대적 부상위험이 있습니다.</div>
-          </div>
-          <div className="flex space-x-1">
-            <div className="w-[103px] flex justify-center px-2 bg-[#C7DF9F] rounded-[5px] font-[700]">
-              0.80 - 1.50
-            </div>
-            <div>
-              최적의 훈련부하로써 부상위험이{" "}
-              <em className="text-[15px] text-[#8DBE3D] font-[700] not-italic">
-                낮습니다.
-              </em>
-            </div>
-          </div>
-          <div className="flex space-x-1">
-            <div className=" w-[103px] flex justify-center px-2 bg-[#FFA1A1] rounded-[5px] font-[700]">
-              ＞1.50
-            </div>
-            <div>
-              오버트레이닝 구간으로 부상위험이{" "}
-              <em className="text-[15px] text-[#FF0000] font-[700] not-italic">
-                아주 높습니다.
-              </em>
-            </div>
-          </div>
+      </div>
+      <div className="w-full flex justify-center">
+        <BarChart width={460} height={200} data={data} margin={{ top: 20 }}>
+          {/*<CartesianGrid strokeDasharray="3 3" />*/}
+          <XAxis dataKey="name" tickSize={0} tickMargin={10} />
+          <Tooltip />
+          <Bar
+            dataKey="value"
+            fill={"#C6E19B"}
+            background={false}
+            focusable={false}
+            barSize={30}
+            radius={[4, 4, 0, 0]}
+          >
+            <LabelList dataKey="value" position="top" fill="#7d7d7d" />
+          </Bar>
+        </BarChart>
+      </div>
+      <div className="w-full flex justify-center items-center gap-6">
+        <span className="font-sans font-bold text-lg text-black">
+          sRPE Load
+        </span>
+        <div className="flex flex-col gap-5">
+          <BalanceItem value={trainingBalance.lastFourWeekBalanceValue} />
+          <BalanceItem value={trainingBalance.lastEightWeekBalanceValue} />
         </div>
       </div>
     </div>

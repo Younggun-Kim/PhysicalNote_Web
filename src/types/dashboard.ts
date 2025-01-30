@@ -2,9 +2,10 @@ export interface DashboardResponseType {
   teamConditionInfo: TeamConditionInfoType;
   todayTrainingPlanInfo: TodayTrainingPlanInfoType[];
   weeklyWorkloadInfo: WeeklyWorkLoadInfoType;
+  weeklyWorkoutAnalysisInfo: WeeklyWorkAnalysisInfoType;
   trainingBalanceInfo: TrainingBalanceInfoType;
   trainingLoadGraphInfo: TrainingLoadGraphInfoType[];
-  trainingDurationGraphInfo: TrainingLoadGraphInfoType[];
+  trainingDurationGraphInfo: TrainingDurationGraphInfoType[];
   teamNoteInfo: TeamNoteInfoType;
 }
 
@@ -90,9 +91,39 @@ export interface WeeklyWorkLoadInfoType {
 }
 
 export interface WorkLoadInfoType {
+  hooperIndex: number;
   value: number;
   xvalue: string;
 }
+
+// 주간 트레이닝 - RPE -  부하 정보
+export interface WeeklyWorkAnalysisInfoType {
+  stringOfWeekly: string;
+  workoutInfoList: WorkAnalysisInfoType[];
+}
+
+export interface WorkAnalysisInfoType {
+  intensityLevel: number;
+  workoutMinutes: number;
+  xvalue: string;
+}
+
+export const workoutAnalysisToLoad = (
+  analysis: WeeklyWorkAnalysisInfoType,
+): WeeklyWorkLoadInfoType => {
+  return {
+    stringOfWeekly: analysis.stringOfWeekly,
+    workloadInfoList: analysis.workoutInfoList.map(
+      ({ xvalue, workoutMinutes: value, intensityLevel: hooperIndex }) => {
+        return {
+          xvalue,
+          value,
+          hooperIndex,
+        };
+      },
+    ),
+  };
+};
 
 // 트레이닝 밸런스 정보
 export interface TrainingBalanceInfoType {
@@ -109,12 +140,22 @@ export interface TrainingBalanceInfoType {
   lastEightWeekValue: number;
   lastEightWeekBalanceValue: number;
   lastEightWeekValueOfString: string;
+  peekLoadValue: number;
 }
 
 // 훈련 부하 모니터링 정보
 export interface TrainingLoadGraphInfoType {
   monthOfString: string;
   weeklyGraphInfo: WorkLoadInfoType[];
+}
+
+export interface TrainingDurationGraphInfoType {
+  monthOfString: string;
+  weeklyGraphInfo: {
+    value: number;
+    xvalue: string;
+    intensityLevel: number;
+  }[];
 }
 
 // 비고 정보

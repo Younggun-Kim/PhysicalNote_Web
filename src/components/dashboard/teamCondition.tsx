@@ -140,7 +140,7 @@ const TeamCondition = ({ searchDate }: TeamConditionType) => {
         if (status === 200) {
           showToast("미등록 선수 알림을 보냈습니다.");
         }
-      }
+      },
     );
   };
 
@@ -190,7 +190,7 @@ const TeamCondition = ({ searchDate }: TeamConditionType) => {
                       </div>
                     </div>
                   </div>
-                  <em className="text-[12px] text-[#000] font-[700] not-italic">{`Hooper Index(평균값) : ${Math.ceil(condition.hooperIndexValue)} (${condition.hooperIndexString})`}</em>
+                  <em className="text-[12px] text-[#000] font-[700] not-italic">{`Hooper Index : ${Math.ceil(condition.hooperIndexValue)} (${condition.hooperIndexString})`}</em>
                 </>
               ) : (
                 <PrettoSlider disabled />
