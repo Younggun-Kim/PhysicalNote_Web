@@ -5,6 +5,7 @@ import { TeamNoteInfoType, TeamNoteType } from "@/types/dashboard";
 import { getFullDateToString } from "@/utils/dateFormat";
 import Api from "@/api/dashboard";
 import { showToast } from "@/utils";
+import useDebounce from "@/utils/hooks/useDebounce";
 
 const TeamNote = ({ searchDate }: TeamNoteType) => {
   const teamNote = useRecoilValue(teamNoteSelector);
@@ -15,6 +16,8 @@ const TeamNote = ({ searchDate }: TeamNoteType) => {
   const [text, setText] = useState<string>(""); // type : textarea
   const [htmlContent, setHtmlContent] = useState<string>(""); // text -> html
   const [date, setDate] = useState<string>("");
+
+  const debounceQuery = useDebounce(htmlContent, 500);
 
   const handleClick = () => {
     updateTeamNote();
@@ -30,6 +33,10 @@ const TeamNote = ({ searchDate }: TeamNoteType) => {
     const santizedHtml = DOMPurify.sanitize(text.replace(/\n/g, "<br>"));
     setHtmlContent(santizedHtml);
   };*/
+
+  useEffect(() => {
+    if (debounceQuery) handleClick();
+  }, [debounceQuery]);
 
   const updateTeamNote = async () => {
     await Api.v1UpdateTeamNote(htmlContent, date).then((res) => {
