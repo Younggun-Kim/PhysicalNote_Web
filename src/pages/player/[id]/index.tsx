@@ -85,6 +85,21 @@ const ManagePlayerDetail: NextPage = () => {
             onClick={handleBack}
           />
           <h1 className="text-[28px] font-[700]">선수관리</h1>{" "}
+          <button
+            className={[
+              "rounded-[10px] border-secondary border-[1px] px-8 py-2.5",
+              "font-inter font-bold text-base text-gray-1 mx-6",
+            ].join(" ")}
+          >
+            피드백 보내기
+          </button>
+          <button
+            className={[
+              "underline font-inter font-normal text-base text-black",
+            ].join(" ")}
+          >
+            활동 내역
+          </button>
         </div>
         <div className="flex items-center justify-end space-x-2 mb-10">
           <Button
