@@ -20,6 +20,7 @@ import Image from "next/image";
 import PlayerFeedbackModal from "@/components/dashboard/modal/playerFeedbackModal";
 import SendFeedbackModal from "@/components/player/modal/SendFeedbackModal";
 import SendFeedbackBtn from "@/components/player/SendFeedbackBtn";
+import FeedbackListBtn from "@/components/player/FeedbackListBtn";
 
 const ManagePlayerDetail: NextPage = () => {
   const router = useRouter();
@@ -88,13 +89,7 @@ const ManagePlayerDetail: NextPage = () => {
           />
           <h1 className="text-[28px] font-[700]">선수관리</h1>{" "}
           <SendFeedbackBtn playerId={playerData.userInfo.id} />
-          <button
-            className={[
-              "underline font-inter font-normal text-base text-black",
-            ].join(" ")}
-          >
-            활동 내역
-          </button>
+          <FeedbackListBtn playerId={playerData.userInfo.id} />
         </div>
         <div className="flex items-center justify-end space-x-2 mb-10">
           <Button
