@@ -112,14 +112,16 @@ const Player = {
    * 선수의 피드백 목록 리스트 조회
    * @param period ALL | TODAY | THIS_WEEK | LAST_WEEK
    * @param playerId 선수번호
+   * @param sortDirection 'ASC' | 'DESC'
    * @returns
    */
   async v2GetFeedbackList(
     period: FeedbackListPeriodValueType,
     playerId: number,
+    sortDirection: "ASC" | "DESC",
   ) {
     try {
-      const url = `${prefix}/feed_backs/${playerId}?period=${period}&sortDirection=DESC`;
+      const url = `${prefix}/feed_backs/${playerId}?period=${period}&sortDirection=${sortDirection}`;
       return await instanceWithToken.get(url);
     } catch (err) {
       return Promise.reject(err);

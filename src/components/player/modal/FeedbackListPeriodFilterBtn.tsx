@@ -34,7 +34,7 @@ const FeedbackListPeriodFilterBtn = ({ type, currentType, onClick }: Props) => {
   return (
     <button
       className={[
-        "border-tertiary border-[1px] rounded-full py-1 px-3",
+        "border-tertiary border-[1px] rounded-full h-[30px] px-3",
         "text-xs font-inter font-bold",
         bgColor,
         textColor,
