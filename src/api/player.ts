@@ -11,6 +11,8 @@ import {
   ErrorResponseType,
 } from "@/api/common/errorResponse";
 import axios from "axios";
+import { FeedbackListPeriodValueType } from "@/components/player/modal/FeedbackListPeriodFilterBtn";
+
 const prefix = "/admin";
 
 const Player = {
@@ -82,10 +84,7 @@ const Player = {
   async v1PostFeedback(playerId: number, data: TeamNoteInfoType) {
     try {
       const url = `${prefix}/feed_back/${playerId}`;
-      return await instanceWithToken.post<FeedBackInfoType, ErrorResponseType>(
-        url,
-        { ...data },
-      );
+      return await instanceWithToken.post<FeedBackInfoType>(url, { ...data });
     } catch (err) {
       if (axios.isAxiosError<ErrorResponseDto>(err)) {
         return Promise.reject(err.response?.data.message);
@@ -106,6 +105,40 @@ const Player = {
       });
       return result;
     } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+  /**
+   * 선수의 피드백 목록 리스트 조회
+   * @param period ALL | TODAY | THIS_WEEK | LAST_WEEK
+   * @param playerId 선수번호
+   * @returns
+   */
+  async v2GetFeedbackList(
+    period: FeedbackListPeriodValueType,
+    playerId: number,
+  ) {
+    try {
+      const url = `${prefix}/feed_backs/${playerId}?period=${period}&sortDirection=DESC`;
+      return await instanceWithToken.get(url);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
+  /**
+   * 피드백 수정
+   * @param feedbackId
+   * @param data
+   */
+  async v2UpdateFeedback(feedbackId: number, data: TeamNoteInfoType) {
+    try {
+      const url = `${prefix}/feed_back/${feedbackId}`;
+      return await instanceWithToken.put<FeedBackInfoType>(url, { ...data });
+    } catch (err) {
+      if (axios.isAxiosError<ErrorResponseDto>(err)) {
+        return Promise.reject(err.response?.data.message);
+      }
       return Promise.reject(err);
     }
   },

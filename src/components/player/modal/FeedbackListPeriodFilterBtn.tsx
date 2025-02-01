@@ -1,13 +1,17 @@
 export const FeedbackPeriod = {
-  all: "all",
-  today: "today",
-  thisWeek: "thisWeek",
-  lastWeek: "lastWeek",
+  all: "ALL",
+  today: "TODAY",
+  thisWeek: "THIS_WEEK",
+  lastWeek: "LAST_WEEK",
 } as const;
 
-export const FeedbackPeriodValues = Object.values(FeedbackPeriod);
+export const FeedbackPeriodKeys = Object.keys(
+  FeedbackPeriod,
+) as (keyof typeof FeedbackPeriod)[];
 
-export type FeedbackListPeriodType =
+export type FeedbackListPeriodType = keyof typeof FeedbackPeriod;
+
+export type FeedbackListPeriodValueType =
   (typeof FeedbackPeriod)[keyof typeof FeedbackPeriod];
 
 const PeriodStringMap: Record<FeedbackListPeriodType, string> = {

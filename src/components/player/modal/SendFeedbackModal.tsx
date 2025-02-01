@@ -4,7 +4,6 @@ import Button from "@/components/common/button";
 import Api from "@/api/player";
 import { getFullDateToString, showToast } from "@/utils";
 import { TeamNoteInfoType } from "@/types/dashboard";
-import { ErrorResponseType } from "@/api/common/errorResponse";
 
 interface Props {
   playerId: number;

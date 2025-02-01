@@ -17,7 +17,10 @@ const config: Config = {
         primary: "#8DBE3D", // 기본 색상
         secondary: "#C6E19B", // 기본 색상
         tertiary: "#edfbd5",
-        "gray-1": "#7d7d7d",
+        gray: {
+          1: "#7d7d7d",
+          2: "#D9D9D9",
+        },
         level: {
           0: "#8DBE3D",
           1: "#B7d487",
