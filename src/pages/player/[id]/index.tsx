@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import Layout from "@/components/layout";
@@ -17,6 +17,9 @@ import { getFullDateToString } from "@/utils/dateFormat";
 import { useRecoilState } from "recoil";
 import { playerDetailSelector } from "@/recoil/player/playerState";
 import Image from "next/image";
+import PlayerFeedbackModal from "@/components/dashboard/modal/playerFeedbackModal";
+import SendFeedbackModal from "@/components/player/modal/SendFeedbackModal";
+import SendFeedbackBtn from "@/components/player/SendFeedbackBtn";
 
 const ManagePlayerDetail: NextPage = () => {
   const router = useRouter();
@@ -24,7 +27,6 @@ const ManagePlayerDetail: NextPage = () => {
 
   const [initDate, setInitDate] = useState<Date>(new Date());
   const [searchDate, setSearchDate] = useState<Date>(new Date());
-
   const [playerData, setPlayerData] = useRecoilState(playerDetailSelector);
 
   const toggleDate = (type: string) => {
@@ -85,14 +87,7 @@ const ManagePlayerDetail: NextPage = () => {
             onClick={handleBack}
           />
           <h1 className="text-[28px] font-[700]">선수관리</h1>{" "}
-          <button
-            className={[
-              "rounded-[10px] border-secondary border-[1px] px-8 py-2.5",
-              "font-inter font-bold text-base text-gray-1 mx-6",
-            ].join(" ")}
-          >
-            피드백 보내기
-          </button>
+          <SendFeedbackBtn playerId={playerData.userInfo.id} />
           <button
             className={[
               "underline font-inter font-normal text-base text-black",

@@ -157,6 +157,7 @@ const weeklyRpeSelector = selector<WeeklyWorkAnalysisInfoType>({
 const trainingBalanceState = atom<TrainingBalanceInfoType>({
   key: "trainingBalanceState",
   default: {
+    peekLoadValue: 0,
     thisWeekValue: 0,
     lastTwoWeekValue: 0,
     lastTwoWeekBalanceValue: 0,

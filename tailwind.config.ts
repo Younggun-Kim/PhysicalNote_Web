@@ -27,6 +27,9 @@ const config: Config = {
           5: "#FF0000",
         },
       },
+      boxShadow: {
+        md: "0px 2px 8px 0px rgba(0, 0, 0, 0.10)",
+      },
       fontFamily: {
         inter: ["Inter", "sans-serif"],
       },

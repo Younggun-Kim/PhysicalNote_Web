@@ -37,14 +37,14 @@ const PlayerFeedbackModal = ({
       recordDate: date,
     };
 
-    await Api.v1UpdateFeedback(Number(data.userInfo!.userId), params).then(
+    await Api.v1PostFeedback(Number(data.userInfo!.userId), params).then(
       (res) => {
         const { status } = res;
         if (status === 200) {
           showToast("피드백이 정상 등록되었습니다.");
           onClickClose();
         }
-      }
+      },
     );
   };
 

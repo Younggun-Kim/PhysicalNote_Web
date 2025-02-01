@@ -26,7 +26,7 @@ const FeedbackInfo = ({ searchDate }: TeamNoteType) => {
       recordDate: date,
     };
 
-    await Api.v1UpdateFeedback(Number(id), params).then((res) => {
+    await Api.v1PostFeedback(Number(id), params).then((res) => {
       const { status } = res;
       if (status === 200) {
         showToast("오늘의 피드백이 정상 등록되었습니다.");

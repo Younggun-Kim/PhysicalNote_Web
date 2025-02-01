@@ -2,9 +2,15 @@ import { instanceWithToken } from "@/api";
 import { TeamNoteInfoType } from "@/types/dashboard";
 import {
   ApprovePlayerRequestType,
+  FeedBackInfoType,
   PlayerChangeRequestType,
 } from "@/types/player";
 import { PlayersRequestType } from "@/types/privateData";
+import {
+  ErrorResponseDto,
+  ErrorResponseType,
+} from "@/api/common/errorResponse";
+import axios from "axios";
 const prefix = "/admin";
 
 const Player = {
@@ -55,10 +61,9 @@ const Player = {
   async v1ApprovePlayerRequests(data: ApprovePlayerRequestType) {
     try {
       const url = `${prefix}/team/request`;
-      const result = await instanceWithToken.post(url, {
+      return await instanceWithToken.post(url, {
         ...data,
       });
-      return result;
     } catch (err) {
       return Promise.reject(err);
     }
@@ -74,12 +79,17 @@ const Player = {
       return Promise.reject(err);
     }
   },
-  async v1UpdateFeedback(playerId: number, data: TeamNoteInfoType) {
+  async v1PostFeedback(playerId: number, data: TeamNoteInfoType) {
     try {
       const url = `${prefix}/feed_back/${playerId}`;
-      const result = await instanceWithToken.post(url, { ...data });
-      return result;
+      return await instanceWithToken.post<FeedBackInfoType, ErrorResponseType>(
+        url,
+        { ...data },
+      );
     } catch (err) {
+      if (axios.isAxiosError<ErrorResponseDto>(err)) {
+        return Promise.reject(err.response?.data.message);
+      }
       return Promise.reject(err);
     }
   },
