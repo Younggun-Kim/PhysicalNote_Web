@@ -72,8 +72,10 @@ const ProfileInfo = () => {
             alt="프로필 이미지"
             style={{
               width: "92px",
-              height: "auto",
-              borderRadius: "46px",
+              height: "92px",
+              objectFit: "cover",
+              objectPosition: "center",
+              borderRadius: "50%",
             }}
           />
         </div>
