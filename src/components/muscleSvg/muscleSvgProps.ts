@@ -1,5 +1,7 @@
 export interface MuscleSvgProps {
   color: string;
+  width?: number;
+  height?: number;
 }
 
 export const levelToColor = (level: number) => {

@@ -40,4 +40,14 @@ export class MuscleUtils {
       }[bodyPart] ?? ""
     );
   };
+
+  /** distinctionType to kor */
+  static distinctionTypeToKor = (distinctionType: string): string => {
+    return (
+      {
+        FRONT: "앞",
+        BACK: "뒤",
+      }[distinctionType] ?? "'"
+    );
+  };
 }

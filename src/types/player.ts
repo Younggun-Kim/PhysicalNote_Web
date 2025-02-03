@@ -93,6 +93,7 @@ export interface PlayerDetailResponseType {
   monthHooperIndexGraph: HooperIndexGraphType;
   monthWorkoutTimeGraph: WorkoutTimeGraphType[];
   injuryInfo: InjuryInfoType[];
+  recoveryInjuryInfo: InjuryInfoType[];
 }
 
 export interface UserInfoType {
@@ -192,7 +193,25 @@ export interface InjuryInfoType {
   painTimeList?: Array<string>; // 통증 시기
   comment: string | null; // 부상 코멘트
   recoveryYn: boolean;
+  recoveryDate: string | null;
 }
+
+/**
+ * 부상 기간 얻기
+ * @param recordDate
+ * @param recoveryDate
+ */
+export const getInjuryPeriod = ({
+  recordDate,
+  recoveryDate,
+}: InjuryInfoType) => {
+  let period = recordDate;
+  if (recoveryDate) {
+    period = `${recordDate} - ${recoveryDate}`;
+  }
+
+  return period;
+};
 
 export interface HooperGraphType {
   sleep: {

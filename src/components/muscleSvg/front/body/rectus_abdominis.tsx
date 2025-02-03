@@ -1,12 +1,16 @@
 import { MuscleSvgProps } from "@/components/muscleSvg/muscleSvgProps";
 
 /**  앞 복직근 */
-export const FrontBodyRectusAbdominis = ({ color }: MuscleSvgProps) => {
+export const FrontBodyRectusAbdominis = ({
+  width,
+  height,
+  color,
+}: MuscleSvgProps) => {
   return (
     <>
       <svg
-        width="75"
-        height="75"
+        width={width ?? "75"}
+        height={height ?? "75"}
         viewBox="0 0 75 75"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

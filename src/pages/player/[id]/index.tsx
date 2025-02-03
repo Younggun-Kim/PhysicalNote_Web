@@ -136,10 +136,6 @@ const ManagePlayerDetail: NextPage = () => {
               <InjuryInfo />
               <UrineInfo />
             </div>
-            <div className="w-full flex space-x-10">
-              <FeedbackInfo searchDate={searchDate} />
-              <div className="w-[430px]"></div>
-            </div>
           </div>
           <div className="flex flex-col space-y-7">
             <div className="text-[20px] font-[700]">주간 항목별 평균</div>
