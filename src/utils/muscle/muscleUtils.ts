@@ -3,7 +3,10 @@ import { findMuscleKeyByValue, formatMuscleName, MuscleTypeKey } from "@/types";
 /** 근육 타입 유틸들 */
 export class MuscleUtils {
   /** 근육이름 가져오기, 없을 경우 '-' */
-  static getMuscleName = (muscle: MuscleTypeKey): string => {
+  static getMuscleName = (muscle?: MuscleTypeKey | null): string => {
+    if (!muscle) {
+      return "-";
+    }
     return formatMuscleName(muscle);
   };
 
@@ -29,7 +32,10 @@ export class MuscleUtils {
   };
 
   /** BodyPart to kor */
-  static bodyPartToKor = (bodyPart: string): string => {
+  static bodyPartToKor = (bodyPart?: string | null): string => {
+    if (!bodyPart) {
+      return "-";
+    }
     return (
       {
         TORSO: "몸통",
@@ -37,7 +43,7 @@ export class MuscleUtils {
         LEG_RIGHT: "오른쪽 다리",
         ARM_LEFT: "왼팔",
         ARM_RIGHT: "오른팔",
-      }[bodyPart] ?? ""
+      }[bodyPart] ?? "-"
     );
   };
 

@@ -3,7 +3,7 @@
     <option name="myName" value="Project Default" />
     <inspection_tool class="NonAsciiCharacters" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="RequiredAttributes" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="myAdditionalRequiredHtmlAttributes" value="showMonthYearDropdown" />
+      <option name="myAdditionalRequiredHtmlAttributes" value="showMonthYearDropdown,height" />
     </inspection_tool>
     <inspection_tool class="SpellCheckingInspection" enabled="false" level="TYPO" enabled_by_default="false">
       <option name="processCode" value="true" />

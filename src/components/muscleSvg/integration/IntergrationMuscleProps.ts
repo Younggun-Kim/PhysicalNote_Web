@@ -4,4 +4,5 @@ export default interface IntergrationMuscleProps {
   muscleType: MuscleTypeKey;
   width: number;
   height: number;
+  color: string;
 }

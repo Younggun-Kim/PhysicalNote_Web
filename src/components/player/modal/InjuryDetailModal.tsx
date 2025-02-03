@@ -1,21 +1,28 @@
 import React from "react";
 import ModalForm from "@/components/common/modal/modalForm";
-import { InjuryInfoType } from "@/types/player";
-import { MuscleImgMap, MuscleUtils } from "@/utils";
+import { getInjuryPeriod, InjuryInfoType } from "@/types/player";
+import { MuscleGroupImgMap, MuscleUtils } from "@/utils";
 import Api from "@/api/injuryProgress";
 import { PostInjuryRecoveryResponseType } from "@/types/injuryProgress";
 import { useRecoilState } from "recoil";
 import { playerDetailSelector } from "@/recoil/player/playerState";
-import { EmptyImageView } from "@/components/injuryProgress";
-import { styled } from "@mui/material";
-import MuscleFrontBodyImg from "@/components/muscleSvg/integration/MuscleFrontBodyImg";
+import { formatInjuryType, MuscleTypeKey } from "@/types";
+import IntergrationMuscleProps from "@/components/muscleSvg/integration/IntergrationMuscleProps";
+import InjuryDetailFieldName from "@/components/player/modal/InjuryDetailFieldName";
+import InjuryDetailFieldValue from "@/components/player/modal/InjuryDetailFieldValue";
+import InjuryLevelBadge from "@/components/common/InjuryLevelBadge";
 
 interface Props {
   data: InjuryInfoType;
   onClose: () => void;
+  onRecoverySuccess: () => void;
 }
 
-const InjuryDetailModal = ({ data, onClose }: Props) => {
+const EmptyImageView = ({ width, height }: IntergrationMuscleProps) => {
+  return <div className={`w-[${width}px] h-[${height} px] bg-gray-1`}></div>;
+};
+
+const InjuryDetailModal = ({ data, onClose, onRecoverySuccess }: Props) => {
   const [playerDetail, setPlayerDetail] = useRecoilState(playerDetailSelector);
   const recoveryString = data.recoveryYn ? "_완치완료" : "_진행중";
 
@@ -26,16 +33,7 @@ const InjuryDetailModal = ({ data, onClose }: Props) => {
       if (data as PostInjuryRecoveryResponseType) {
         const { status, message } = data;
         if (status) {
-          // API 호출 대신 바뀐 것만 업데이트
-          const { injuryInfo } = playerDetail;
-          const newInjuryInfo = injuryInfo.map((injury) => {
-            if (injury.id == injuryId) {
-              return { ...injury, recoveryYn: true };
-            }
-
-            return injury;
-          });
-          setPlayerDetail({ ...playerDetail, injuryInfo: newInjuryInfo });
+          onRecoverySuccess();
         } else {
           alert(message);
         }
@@ -44,26 +42,19 @@ const InjuryDetailModal = ({ data, onClose }: Props) => {
   };
 
   const handleRecovery = async (injuryId: number) => {
-    // TODO: 완치 후 리프레시
     if (confirm("선택하신 부상을 완치하시겠습니까?")) {
       await postInjuryRecovery(injuryId);
     }
   };
 
-  const distinctionType = MuscleUtils.distinctionTypeToKor(
-    data.distinctionType ?? "",
-  );
-  const bodyPart = MuscleUtils.bodyPartToKor(data.bodyPart ?? "");
-  const muscleType = data.muscleType;
-  console.log(bodyPart, muscleType);
+  const muscleType = data.muscleType as MuscleTypeKey;
   const MuscleImage =
-    bodyPart && muscleType
-      ? MuscleImgMap[`${distinctionType}_${bodyPart}`][muscleType]
-      : EmptyImageView;
+    MuscleGroupImgMap[`${data.distinctionType}_${data.bodyPart}`] ??
+    EmptyImageView;
 
   return (
     <ModalForm onClickEvent={onClose}>
-      <div className="w-[720px] px-10">
+      <div className="w-[800px] px-10">
         <div className="flex items-end gap-2.5">
           <span className="font-bold text-xl text-black">
             {MuscleUtils.getMuscleName(data.muscleType ?? "")}
@@ -81,9 +72,56 @@ const InjuryDetailModal = ({ data, onClose }: Props) => {
             </button>
           )}
         </div>
-        <div>
-          <div className={"w-[370px] h-[400px]"}>
-            <MuscleFrontBodyImg width={370} height={400} muscleType={""} />
+        <div className="flex justify-start items-start">
+          <div className={"w-[370px] h-[400px] flex items-center"}>
+            <MuscleImage
+              width={370}
+              height={400}
+              muscleType={muscleType}
+              color="#E4FAC1"
+            />
+          </div>
+          <div
+            className={
+              "flex-1 h-full flex flex-col gap-2.5 justify-start items-start"
+            }
+          >
+            <div className="flex items-center">
+              <InjuryDetailFieldName text="종류" />
+              <InjuryDetailFieldValue
+                text={formatInjuryType(data.injuryType)}
+              />
+            </div>
+            <div className="flex items-center">
+              <InjuryDetailFieldName text="위치" />
+              <InjuryDetailFieldValue
+                text={`${MuscleUtils.bodyPartToKor(data.bodyPart)}_${MuscleUtils.getMuscleName(data.muscleType)}`}
+              />
+            </div>
+            <div className="flex items-center">
+              <InjuryDetailFieldName text="정도" />
+              <InjuryLevelBadge injuryLevelType={data.injuryLevelType ?? ""} />
+              <div className="w-2.5"></div>
+              <InjuryDetailFieldValue
+                text={formatInjuryType(
+                  data.injuryLevelType ? `${data.injuryLevelType}_SIMPLE` : "",
+                )}
+              />
+            </div>
+            <div className="flex items-center">
+              <InjuryDetailFieldName text="통증" />
+              <InjuryDetailFieldValue
+                text={data.painCharacteristicList?.join(",") ?? "-"}
+              />
+            </div>
+            <div className="flex items-center">
+              <InjuryDetailFieldName text="시기" />
+              <InjuryDetailFieldValue text={getInjuryPeriod(data) ?? "-"} />
+            </div>
+            <div className="flex items-center">
+              <InjuryDetailFieldName text="경위" />
+              <InjuryDetailFieldValue text={data.comment ?? "-"} />
+            </div>
           </div>
         </div>
       </div>

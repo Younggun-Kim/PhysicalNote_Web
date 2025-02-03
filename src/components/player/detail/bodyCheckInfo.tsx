@@ -12,7 +12,11 @@ import { cls } from "@/utils";
 import { RecoveryToggleBtn } from "@/components/common";
 import InjuryDetailModal from "@/components/player/modal/InjuryDetailModal";
 
-const BodyCheckInfo = () => {
+interface Props {
+  onRefresh: () => void;
+}
+
+const BodyCheckInfo = ({ onRefresh }: Props) => {
   const [playerDetail, setPlayerDetail] = useRecoilState(playerDetailSelector);
   const [injuryData, setInjuryData] = useState<InjuryInfoType[]>();
   const [isRecovery, setIsRecovery] = useState<boolean>(false);
@@ -111,6 +115,10 @@ const BodyCheckInfo = () => {
             <InjuryDetailModal
               data={modalData}
               onClose={() => setModalData(undefined)}
+              onRecoverySuccess={() => {
+                onRefresh();
+                setModalData(undefined);
+              }}
             />
           )}
         </div>

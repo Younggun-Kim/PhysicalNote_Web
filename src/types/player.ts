@@ -196,6 +196,19 @@ export interface InjuryInfoType {
   recoveryDate: string | null;
 }
 
+const getPeriodDays = (recordDate: string, recoveryDate: string): string => {
+  if (!recordDate || !recoveryDate) return "";
+
+  const record = Date.parse(recordDate);
+  const recovery = Date.parse(recoveryDate);
+
+  // 밀리초 단위의 차이를 일 단위로 변환
+  const diffInMs = recovery - record;
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+  return String(diffInDays);
+};
+
 /**
  * 부상 기간 얻기
  * @param recordDate
@@ -207,7 +220,7 @@ export const getInjuryPeriod = ({
 }: InjuryInfoType) => {
   let period = recordDate;
   if (recoveryDate) {
-    period = `${recordDate} - ${recoveryDate}`;
+    period = `${recordDate} - ${recoveryDate}(${getPeriodDays(recordDate ?? "", recoveryDate)})`;
   }
 
   return period;

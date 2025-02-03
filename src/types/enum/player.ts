@@ -32,6 +32,14 @@ const InjuryMap: Record<string, string> = {
   HIGH_PAIN: "높은 통증-워밍업 후에도 지속, 특정 동작에서 제한 발생",
   VERY_HIGH_PAIN: "매우 높은 통증-운동 또는 일상 동작이 어려움",
   INJURED: "부상 상태-의료 상담 필요",
+
+  // 통증 수준/강도 - Simple
+  NO_PAIN_SIMPLE: "통증 없음",
+  MILD_DISCOMFORT_SIMPLE: "가벼운 불편함",
+  MODERATE_PAIN_SIMPLE: "보통 통증",
+  HIGH_PAIN_SIMPLE: "높은 통증",
+  VERY_HIGH_PAIN_SIMPLE: "매우 높은 통증",
+  INJURED_SIMPLE: "부상 상태",
 };
 
 const InjuryLevelMap: Record<string, string> = {

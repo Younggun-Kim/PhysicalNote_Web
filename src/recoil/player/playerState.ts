@@ -79,6 +79,7 @@ const playerDetailState = atom<PlayerDetailResponseType>({
     },
     monthWorkoutTimeGraph: [],
     injuryInfo: [],
+    recoveryInjuryInfo: [],
   },
 });
 

@@ -141,7 +141,7 @@ const ManagePlayerDetail: NextPage = () => {
             <div className="text-[20px] font-[700]">주간 항목별 평균</div>
             <div className="w-full flex space-x-10">
               <WeeklyAvgInfo />
-              <BodyCheckInfo />
+              <BodyCheckInfo onRefresh={() => getPlayerDetail()} />
             </div>
           </div>
         </div>

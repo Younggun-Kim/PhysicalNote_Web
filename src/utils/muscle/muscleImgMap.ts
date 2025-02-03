@@ -97,6 +97,17 @@ import FrontLeftArmCoracobrachialis from "@/components/muscleSvg/front/leftArm/c
 import FrontRightArmCoracobrachialis from "@/components/muscleSvg/front/rightArm/coracobrachialis";
 import FrontLeftLegGlute from "@/components/muscleSvg/front/leftLeg/glute";
 import { BackLeftLegGastrocnemius } from "@/components/muscleSvg/back/leftLeg/gastrocnemius";
+import MuscleFrontBodyImg from "@/components/muscleSvg/integration/MuscleFrontBodyImg";
+import IntergrationMuscleProps from "@/components/muscleSvg/integration/IntergrationMuscleProps";
+import MuscleFrontLeftArmImg from "@/components/muscleSvg/integration/MuscleFrontLeftArmImg";
+import MuscleFrontRightArmImg from "@/components/muscleSvg/integration/MuscleFrontRightArmImg";
+import MuscleFrontLeftLegImg from "@/components/muscleSvg/integration/MuscleFrontLeftLegImg";
+import MuscleFrontRightLegImg from "@/components/muscleSvg/integration/MuscleFrontRightLegImg";
+import MuscleBackBody from "@/components/muscleSvg/integration/MuscleBackBody";
+import MuscleBackLeftArm from "@/components/muscleSvg/integration/MuscleBackLeftArm";
+import MuscleBackRightArm from "@/components/muscleSvg/integration/MuscleBackRightArm";
+import MuscleBackLeftLeg from "@/components/muscleSvg/integration/MuscleBackLeftLeg";
+import MuscleBackRightLeg from "@/components/muscleSvg/integration/MuscleBackRightLeg";
 
 const FrontBody: Record<MuscleTypeKey, ComponentType<MuscleSvgProps>> = {
   TRAPEZIUS: FrontBodyTrapezius,
@@ -130,7 +141,7 @@ const FrontRightArm: Record<MuscleTypeKey, ComponentType<MuscleSvgProps>> = {
 const FrontLeftLeg: Record<MuscleTypeKey, ComponentType<MuscleSvgProps>> = {
   GLUTE: FrontLeftLegGlute,
   TENSOR_FASCIAE_LATAE: FrontLeftLegTensorFasciaeLatae,
-  SATORIUS: FrontLeftLegSartorius,
+  SARTORIUS: FrontLeftLegSartorius,
   VASTUS_LATERALIS: FrontLeftLegVastusLateralis,
   RECTUS_FEMORIS: FrontLeftLegRectusFemoris,
   IT_BAND: FrontLeftLegItBand,
@@ -153,7 +164,7 @@ const FrontLeftLeg: Record<MuscleTypeKey, ComponentType<MuscleSvgProps>> = {
 const FrontRightLeg: Record<MuscleTypeKey, ComponentType<MuscleSvgProps>> = {
   GLUTE: FrontRightLegGlute,
   TENSOR_FASCIAE_LATAE: FrontRightLegTensorFasciaeLatae,
-  SATORIUS: FrontRightLegSartorius,
+  SARTORIUS: FrontRightLegSartorius,
   VASTUS_LATERALIS: FrontRightLegVastusLateralis,
   RECTUS_FEMORIS: FrontRightLegRectusFemoris,
   IT_BAND: FrontRightLegItBand,
@@ -237,4 +248,21 @@ export const MuscleImgMap: Record<
   뒤_오른팔: BackRightArm,
   "뒤_왼쪽 다리": BackLeftLeg,
   "뒤_오른쪽 다리": BackRightLeg,
+};
+
+export const MuscleGroupImgMap: Record<
+  string,
+  ComponentType<IntergrationMuscleProps>
+> = {
+  FRONT_TORSO: MuscleFrontBodyImg,
+  FRONT_ARM_LEFT: MuscleFrontLeftArmImg,
+  FRONT_ARM_RIGHT: MuscleFrontRightArmImg,
+  FRONT_LEG_LEFT: MuscleFrontLeftLegImg,
+  FRONT_LEG_RIGHT: MuscleFrontRightLegImg,
+
+  BACK_TORSO: MuscleBackBody,
+  BACK_ARM_LEFT: MuscleBackLeftArm,
+  BACK_ARM_RIGHT: MuscleBackRightArm,
+  BACK_LEG_LEFT: MuscleBackLeftLeg,
+  BACK_LEG_RIGHT: MuscleBackRightLeg,
 };
