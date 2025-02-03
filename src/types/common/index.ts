@@ -33,6 +33,7 @@ export interface DropDownProps {
   width?: number | undefined;
   dropDownList?: Array<SearchCategoryType>;
   changeText?: (category: string) => void | undefined;
+  hasUnderLine?: boolean;
 }
 
 export interface TableType {

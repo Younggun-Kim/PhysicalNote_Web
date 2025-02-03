@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Box, Slider, styled } from "@mui/material";
-import { marks } from "@/constants/mock/dashboard";
 import { useRecoilValue } from "recoil";
 import { playerDetailSelector } from "@/recoil/player/playerState";
 import { UserInfoType } from "@/types/player";
+import CoachDropdown from "@/components/player/detail/CoachDropdown";
 
 const ProfileInfo = () => {
   const playerDetail = useRecoilValue(playerDetailSelector);
@@ -87,6 +87,9 @@ const ProfileInfo = () => {
           <p className="text-[16px] font-[700]">
             몸무게 : {userInfo?.weight && Math.ceil(userInfo?.weight)} kg
           </p>
+          <div className="flex items-center">
+            담당코치 : <CoachDropdown />
+          </div>
         </div>
       </div>
       <div className="flex flex-col space-y-4">

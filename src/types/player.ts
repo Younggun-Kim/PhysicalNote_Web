@@ -1,5 +1,4 @@
 import { Column } from "react-table";
-import { bool } from "yup";
 
 export interface PlayerListResponseType {
   id: number;
@@ -196,6 +195,17 @@ export interface InjuryInfoType {
   recoveryDate: string | null;
 }
 
+export interface CoachInfoType {
+  classes: string;
+  endDate: string;
+  entrySource: string;
+  id: number;
+  mainYn: boolean;
+  name: string;
+  staffPosition: string;
+  startDate: string;
+  teamName: string;
+}
 const getPeriodDays = (recordDate: string, recoveryDate: string): string => {
   if (!recordDate || !recoveryDate) return "";
 

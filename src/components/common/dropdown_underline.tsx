@@ -10,6 +10,7 @@ const DropDownUnderLine = ({
   isSize,
   dropDownList,
   changeText,
+  hasUnderLine = true,
   ...props
 }: DropDownProps) => {
   const menuInput = useRef<HTMLInputElement>(null);
@@ -47,17 +48,17 @@ const DropDownUnderLine = ({
     <div
       ref={menuWrap}
       className={cls(
-        "border-b border-black flex flex-col justify-center relative py-0 text-black",
+        `border-b ${hasUnderLine ? "border-black" : "border-none"} flex flex-col justify-center relative py-0 text-black`,
         isSize && isSize === "small"
           ? "w-[140px] h-[44px]"
-          : "w-[160px] h-[36px]"
+          : "w-[160px] h-[36px]",
       )}
       {...props}
     >
       <button
         className={cls(
           "h-[1.875rem] flex flex-row justify-center items-center relative pr-12 pl-10 bg-transparent border-none text-body-md",
-          isSize && isSize === "small" ? "text-[12px]" : "text-[15px]"
+          isSize && isSize === "small" ? "text-[12px]" : "text-[15px]",
         )}
         onClick={() => setIsOpen((open) => !open)}
       >
@@ -71,7 +72,7 @@ const DropDownUnderLine = ({
             "absolute right-[13px]",
             isSize && isSize === "small"
               ? "w-[11px] h-[11px] top-[7px]"
-              : "w-[13px] h-[13px] top-[10px]"
+              : "w-[13px] h-[13px] top-[10px]",
           )}
           priority
         />
@@ -82,7 +83,7 @@ const DropDownUnderLine = ({
             "bg-[#fff] flex flex-col absolute rounded-[5px] py-[5px] border-[#ededed] z-10 overflow-y-auto shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)]",
             isSize && isSize === "small"
               ? "w-[140px] max-h-[160px] top-[35px]"
-              : "w-[160px] max-h-[160px] top-[45px]"
+              : "w-[160px] max-h-[160px] top-[45px]",
           )}
         >
           {list.map((item) => {
@@ -91,7 +92,7 @@ const DropDownUnderLine = ({
                 key={item.key}
                 onClick={() => changeItem(item)}
                 className={cls(
-                  "flex justify-center text-body-md px-[5px] py-[7px] hover:bg-tertiary cursor-pointer"
+                  "flex justify-center text-body-md px-[5px] py-[7px] hover:bg-tertiary cursor-pointer",
                 )}
               >
                 {item.value}

@@ -9,7 +9,6 @@ import AlertInfo from "@/components/player/detail/alertInfo";
 import HooperIndexInfo from "@/components/player/detail/hooperIndexInfo";
 import InjuryInfo from "@/components/player/detail/injuryInfo";
 import UrineInfo from "@/components/player/detail/urineInfo";
-import FeedbackInfo from "@/components/player/detail/feedbackInfo";
 import WeeklyAvgInfo from "@/components/player/detail/weeklyAvgInfo";
 import BodyCheckInfo from "@/components/player/detail/bodyCheckInfo";
 import Api from "@/api/player";
@@ -17,8 +16,6 @@ import { getFullDateToString } from "@/utils/dateFormat";
 import { useRecoilState } from "recoil";
 import { playerDetailSelector } from "@/recoil/player/playerState";
 import Image from "next/image";
-import PlayerFeedbackModal from "@/components/dashboard/modal/playerFeedbackModal";
-import SendFeedbackModal from "@/components/player/modal/SendFeedbackModal";
 import SendFeedbackBtn from "@/components/player/SendFeedbackBtn";
 import FeedbackListBtn from "@/components/player/FeedbackListBtn";
 
