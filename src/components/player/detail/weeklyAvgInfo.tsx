@@ -11,12 +11,15 @@ import {
   HooperGraphType,
 } from "@/types/player";
 import { getDateToNum } from "@/utils/dateFormat";
+import WorkoutTimeGraph from "@/components/player/detail/WorkoutTimeGraph";
+import IntensityGraph from "@/components/player/detail/IntensityGraph";
+import HooperIndexGraph from "@/components/player/detail/HooperIndexGraph";
 
 const WeeklyAvgInfo = () => {
   const playerDetail = useRecoilValue(playerDetailSelector);
-  const [reportType, setReportType] = useState<"days" | "weeks">("days");
+  const [reportType, setReportType] = useState<"days" | "month">("days");
   const [graphType, setGraphType] = useState<"hooper" | "intensity" | "time">(
-    "hooper"
+    "hooper",
   );
   const [hooperType, setHooperType] = useState<
     "sleep" | "stress" | "fatigue" | "muscle"
@@ -41,11 +44,11 @@ const WeeklyAvgInfo = () => {
     WorkoutTimeGraphType[]
   >([]);
   const [intensityGraph, setIntensityGraph] = useState<IntensityGraphType[]>(
-    []
+    [],
   );
 
   const onClickDays = () => setReportType("days");
-  const onClickWeeks = () => setReportType("weeks");
+  const onClickWeeks = () => setReportType("month");
 
   useEffect(() => {
     if (reportType === "days") {
@@ -54,7 +57,7 @@ const WeeklyAvgInfo = () => {
       setIntensityGraph(playerDetail?.weekIntensityGraph);
     }
 
-    if (reportType === "weeks") {
+    if (reportType === "month") {
       setHooperIndexGraph(playerDetail?.monthHooperIndexGraph);
       setWorkoutTimeGraph(playerDetail?.monthWorkoutTimeGraph);
       setIntensityGraph(playerDetail?.monthIntensityGraph);
@@ -157,7 +160,7 @@ const WeeklyAvgInfo = () => {
               onClick={() => setGraphType("hooper")}
               className={cls(
                 "cursor-pointer",
-                graphType === "hooper" ? "text-[#000]" : "text-[#C1C1C1]"
+                graphType === "hooper" ? "text-[#000]" : "text-[#C1C1C1]",
               )}
             >
               후퍼인덱스
@@ -166,7 +169,7 @@ const WeeklyAvgInfo = () => {
               onClick={() => setGraphType("intensity")}
               className={cls(
                 "cursor-pointer",
-                graphType === "intensity" ? "text-[#000]" : "text-[#C1C1C1]"
+                graphType === "intensity" ? "text-[#000]" : "text-[#C1C1C1]",
               )}
             >
               운동강도
@@ -175,7 +178,7 @@ const WeeklyAvgInfo = () => {
               onClick={() => setGraphType("time")}
               className={cls(
                 "cursor-pointer",
-                graphType === "time" ? "text-[#000]" : "text-[#C1C1C1]"
+                graphType === "time" ? "text-[#000]" : "text-[#C1C1C1]",
               )}
             >
               운동시간
@@ -188,7 +191,7 @@ const WeeklyAvgInfo = () => {
                 "w-1/2 flex items-center justify-center cursor-pointer",
                 reportType === "days"
                   ? "bg-[#C6E19B] text-white"
-                  : "text-[#8DBE3D]"
+                  : "text-[#8DBE3D]",
               )}
             >
               일간
@@ -197,23 +200,23 @@ const WeeklyAvgInfo = () => {
               onClick={onClickWeeks}
               className={cls(
                 "w-1/2 flex items-center justify-center cursor-pointer",
-                reportType === "weeks"
+                reportType === "month"
                   ? "bg-[#C6E19B] text-white"
-                  : "text-[#8DBE3D]"
+                  : "text-[#8DBE3D]",
               )}
             >
-              주간
+              월간
             </div>
           </div>
         </div>
         {graphType === "hooper" && (
           <div className="flex flex-col text-[12px]">
-            <div className="flex space-x-8">
+            <div className="flex space-x-8 mb-5">
               <div
                 onClick={() => setHooperType("sleep")}
                 className={cls(
                   "cursor-pointer",
-                  hooperType === "sleep" ? "text-[#000]" : "text-[#B9B9C3]"
+                  hooperType === "sleep" ? "text-[#000]" : "text-[#B9B9C3]",
                 )}
               >
                 수면의 질
@@ -222,7 +225,7 @@ const WeeklyAvgInfo = () => {
                 onClick={() => setHooperType("stress")}
                 className={cls(
                   "cursor-pointer",
-                  hooperType === "stress" ? "text-[#000]" : "text-[#B9B9C3]"
+                  hooperType === "stress" ? "text-[#000]" : "text-[#B9B9C3]",
                 )}
               >
                 스트레스
@@ -231,7 +234,7 @@ const WeeklyAvgInfo = () => {
                 onClick={() => setHooperType("fatigue")}
                 className={cls(
                   "cursor-pointer",
-                  hooperType === "fatigue" ? "text-[#000]" : "text-[#B9B9C3]"
+                  hooperType === "fatigue" ? "text-[#000]" : "text-[#B9B9C3]",
                 )}
               >
                 피로
@@ -240,124 +243,23 @@ const WeeklyAvgInfo = () => {
                 onClick={() => setHooperType("muscle")}
                 className={cls(
                   "cursor-pointer",
-                  hooperType === "muscle" ? "text-[#000]" : "text-[#B9B9C3]"
+                  hooperType === "muscle" ? "text-[#000]" : "text-[#B9B9C3]",
                 )}
               >
                 근육통
               </div>
             </div>
             <div className="w-full">
-              {hooperType === "sleep" &&
-              hooperGraph?.sleep &&
-              hooperGraph?.sleep.value.length !== 0 &&
-              hooperGraph?.sleep.xvalue.length !== 0 ? (
-                <AxisWithComposition
-                  xAxisData={hooperGraph.sleep.xvalue}
-                  seriesData={[
-                    {
-                      type: "bar",
-                      yAxisKey: "loadValue",
-                      data: hooperGraph.sleep.value,
-                      color: "#C6E19B",
-                    },
-                    {
-                      type: "line",
-                      curve: "linear",
-                      yAxisKey: "totalCount",
-                      data: hooperGraph.sleep.value,
-                      color: "#FF9F43",
-                    },
-                  ]}
-                  yAxisIds={yAxisIds}
-                  height={300}
-                  margin={{ left: 40, right: 60 }}
-                />
-              ) : hooperType === "stress" &&
-                hooperGraph?.stress &&
-                hooperGraph?.stress.value.length !== 0 &&
-                hooperGraph?.stress.xvalue.length !== 0 ? (
-                <AxisWithComposition
-                  xAxisData={hooperGraph.stress.xvalue}
-                  seriesData={[
-                    {
-                      type: "bar",
-                      yAxisKey: "loadValue",
-                      data: hooperGraph.stress.value,
-                      color: "#C6E19B",
-                    },
-                    {
-                      type: "line",
-                      curve: "linear",
-                      yAxisKey: "totalCount",
-                      data: hooperGraph.stress.value,
-                      color: "#FF9F43",
-                    },
-                  ]}
-                  yAxisIds={yAxisIds}
-                  height={300}
-                  margin={{ left: 40, right: 60 }}
-                />
-              ) : hooperType === "fatigue" &&
-                hooperGraph?.fatigue &&
-                hooperGraph?.fatigue.value.length !== 0 &&
-                hooperGraph?.fatigue.xvalue.length !== 0 ? (
-                <AxisWithComposition
-                  xAxisData={hooperGraph.fatigue.xvalue}
-                  seriesData={[
-                    {
-                      type: "bar",
-                      yAxisKey: "loadValue",
-                      data: hooperGraph.fatigue.value,
-                      color: "#C6E19B",
-                    },
-                    {
-                      type: "line",
-                      curve: "linear",
-                      yAxisKey: "totalCount",
-                      data: hooperGraph.fatigue.value,
-                      color: "#FF9F43",
-                    },
-                  ]}
-                  yAxisIds={yAxisIds}
-                  height={300}
-                  margin={{ left: 40, right: 60 }}
-                />
-              ) : hooperType === "muscle" &&
-                hooperGraph?.muscleSoreness &&
-                hooperGraph?.muscleSoreness.value.length !== 0 &&
-                hooperGraph?.muscleSoreness.xvalue.length !== 0 ? (
-                <AxisWithComposition
-                  xAxisData={hooperGraph.muscleSoreness.xvalue}
-                  seriesData={[
-                    {
-                      type: "bar",
-                      yAxisKey: "loadValue",
-                      data: hooperGraph.muscleSoreness.value,
-                      color: "#C6E19B",
-                    },
-                    {
-                      type: "line",
-                      curve: "linear",
-                      yAxisKey: "totalCount",
-                      data: hooperGraph.muscleSoreness.value,
-                      color: "#FF9F43",
-                    },
-                  ]}
-                  yAxisIds={yAxisIds}
-                  height={300}
-                  margin={{ left: 40, right: 60 }}
-                />
-              ) : (
-                <div className="min-h-[260px] flex items-center justify-center w-full py-10 font-bold text-[16px]">
-                  데이터가 없습니다.
-                </div>
-              )}
+              <HooperIndexGraph
+                isDays={reportType === "days"}
+                hooperType={hooperType}
+              />
             </div>
           </div>
         )}
         {graphType === "intensity" && (
           <div className="flex flex-col text-[12px]">
-            <div className="flex space-x-8">
+            <div className="flex space-x-4 mb-5">
               <div className="flex items-center space-x-1">
                 <div className="text-[#000] text-[12px]">스포츠훈련</div>
                 <div className="w-[12px] h-[12px] bg-[#C6E19B] rounded-[50%]"></div>
@@ -371,36 +273,7 @@ const WeeklyAvgInfo = () => {
               {intensitySportsValue.length !== 0 &&
               intensityPhysicalValue.length !== 0 &&
               intensityGraphXValue.length !== 0 ? (
-                <AxisWithComposition
-                  xAxisData={intensityGraphXValue}
-                  seriesData={[
-                    {
-                      type: "bar",
-                      yAxisKey: "loadValue",
-                      data: intensitySportsValue,
-                      color: "#C6E19B",
-                      label: "스포츠훈련",
-                    },
-                    {
-                      type: "line",
-                      curve: "linear",
-                      yAxisKey: "totalCount",
-                      data: intensitySportsValue,
-                      color: "#FF0000",
-                      label: "스포츠훈련",
-                    },
-                    {
-                      type: "bar",
-                      yAxisKey: "loadValue",
-                      data: intensityPhysicalValue,
-                      color: "#F0EA0D",
-                      label: "피지컬훈련",
-                    },
-                  ]}
-                  yAxisIds={yAxisIds}
-                  height={300}
-                  margin={{ left: 40, right: 60 }}
-                />
+                <IntensityGraph isDays={reportType === "days"} />
               ) : (
                 <div className="min-h-[260px] flex items-center justify-center w-full py-10 font-bold text-[16px]">
                   데이터가 없습니다.
@@ -411,40 +284,24 @@ const WeeklyAvgInfo = () => {
         )}
         {graphType === "time" && (
           <div className="flex flex-col text-[12px]">
-            <div className="text-[#000] text-[12px]">단위 : 시간</div>
+            <div className="flex space-x-8 mb-5">
+              <div className="flex items-center space-x-1">
+                <div className="text-[#000] text-[12px]">스포츠훈련</div>
+                <div className="w-[12px] h-[12px] bg-[#C6E19B] rounded-[50%]"></div>
+              </div>
+              <div className="flex items-center space-x-1">
+                <div className="text-[#000] text-[12px]">피지컬훈련</div>
+                <div className="w-[12px] h-[12px] bg-[#F0EA0D] rounded-[50%]"></div>
+              </div>
+              <div className="flex-1"></div>
+              <div className="text-[#000] text-[12px]\">단위 : 시간</div>
+            </div>
+
             <div className="w-full">
               {timeSportsValue.length !== 0 &&
               timePhysicalValue.length !== 0 &&
               timeGraphXValue.length !== 0 ? (
-                <AxisWithComposition
-                  xAxisData={timeGraphXValue}
-                  seriesData={[
-                    {
-                      type: "bar",
-                      yAxisKey: "loadValue",
-                      data: timeSportsValue,
-                      color: "#C6E19B",
-                      label: "스포츠훈련",
-                    },
-                    {
-                      type: "line",
-                      curve: "linear",
-                      yAxisKey: "totalCount",
-                      data: timeSportsValue,
-                      color: "#FF0000",
-                    },
-                    {
-                      type: "bar",
-                      yAxisKey: "loadValue",
-                      data: timePhysicalValue,
-                      color: "#F0EA0D",
-                      label: "피지컬훈련",
-                    },
-                  ]}
-                  yAxisIds={yAxisIds}
-                  height={300}
-                  margin={{ left: 40, right: 60 }}
-                />
+                <WorkoutTimeGraph isDays={reportType === "days"} />
               ) : (
                 <div className="min-h-[260px] flex items-center justify-center w-full py-10 font-bold text-[16px]">
                   데이터가 없습니다.

@@ -175,6 +175,7 @@ export interface WorkoutTimeGraphType {
   id: number | null;
   type: string;
   workoutTime: string;
+  workoutTimeStr: string;
   xvalue: string;
 }
 
