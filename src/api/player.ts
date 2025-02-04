@@ -17,7 +17,7 @@ const Player = {
   async v1GetPlayers(data: PlayersRequestType, page: number, size: number) {
     try {
       const url = `${prefix}/player`;
-      await instanceWithToken.get(url, {
+      return await instanceWithToken.get(url, {
         params: { ...data, page, size },
       });
     } catch (err) {
@@ -47,7 +47,7 @@ const Player = {
   async v1GetPlayerRequests(page: number, size: number) {
     try {
       const url = `${prefix}/team/request`;
-      await instanceWithToken.get(url, {
+      return await instanceWithToken.get(url, {
         params: { page, size },
       });
     } catch (err) {
@@ -67,7 +67,7 @@ const Player = {
   async v1GetPlayerDetail(playerId: number, recordDate: string) {
     try {
       const url = `${prefix}/player/${playerId}`;
-      await instanceWithToken.get(url, {
+      return await instanceWithToken.get(url, {
         params: { recordDate },
       });
     } catch (err) {
@@ -93,7 +93,7 @@ const Player = {
   async v2GetPlayerSimple(name: string) {
     try {
       const url = `${prefix}/player/simple`;
-      await instanceWithToken.get(url, {
+      return await instanceWithToken.get(url, {
         params: { name },
       });
     } catch (err) {
