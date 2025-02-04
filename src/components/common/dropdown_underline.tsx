@@ -35,6 +35,11 @@ const DropDownUnderLine = ({
     setIsOpen(false);
   };
 
+  /// 선택처리
+  useEffect(() => {
+    setTitle(text || "구분");
+  }, [text]);
+
   useEffect(() => {
     document.addEventListener("click", clickWrap);
     dropDownList ? setList(dropDownList) : setList(searchCategoryList);

@@ -99,7 +99,11 @@ const FeedbackListModal = ({ playerId, onClose }: Props) => {
           {feedbackList.length == 0 && <span>피드백이 존재하지 않습니다.</span>}
           {feedbackList.length > 0 &&
             feedbackList.map((data) => (
-              <FeedbackListItem data={data} onUpdate={onUpdateFeedback} />
+              <FeedbackListItem
+                key={data.id}
+                data={data}
+                onUpdate={onUpdateFeedback}
+              />
             ))}
         </div>
         <div className="w-full flex justify-end items-center gap-5 mt-5">

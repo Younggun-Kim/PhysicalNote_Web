@@ -25,6 +25,14 @@ const CoachDropdown = () => {
               value: e.name,
             }) as SearchCategoryType,
         );
+
+        const newSelectedCoach = items.find(
+          (item) => item.mainYn === true,
+        )?.name;
+        if (newSelectedCoach) {
+          setSelectedCoach(newSelectedCoach);
+        }
+
         setCoaches(dropDownItems);
       }
     });
@@ -44,24 +52,19 @@ const CoachDropdown = () => {
   };
 
   const handleChange = (coach: string) => {
-    setSelectedCoach(coach);
+    setSelectedCoach(coaches.find((c) => `${c.key}` === coach)?.value ?? "");
+    updateCoach(parseInt(coach));
   };
 
   useEffect(() => {
     getTeamCoaches();
   }, []);
-
-  useEffect(() => {
-    if (parseInt(selectedCoach)) {
-      updateCoach(parseInt(selectedCoach));
-    }
-  }, [selectedCoach]);
-
   return (
     <DropDownUnderLine
       dropDownList={coaches}
       isSize="small"
       defaultText={selectedCoach}
+      text={selectedCoach}
       changeText={handleChange}
       hasUnderLine={false}
     />
