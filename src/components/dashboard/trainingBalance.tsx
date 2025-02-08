@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { trainingBalanceSelector } from "@/recoil/dashboard/dashboardState";
 import { TrainingBalanceInfoType } from "@/types/dashboard";
-import { Bar, CartesianGrid, LabelList, XAxis } from "recharts";
+import { Bar, LabelList, XAxis } from "recharts";
 import { BarChart, Tooltip } from "recharts";
+import ChartTooltip from "@/components/common/ChartTooltip";
 
 interface BalanceChartType {
   name: string;
@@ -24,20 +25,30 @@ const balanceToString = (value: number): string => {
 
 const balanceToColor = (value: number): string => {
   if (value < 0.8) {
-    return "#FFCFA1";
+    return "bg-tb-less";
   } else if (value < 1.5) {
-    return "#8DBE3D80";
+    return "bg-tb-base";
   } else {
-    return "#FF434380";
+    return "bg-tb-over";
   }
 };
 
-const BalanceItem = ({ value }: { value: number }) => {
+interface BalanceItemProps {
+  title: string;
+  value: number;
+}
+
+const BalanceItem = ({ title, value }: BalanceItemProps) => {
+  const bgColor = balanceToColor(value);
+
   return (
     <div className="flex items-center gap-2.5">
-      <span className="font-sans font-normal text-sm text-black">With Av4</span>
+      <span className="font-sans font-normal text-sm text-black">{title}</span>
       <div
-        className={`w-[63px] h-[22px] bg-[${balanceToColor(value)}] flex justify-center items-center rounded-full`}
+        className={[
+          `w-[63px] h-[22px] flex justify-center items-center rounded-full`,
+          bgColor,
+        ].join(" ")}
       >
         {value.toFixed(1)}
       </div>
@@ -108,7 +119,16 @@ const TrainingBalance = () => {
         <BarChart width={460} height={200} data={data} margin={{ top: 20 }}>
           {/*<CartesianGrid strokeDasharray="3 3" />*/}
           <XAxis dataKey="name" tickSize={0} tickMargin={10} />
-          <Tooltip />
+          <Tooltip
+            cursor={false}
+            content={({ active, payload }) => (
+              <ChartTooltip
+                active={active}
+                payload={payload}
+                payloadSuffix={""}
+              />
+            )}
+          />
           <Bar
             dataKey="value"
             fill={"#C6E19B"}
@@ -126,8 +146,14 @@ const TrainingBalance = () => {
           sRPE Load
         </span>
         <div className="flex flex-col gap-5">
-          <BalanceItem value={trainingBalance.lastFourWeekBalanceValue} />
-          <BalanceItem value={trainingBalance.lastEightWeekBalanceValue} />
+          <BalanceItem
+            title={"With Av4"}
+            value={trainingBalance.lastFourWeekBalanceValue}
+          />
+          <BalanceItem
+            title={"With Av8"}
+            value={trainingBalance.lastEightWeekBalanceValue}
+          />
         </div>
       </div>
     </div>
