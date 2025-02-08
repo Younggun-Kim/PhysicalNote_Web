@@ -29,6 +29,12 @@ const config: Config = {
           4: "#F27C21",
           5: "#FF0000",
         },
+        tb: {
+          // Training Balance
+          less: "#FFCFA1",
+          base: "#C7DC97",
+          over: "#FF9E99",
+        },
       },
       boxShadow: {
         md: "0px 2px 8px 0px rgba(0, 0, 0, 0.10)",
