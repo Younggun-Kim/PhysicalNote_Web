@@ -164,7 +164,7 @@ const InjuryInfo = () => {
                         {
                           data: [
                             { value: item.level, color: "#FF0000" },
-                            { value: 100 - item.level, color: "#C1C1C1" },
+                            { value: 10 - item.level, color: "#C1C1C1" },
                           ],
                           innerRadius: 40,
                           outerRadius: 80,
