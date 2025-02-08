@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { cls } from "@/utils";
-import AxisWithComposition from "@/components/common/axisWithComposition";
-import { yAxisIds } from "@/constants/mock/dashboard";
 import { useRecoilValue } from "recoil";
 import { playerDetailSelector } from "@/recoil/player/playerState";
 import {
@@ -10,7 +8,6 @@ import {
   WorkoutTimeGraphType,
   HooperGraphType,
 } from "@/types/player";
-import { getDateToNum } from "@/utils/dateFormat";
 import WorkoutTimeGraph from "@/components/player/detail/WorkoutTimeGraph";
 import IntensityGraph from "@/components/player/detail/IntensityGraph";
 import HooperIndexGraph from "@/components/player/detail/HooperIndexGraph";
@@ -24,132 +21,13 @@ const WeeklyAvgInfo = () => {
   const [hooperType, setHooperType] = useState<
     "sleep" | "stress" | "fatigue" | "muscle"
   >("sleep");
-  const [hooperGraph, setHooperGraph] = useState<HooperGraphType>();
-  const [timeSportsValue, setTimeSportsValue] = useState<Array<number>>([]);
-  const [timePhysicalValue, setTimePhysicalValue] = useState<Array<number>>([]);
-  const [timeGraphXValue, setTimeGraphXValue] = useState<Array<string>>([]);
-  const [intensitySportsValue, setIntensitySportsValue] = useState<
-    Array<number>
-  >([]);
-  const [intensityPhysicalValue, setIntensityPhysicalValue] = useState<
-    Array<number>
-  >([]);
-  const [intensityGraphXValue, setIntensityGraphXValue] = useState<
-    Array<string>
-  >([]);
-
-  const [hooperIndexGraph, setHooperIndexGraph] =
-    useState<HooperIndexGraphType>();
-  const [workoutTimeGraph, setWorkoutTimeGraph] = useState<
-    WorkoutTimeGraphType[]
-  >([]);
-  const [intensityGraph, setIntensityGraph] = useState<IntensityGraphType[]>(
-    [],
-  );
 
   const onClickDays = () => setReportType("days");
   const onClickWeeks = () => setReportType("month");
 
   useEffect(() => {
-    if (reportType === "days") {
-      setHooperIndexGraph(playerDetail?.weekHooperIndexGraph);
-      setWorkoutTimeGraph(playerDetail?.weekWorkoutTimeGraph);
-      setIntensityGraph(playerDetail?.weekIntensityGraph);
-    }
-
-    if (reportType === "month") {
-      setHooperIndexGraph(playerDetail?.monthHooperIndexGraph);
-      setWorkoutTimeGraph(playerDetail?.monthWorkoutTimeGraph);
-      setIntensityGraph(playerDetail?.monthIntensityGraph);
-    }
-  }, [playerDetail, reportType]);
-
-  useEffect(() => {
     setHooperType("sleep");
   }, [graphType]);
-
-  useEffect(() => {
-    const sleepValue: Array<number> = [];
-    const stressValue: Array<number> = [];
-    const fatigueValue: Array<number> = [];
-    const muscleValue: Array<number> = [];
-    const sleepXValue: Array<string> = [];
-    const stressXValue: Array<string> = [];
-    const fatigueXValue: Array<string> = [];
-    const muscleXValue: Array<string> = [];
-
-    const tSportsValue: Array<number> = [];
-    const tPhysicalValue: Array<number> = [];
-    const tXValue: Array<string> = [];
-    const iSportsValue: Array<number> = [];
-    const iPhysicalValue: Array<number> = [];
-    const iXValue: Array<string> = [];
-
-    hooperIndexGraph?.sleepInfo.map((item) => {
-      sleepValue.push(item.level);
-      sleepXValue.push(item.xvalue);
-    });
-    hooperIndexGraph?.stressInfo.map((item) => {
-      stressValue.push(item.level);
-      stressXValue.push(item.xvalue);
-    });
-    hooperIndexGraph?.fatigueInfo.map((item) => {
-      fatigueValue.push(item.level);
-      fatigueXValue.push(item.xvalue);
-    });
-    hooperIndexGraph?.muscleSorenessInfo.map((item) => {
-      muscleValue.push(item.level);
-      muscleXValue.push(item.xvalue);
-    });
-
-    workoutTimeGraph?.map((item) => {
-      if (item.type === "스포츠") {
-        tSportsValue.push(getDateToNum(item.workoutTime));
-      }
-
-      if (item.type === "피지컬") {
-        tPhysicalValue.push(getDateToNum(item.workoutTime));
-      }
-
-      tXValue.push(item.xvalue);
-    });
-
-    intensityGraph?.map((item) => {
-      if (item.type === "스포츠") {
-        iSportsValue.push(item.level);
-      }
-
-      if (item.type === "피지컬") {
-        iPhysicalValue.push(item.level);
-      }
-
-      iXValue.push(item.xvalue);
-    });
-
-    setHooperGraph({
-      sleep: {
-        value: sleepValue,
-        xvalue: sleepXValue,
-      },
-      stress: {
-        value: stressValue,
-        xvalue: stressXValue,
-      },
-      fatigue: {
-        value: fatigueValue,
-        xvalue: fatigueXValue,
-      },
-      muscleSoreness: { value: muscleValue, xvalue: muscleXValue },
-    });
-
-    setTimeSportsValue(tSportsValue);
-    setTimePhysicalValue(tPhysicalValue);
-    setTimeGraphXValue([...new Set(tXValue)]);
-
-    setIntensitySportsValue(iSportsValue);
-    setIntensityPhysicalValue(iPhysicalValue);
-    setIntensityGraphXValue(iXValue);
-  }, [hooperIndexGraph, workoutTimeGraph, intensityGraph]);
 
   return (
     <div className="w-full min-w-[650px] flex space-x-5 rounded-[25px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] py-4 px-8">
@@ -270,21 +148,13 @@ const WeeklyAvgInfo = () => {
               </div>
             </div>
             <div className="w-full">
-              {intensitySportsValue.length !== 0 &&
-              intensityPhysicalValue.length !== 0 &&
-              intensityGraphXValue.length !== 0 ? (
-                <IntensityGraph isDays={reportType === "days"} />
-              ) : (
-                <div className="min-h-[260px] flex items-center justify-center w-full py-10 font-bold text-[16px]">
-                  데이터가 없습니다.
-                </div>
-              )}
+              <IntensityGraph isDays={reportType === "days"} />
             </div>
           </div>
         )}
         {graphType === "time" && (
           <div className="flex flex-col text-[12px]">
-            <div className="flex space-x-8 mb-5">
+            <div className="flex space-x-4 mb-5">
               <div className="flex items-center space-x-1">
                 <div className="text-[#000] text-[12px]">스포츠훈련</div>
                 <div className="w-[12px] h-[12px] bg-[#C6E19B] rounded-[50%]"></div>
@@ -298,15 +168,7 @@ const WeeklyAvgInfo = () => {
             </div>
 
             <div className="w-full">
-              {timeSportsValue.length !== 0 &&
-              timePhysicalValue.length !== 0 &&
-              timeGraphXValue.length !== 0 ? (
-                <WorkoutTimeGraph isDays={reportType === "days"} />
-              ) : (
-                <div className="min-h-[260px] flex items-center justify-center w-full py-10 font-bold text-[16px]">
-                  데이터가 없습니다.
-                </div>
-              )}
+              <WorkoutTimeGraph isDays={reportType === "days"} />
             </div>
           </div>
         )}

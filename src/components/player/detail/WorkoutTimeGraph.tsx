@@ -2,7 +2,7 @@ import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
 import { useRecoilValue } from "recoil";
 import { playerDetailSelector } from "@/recoil/player/playerState";
 import ChartTooltip from "@/components/common/ChartTooltip";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { WorkoutTimeGraphType } from "@/types/player";
 
 interface Props {
@@ -52,6 +52,14 @@ const WorkoutTimeGraph = ({ isDays }: Props) => {
     setData(convertWorkoutTimeToChartData(tempData));
   }, [isDays]);
 
+  if (data.length === 0) {
+    return (
+      <div className="min-h-[260px] flex items-center justify-center w-full py-10 font-bold text-[16px]">
+        데이터가 없습니다.
+      </div>
+    );
+  }
+
   return (
     <BarChart
       width={640}
@@ -72,7 +80,11 @@ const WorkoutTimeGraph = ({ isDays }: Props) => {
             x={x}
             y={y + 10}
             textAnchor="middle"
-            fill={"#000000"}
+            fill={
+              payload.value.toUpperCase().includes("(MD)")
+                ? "#FF0000"
+                : "#000000"
+            }
             fontSize={12}
             fontWeight={400}
           >

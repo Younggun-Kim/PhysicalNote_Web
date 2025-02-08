@@ -2,7 +2,7 @@ import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
 import { useRecoilValue } from "recoil";
 import { playerDetailSelector } from "@/recoil/player/playerState";
 import ChartTooltip from "@/components/common/ChartTooltip";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IntensityGraphType, WorkoutTimeGraphType } from "@/types/player";
 
 interface Props {
@@ -51,6 +51,14 @@ const IntensityGraph = ({ isDays }: Props) => {
 
     setData(convertIntensityToChartData(tempData));
   }, [isDays]);
+
+  if (data.length === 0) {
+    return (
+      <div className="min-h-[260px] flex items-center justify-center w-full py-10 font-bold text-[16px]">
+        데이터가 없습니다.
+      </div>
+    );
+  }
 
   return (
     <BarChart

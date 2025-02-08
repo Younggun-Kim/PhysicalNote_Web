@@ -14,7 +14,11 @@ const CoachDropdown = () => {
   const playerData = useRecoilValue(playerDetailSelector);
 
   const getTeamCoaches = async () => {
-    await TeamApi.v2GetTeamCoaches().then((res) => {
+    const playerId = playerData.userInfo.id;
+
+    if (playerId == 0) return;
+
+    await TeamApi.v2GetTeamCoaches(playerData.userInfo.id).then((res) => {
       const { data } = res;
       if (data && (data as GetTeamCoachesResponseDto[])) {
         const items = data as GetTeamCoachesResponseDto[];
@@ -58,7 +62,7 @@ const CoachDropdown = () => {
 
   useEffect(() => {
     getTeamCoaches();
-  }, []);
+  }, [playerData]);
   return (
     <DropDownUnderLine
       dropDownList={coaches}

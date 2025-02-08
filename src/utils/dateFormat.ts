@@ -42,6 +42,5 @@ export const getFullSimpleDateToString = (date: Date) => {
 
 export const getDateToNum = (date: string) => {
   const [hour, minute, second] = date.split(":").map(Number);
-  const totalHours = hour + minute / 60 + second / 3600;
-  return totalHours;
+  return hour + minute / 60 + second / 3600;
 };
