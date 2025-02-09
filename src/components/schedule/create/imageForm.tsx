@@ -11,6 +11,7 @@ const ImageForm = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [previewURLs, setPreviewURLs] = useState<string[]>([]);
   const setImageFiles = useSetRecoilState(imageFilesSelector);
+  const imageUrls = useRecoilValue(imageUrlsSelector);
 
   const imageLoader = ({ src, width, quality }: any) => {
     return `${src}?w=${width}&q=${quality || 75}`;
@@ -52,7 +53,7 @@ const ImageForm = () => {
 
     if (!fileType || !ALLOW_FILE_EXTENSION.includes(fileType)) {
       alert(
-        `업로드 가능한 확장자가 아닙니다. [가능한 확장자 : ${ALLOW_FILE_EXTENSION}]`
+        `업로드 가능한 확장자가 아닙니다. [가능한 확장자 : ${ALLOW_FILE_EXTENSION}]`,
       );
       return false;
     }
@@ -77,6 +78,10 @@ const ImageForm = () => {
   useEffect(() => {
     setImageFiles(files);
   }, [files]);
+
+  useEffect(() => {
+    setPreviewURLs(imageUrls);
+  }, [imageUrls]);
 
   return (
     <div>
