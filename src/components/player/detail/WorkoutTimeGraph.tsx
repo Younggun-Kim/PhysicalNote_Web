@@ -1,4 +1,12 @@
-import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { useRecoilValue } from "recoil";
 import { playerDetailSelector } from "@/recoil/player/playerState";
 import ChartTooltip from "@/components/common/ChartTooltip";
@@ -61,63 +69,64 @@ const WorkoutTimeGraph = ({ isDays }: Props) => {
   }
 
   return (
-    <BarChart
-      width={640}
-      height={300}
-      data={data}
-      barCategoryGap={20}
-      margin={{ left: 0, right: 0 }}
-      className={"translate-x-[-40px]"}
-    >
-      <CartesianGrid vertical={false} stroke="#EBE9F1" />
-      <XAxis
-        dataKey="name"
-        tickLine={false}
-        stroke={"#CBCCCD"}
-        strokeWidth={1}
-        tick={({ x, y, payload }) => (
-          <text
-            x={x}
-            y={y + 10}
-            textAnchor="middle"
-            fill={
-              payload.value.toUpperCase().includes("(MD)")
-                ? "#FF0000"
-                : "#000000"
-            }
-            fontSize={12}
-            fontWeight={400}
-          >
-            {payload.value}
-          </text>
-        )}
-      />
-      <YAxis
-        tickLine={false}
-        axisLine={false}
-        tick={{
-          fontSize: 14,
-          fill: "#B9B9C3",
-          fontWeight: 500,
-        }}
-        allowDataOverflow={true}
-
-        // domain={[0, 300]}
-        // ticks={[0, 60, 120, 180, 240, 300]} // 간격 강제 설정
-      />
-      <Tooltip
-        cursor={false}
-        content={({ active, payload }) => (
-          <ChartTooltip
-            active={active}
-            payload={payload}
-            payloadSuffix={"분"}
+    <div className={"w-full h-[300px]"}>
+      <ResponsiveContainer>
+        <BarChart
+          data={data}
+          barCategoryGap={20}
+          margin={{ left: 0, right: 0 }}
+          className={"translate-x-[-40px]"}
+        >
+          <CartesianGrid vertical={false} stroke="#EBE9F1" />
+          <XAxis
+            dataKey="name"
+            tickLine={false}
+            stroke={"#CBCCCD"}
+            strokeWidth={1}
+            tick={({ x, y, payload }) => (
+              <text
+                x={x}
+                y={y + 10}
+                textAnchor="middle"
+                fill={
+                  payload.value.toUpperCase().includes("(MD)")
+                    ? "#FF0000"
+                    : "#000000"
+                }
+                fontSize={12}
+                fontWeight={400}
+              >
+                {payload.value}
+              </text>
+            )}
           />
-        )}
-      />
-      <Bar dataKey="sport" fill="#C6E19B" radius={[5, 5, 0, 0]} />
-      <Bar dataKey="physical" fill="#FFE177" radius={[5, 5, 0, 0]} />
-    </BarChart>
+          <YAxis
+            tickLine={false}
+            axisLine={false}
+            tick={{
+              fontSize: 14,
+              fill: "#B9B9C3",
+              fontWeight: 500,
+            }}
+            allowDataOverflow={true}
+            domain={[0, 360]}
+            ticks={[0, 60, 120, 180, 240, 300, 360]}
+          />
+          <Tooltip
+            cursor={false}
+            content={({ active, payload }) => (
+              <ChartTooltip
+                active={active}
+                payload={payload}
+                payloadSuffix={"분"}
+              />
+            )}
+          />
+          <Bar dataKey="sport" fill="#C6E19B" radius={[5, 5, 0, 0]} />
+          <Bar dataKey="physical" fill="#FFE177" radius={[5, 5, 0, 0]} />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   );
 };
 

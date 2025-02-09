@@ -1,19 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { cls } from "@/utils";
-import { useRecoilValue } from "recoil";
-import { playerDetailSelector } from "@/recoil/player/playerState";
-import {
-  HooperIndexGraphType,
-  IntensityGraphType,
-  WorkoutTimeGraphType,
-  HooperGraphType,
-} from "@/types/player";
 import WorkoutTimeGraph from "@/components/player/detail/WorkoutTimeGraph";
 import IntensityGraph from "@/components/player/detail/IntensityGraph";
 import HooperIndexGraph from "@/components/player/detail/HooperIndexGraph";
 
 const WeeklyAvgInfo = () => {
-  const playerDetail = useRecoilValue(playerDetailSelector);
   const [reportType, setReportType] = useState<"days" | "month">("days");
   const [graphType, setGraphType] = useState<"hooper" | "intensity" | "time">(
     "hooper",
@@ -89,7 +80,7 @@ const WeeklyAvgInfo = () => {
         </div>
         {graphType === "hooper" && (
           <div className="flex flex-col text-[12px]">
-            <div className="flex space-x-8 mb-5">
+            <div className="flex space-x-8">
               <div
                 onClick={() => setHooperType("sleep")}
                 className={cls(
