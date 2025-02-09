@@ -264,6 +264,8 @@ const CreateSchedule: NextPage = () => {
         name,
         userSimpleInfo,
         importantYn,
+        categoryName,
+        categoryColorCode,
       } = res.data;
 
       // const playerArr: Array<string> = [];
@@ -284,6 +286,12 @@ const CreateSchedule: NextPage = () => {
       setInitPlayerIds(playerIdArr);
 
       setCheckedPlayerIds(checkById(checkedPlayerIds, playerIdArr));
+      setCategory({
+        id: -1,
+        name: categoryName,
+        colorCode: "",
+        colorCodeValue: categoryColorCode,
+      });
     });
   };
 
@@ -314,6 +322,7 @@ const CreateSchedule: NextPage = () => {
         <div className="flex items-center space-x-[30px]">
           <h1 className="text-[28px] font-[700]">일정관리</h1>
           <DropDown
+            text={searchGrader}
             dropDownList={searchCategoryList}
             changeText={onSearchGraderChange}
           />

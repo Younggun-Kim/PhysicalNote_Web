@@ -25,6 +25,16 @@ const CategoryForm = () => {
     getCategoryList();
   }, []);
 
+  // 상세 데이터 선택 처리를 위함
+  useEffect(() => {
+    if (category.id === -1 && category.name.length > 0) {
+      const selectedCategory = categoryList.find(
+        (c) => c.name === category.name,
+      );
+      selectedCategory && setCategory(selectedCategory);
+    }
+  }, [category]);
+
   return (
     <>
       <div className="flex items-center space-x-4 mt-2 mb-6">
