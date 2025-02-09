@@ -68,7 +68,7 @@ const XlsxDownload = ({
   const handleClick = () => {
     const excelFileExtension = ".xlsx";
     const excelFileName = isWeekly ? "주간" : "일간";
-    const fullFileName = `${getFullSimpleDateToString(recordDate)}_${excelFileName}_레포트${excelFileExtension}`;
+    const fullFileName = `${getFullSimpleDateToString(recordDate)}_${excelFileName}_리포트${excelFileExtension}`;
     const xlsxFile = makeXlsxFile();
 
     FileSaver.saveAs(xlsxFile, fullFileName);
