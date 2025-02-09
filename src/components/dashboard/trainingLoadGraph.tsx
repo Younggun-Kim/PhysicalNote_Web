@@ -6,7 +6,6 @@ import {
   trainingLoadGraphSelector,
 } from "@/recoil/dashboard/dashboardState";
 import { getSeriesDataMaxvalue, SeriesDataType } from "@/types/chart";
-import { cls } from "@/utils";
 import { yAxisIds } from "@/constants/mock/dashboard";
 import EnabledTextBtn from "@/components/dashboard/enabledTextBtn";
 
@@ -38,11 +37,11 @@ const TrainingLoadGraph = () => {
       const xAxisList: Array<string> = [];
 
       trainingLoadGraphInfo.map((info) => {
-        const { monthOfString, weeklyGraphInfo } = info;
+        const { weeklyGraphInfo } = info;
         weeklyGraphInfo?.map((item) => {
           tempLoadValue.push(item.value);
           tempTotalCount.push(item.hooperIndex);
-          xAxisList.push(`${monthOfString} ${item.xvalue}`);
+          xAxisList.push(`${item.xvalue}`);
         });
       });
 
@@ -70,11 +69,11 @@ const TrainingLoadGraph = () => {
       const xAxisList: Array<string> = [];
 
       trainingDurationGraphInfo.map((info) => {
-        const { monthOfString, weeklyGraphInfo } = info;
+        const { weeklyGraphInfo } = info;
         weeklyGraphInfo?.map((item) => {
           tempLoadValue.push(item.value);
           tempTotalCount.push(item.intensityLevel);
-          xAxisList.push(`${monthOfString} ${item.xvalue}`);
+          xAxisList.push(`${item.xvalue}`);
         });
       });
 
