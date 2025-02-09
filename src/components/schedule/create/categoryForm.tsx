@@ -35,7 +35,7 @@ const CategoryForm = () => {
                 key={`category${idx}`}
                 className="flex justify-center items-center min-w-[60px] h-[30px] px-3 py-1 font-[700] rounded-[10px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] cursor-pointer"
                 style={{
-                  backgroundColor: `${category.id === el.id ? "#EDFBD5" : "#fff"}`,
+                  backgroundColor: `${category.id === el.id ? category.colorCodeValue : "#fff"}`,
                 }}
                 onClick={() => selectCategory(el)}
               >
