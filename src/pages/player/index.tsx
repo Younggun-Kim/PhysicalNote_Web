@@ -51,9 +51,11 @@ const ManagePlayer: NextPage = () => {
 
   // pagination
   const itemPerPage = 10;
-  const totalItems = totalLen;
-  const { currentPage, totalPages, currentItems, handlePageChange } =
-    usePagination((page) => setPage(page), itemPerPage, totalItems);
+  const { currentPage, totalPages, handlePageChange } = usePagination(
+    (page) => setPage(page),
+    itemPerPage,
+    totalLen,
+  );
 
   const next = () => {
     if (currentPage + 1 < totalPages) {
@@ -67,7 +69,8 @@ const ManagePlayer: NextPage = () => {
     }
   };
 
-  const handleDetailClick = (id: number) => {
+  const handleRow = (id: number) => (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
     router.push(`/player/${id}`);
   };
 
@@ -104,7 +107,7 @@ const ManagePlayer: NextPage = () => {
   // 중요 선수 등록/삭제 (즐겨찾기)
   const handleImportantCheck = async (
     id: number,
-    e: React.MouseEvent<HTMLDivElement>
+    e: React.MouseEvent<HTMLDivElement>,
   ) => {
     e.preventDefault();
     setData((prevData) =>
@@ -114,7 +117,7 @@ const ManagePlayer: NextPage = () => {
         }
 
         return item;
-      })
+      }),
     );
 
     await PrivateApi.v1UpdateImportantPlayer(id).then((res) => {
@@ -202,7 +205,7 @@ const ManagePlayer: NextPage = () => {
         setCheckbox(initCheckbox);
         setData(tempData);
         setTotalLen(totalElements);
-      }
+      },
     );
   };
 
@@ -269,13 +272,13 @@ const ManagePlayer: NextPage = () => {
             <Table
               columns={columnData}
               data={data || []}
-              onClickDetail={handleDetailClick}
+              onClickRow={handleRow}
               onClickDelete={handleDeleteClick}
               onClickAllDelete={handleAllDeleteClick}
               onSelect={handleImportantCheck}
               isSelectedCheckbox={true}
               isCheckboxUse={true}
-              isDetail={true}
+              isDetail={false}
               isDelete={true}
               checkPlayer={setCheckPlayer}
             />
