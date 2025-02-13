@@ -65,13 +65,13 @@
 .ant-picker-ok button {
   background: #fff;
   color: #8dbe3d;
-  box-shadow: 0 2px 10px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.25);
 }
 
 .ant-picker-ok button:hover {
   background: #c6e19b !important;
   color: #fff;
-  box-shadow: 0 2px 10px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.25);
 }
 
 .ant-picker-now a:hover {
@@ -141,7 +141,7 @@
 }
 
 .slide > div:nth-child(1) > div:nth-child(4) {
-  margin-top: 0px;
+  margin-top: 0;
 }
 
 .slider::-webkit-slider-thumb {
@@ -170,5 +170,17 @@
 @layer components {
   .body-heavy {
     @apply font-inter text-body-heavy text-left;
+  }
+}
+
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }

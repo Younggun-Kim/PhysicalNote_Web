@@ -4,6 +4,7 @@ const withTM = require("next-transpile-modules");
 const nextConfig = {
   output: "export",
   reactStrictMode: true,
+  trailingSlash: true,
   transpilePackages: ["@mui/x-charts"],
   webpack: (config) => {
     config.module.rules.push({
@@ -18,16 +19,15 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: "/",
-  //       destination: "/dashboard",
-  //       permanent: true,
-  //     },
-  //   ];
-  // },
-  trailingSlash: true,
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/dashboard",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     loader: "akamai",
     path: "/",

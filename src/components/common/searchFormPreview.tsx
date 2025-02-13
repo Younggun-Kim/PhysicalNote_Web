@@ -32,7 +32,7 @@ const SearchFormPreview = ({
   return (
     <div
       ref={ulRef}
-      className="w-full max-h-[11rem] bg-[#fff] overflow-y-auto z-10 rounded-[5px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] focus:ring-0 mt-1 p-2 "
+      className="w-full min-h-10 max-h-[11rem] bg-[#fff] overflow-y-auto z-10 rounded-[5px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] focus:ring-0 mt-1 p-2 "
     >
       <ul className="bg-transparent flex flex-col w-full">
         {searchList &&

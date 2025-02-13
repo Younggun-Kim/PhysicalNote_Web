@@ -1,3 +1,12 @@
+export type SearchCategoryKey = "ALL" | "FIRST" | "SECOND" | "INJURED";
+
+export const searchCategoryMap: Record<SearchCategoryKey, string> = {
+  ALL: "전체",
+  FIRST: "1군",
+  SECOND: "2군",
+  INJURED: "부상자",
+};
+
 export const searchCategoryList = [
   { key: "ALL", value: "전체" },
   { key: "FIRST", value: "1군" },
