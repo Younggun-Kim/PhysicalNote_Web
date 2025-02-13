@@ -53,7 +53,7 @@ const HooperIndexGraph = ({ isDays, hooperType }: Props) => {
       : monthHooperIndexGraph;
 
     setData(getHooperTypeData(hooperType, tempData));
-  }, [isDays, hooperType]);
+  }, [isDays, hooperType, weekHooperIndexGraph, monthHooperIndexGraph]);
 
   if (data.length === 0) {
     return (
