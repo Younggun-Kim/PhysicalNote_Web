@@ -16,10 +16,6 @@ const DailyScheduleItem = ({
   images,
 }: DailyScheduleProps) => {
   const router = useRouter();
-  const tempImages = [
-    "/images/schedule_image1.svg",
-    "/images/schedule_image2.svg",
-  ];
 
   const imageLoader = ({ src, width, quality }: any) => {
     return `${src}?w=${width}&q=${quality || 75}`;
@@ -68,7 +64,7 @@ const DailyScheduleItem = ({
         <div className="flex space-x-1">
           <span className="min-w-[43px]">시간 - </span>
           <div className="w-full overflow-hidden overflow-ellipsis">
-            <div className="w-full line-clamp-1">09:30 ~ 11:00</div>
+            <div className="w-full line-clamp-1">{workoutTime}</div>
           </div>
         </div>
         <div className="flex space-x-1">
