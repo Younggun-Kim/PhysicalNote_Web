@@ -27,9 +27,11 @@ const DailySchedule = () => {
 
   // pagination
   const itemPerPage = 2;
-  const totalItems = totalLength;
-  const { currentPage, totalPages, currentItems, handlePageChange } =
-    usePagination((page) => setPage(page), itemPerPage, totalItems);
+  const { currentPage, totalPages, handlePageChange } = usePagination(
+    (page) => setPage(page),
+    itemPerPage,
+    totalLength,
+  );
 
   const next = () => {
     if (currentPage + 1 < totalPages) {
@@ -57,7 +59,7 @@ const DailySchedule = () => {
       getGrader(),
       getFullDateToString(dailyDate),
       currentPage,
-      itemPerPage
+      itemPerPage,
     ).then((res) => {
       const { content, totalElements } = res.data;
       setEvents([...content]);
@@ -72,7 +74,7 @@ const DailySchedule = () => {
         if (status === 200) {
           showToast("일정 알림을 보냈습니다.");
         }
-      }
+      },
     );
   };
 
@@ -148,7 +150,7 @@ const DailySchedule = () => {
               next={next}
               prev={prev}
             />
-            <Link href="/schedule/create">
+            <Link href="/schedule/create/0">
               <Button
                 text="기록하기"
                 type="button"
@@ -159,7 +161,7 @@ const DailySchedule = () => {
         ) : (
           <div className="h-full flex flex-col justify-center items-center space-y-4">
             <p className="text-[15px]">오늘 일정이 없습니다.</p>
-            <Link href="/schedule/create">
+            <Link href="/schedule/create/0">
               <Button
                 text="기록하기"
                 type="button"

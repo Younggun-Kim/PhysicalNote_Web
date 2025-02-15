@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import { showToast } from "@/utils";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  imageFilesSelector,
-  imageUrlsSelector,
-} from "@/recoil/schedule/scheduleState";
+import { imageDataSelector } from "@/recoil/schedule/scheduleState";
+import { useRecoilState } from "recoil";
 
 const ImageForm = () => {
-  const [files, setFiles] = useState<File[]>([]);
-  const [previewURLs, setPreviewURLs] = useState<string[]>([]);
-  const setImageFiles = useSetRecoilState(imageFilesSelector);
-  const imageUrls = useRecoilValue(imageUrlsSelector);
+  const [images, setImages] = useRecoilState(imageDataSelector);
 
   const imageLoader = ({ src, width, quality }: any) => {
     return `${src}?w=${width}&q=${quality || 75}`;
@@ -20,7 +14,7 @@ const ImageForm = () => {
   const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
-    if (previewURLs.length === 3) {
+    if (images.length === 3) {
       showToast("이미지 첨부는 3장까지 가능합니다.");
       return;
     }
@@ -32,8 +26,13 @@ const ImageForm = () => {
       if (!imageFileValid(uploadFile)) return;
 
       reader.onload = (e) => {
-        setFiles([...files, uploadFile]);
-        setPreviewURLs([...previewURLs, reader.result as string]);
+        setImages([
+          ...images,
+          {
+            url: reader.result as string,
+            file: uploadFile,
+          },
+        ]);
       };
 
       if (uploadFile) {
@@ -43,7 +42,6 @@ const ImageForm = () => {
   };
 
   const imageFileValid = (file: File): boolean => {
-    // image extension check
     const lastIndex = file?.name.lastIndexOf(".");
     if (lastIndex < 0) return false;
 
@@ -69,19 +67,9 @@ const ImageForm = () => {
     return true;
   };
 
-  const deleteImage = (target: string, idx: number) => {
-    const tempImageURLs = previewURLs.filter((url) => url !== target);
-    setFiles(files.filter((file, index) => index !== idx));
-    setPreviewURLs(tempImageURLs);
+  const deleteImage = (idx: number) => {
+    setImages(images.filter((_, index) => index != idx));
   };
-
-  useEffect(() => {
-    setImageFiles(files);
-  }, [files]);
-
-  useEffect(() => {
-    setPreviewURLs(imageUrls);
-  }, [imageUrls]);
 
   return (
     <div>
@@ -97,14 +85,14 @@ const ImageForm = () => {
         </div>
       </div>
       <div className="flex space-x-4 mb-4">
-        {previewURLs.length !== 0 &&
-          previewURLs.map((previewURL, idx) => (
+        {images.length !== 0 &&
+          images.map((item, idx) => (
             <div key={`image${idx}`}>
-              {previewURL && (
+              {item.url && (
                 <div className="relative">
                   <Image
                     loader={imageLoader}
-                    src={previewURL as string}
+                    src={item.url}
                     alt="previewImage"
                     width={0}
                     height={0}
@@ -126,7 +114,7 @@ const ImageForm = () => {
                       right: "-7px",
                       cursor: "pointer",
                     }}
-                    onClick={() => deleteImage(previewURL, idx)}
+                    onClick={() => deleteImage(idx)}
                   />
                 </div>
               )}

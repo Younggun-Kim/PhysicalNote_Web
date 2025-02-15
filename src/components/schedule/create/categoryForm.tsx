@@ -33,7 +33,7 @@ const CategoryForm = () => {
       );
       selectedCategory && setCategory(selectedCategory);
     }
-  }, [category]);
+  }, [category, categoryList]);
 
   return (
     <>

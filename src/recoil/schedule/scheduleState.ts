@@ -131,6 +131,36 @@ const imageUrlsSelector = selector<string[]>({
   },
 });
 
+export interface ImageDataType {
+  url: string;
+  file?: File;
+}
+
+export const urlsToImageDataTypes = (urls: string[]): ImageDataType[] => {
+  return urls.map((url) => ({ url }));
+};
+
+export const getImageUrlsFromImageDataType = (
+  items: ImageDataType[],
+): string[] => {
+  return items.filter((item) => item.file == undefined).map((item) => item.url);
+};
+
+const imageDatasState = atom<ImageDataType[]>({
+  key: "imageDatasState",
+  default: [],
+});
+
+const imageDataSelector = selector<ImageDataType[]>({
+  key: "imageDataSelector",
+  get: ({ get }) => {
+    return get(imageDatasState);
+  },
+  set: ({ set }, newValue) => {
+    set(imageDatasState, newValue);
+  },
+});
+
 const initSchedulePlayersState = {
   items: [],
   currentPage: 0,
@@ -170,6 +200,8 @@ export {
   imageFilesSelector,
   imageUrlsState,
   imageUrlsSelector,
+  imageDatasState,
+  imageDataSelector,
   initSchedulePlayersState,
   schedulePlayersState,
   schedulePlayersSelector,

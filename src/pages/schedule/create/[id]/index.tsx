@@ -9,15 +9,10 @@ import {
   searchCategoryList,
   searchCategoryMap,
 } from "@/constants/mock/searchCategoryList";
-import DropDown from "@/components/common/dropdown";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import {
-  addressKeywordSelector,
-  searchPlayerGraderState,
-} from "@/recoil/search/searchState";
+import { useRecoilState } from "recoil";
+import { addressKeywordSelector } from "@/recoil/search/searchState";
 import {
   AddressResponseType,
-  CheckboxType,
   PlayerSimpleResponseType,
   UserSimpleInfoType,
 } from "@/types/schedule";
@@ -30,80 +25,71 @@ import PlayerForm from "@/components/schedule/create/playerForm";
 import ImageForm from "@/components/schedule/create/imageForm";
 import {
   categorySelector,
-  imageFilesSelector,
-  imageUrlsSelector,
-  playerCheckSelector,
+  getImageUrlsFromImageDataType,
+  imageDataSelector,
   schedulePlayersSelector,
-  selectCategorySelector,
+  urlsToImageDataTypes,
 } from "@/recoil/schedule/scheduleState";
 import { getFullDateToString } from "@/utils/dateFormat";
 import { showToast } from "@/utils";
 import useDebounce from "@/utils/hooks/useDebounce";
 import { getTimeFormat } from "@/utils/strFormat";
+import DropDown2, { DropDownItemType } from "@/components/common/DropDown2";
 
 interface State {
+  grade: SearchCategoryKey;
   name: string;
   recordDate: Date;
   startTime: string;
   endTime: string;
   content: string;
+  isImportant: boolean;
 }
 
 const CreateSchedule: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [searchGrader, setSearchGrader] = useRecoilState(
-    searchPlayerGraderState,
-  );
   const [searchKeyword, setSearchKeyword] = useRecoilState(
     addressKeywordSelector,
   );
   const [category, setCategory] = useRecoilState(categorySelector);
-  const [selectCategory, setSelectCategory] = useRecoilState(
-    selectCategorySelector,
-  );
   const [schedulePlayers, setSchedulePlayers] = useRecoilState(
     schedulePlayersSelector,
   );
-  const [checkedPlayerIds, setCheckedPlayerIds] =
-    useRecoilState(playerCheckSelector);
-  const [imageFiles, setImageFiles] = useRecoilState(imageFilesSelector);
-  const setImageUrls = useSetRecoilState(imageUrlsSelector);
 
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [imageDatas, setImageDatas] = useRecoilState(imageDataSelector);
   const [formState, setFormState] = useState<State>({
+    grade: "ALL",
     name: "",
     recordDate: new Date(),
     startTime: "09:00",
     endTime: "09:00",
     content: "",
+    isImportant: false,
   });
-
   const [previewList, setPreviewList] = useState<Array<AddressResponseType>>(
     [],
   );
-  const [playerList, setPlayerList] = useState<Array<string>>([]);
-  const [playerIdList, setPlayerIdList] = useState<Array<number>>([]);
-  const [importantPlayer, setImportantPlayer] = useState<boolean>(false);
-  const [checkbox, setCheckbox] = useState<CheckboxType[]>([]);
 
   const debouncedQuery = useDebounce(searchKeyword, 250);
 
-  const onSearchGraderChange = (grader: string) => {
-    setSearchGrader(grader);
+  const init = () => {
+    setImageDatas([]);
+    setSearchKeyword("");
+    setCategory({ id: -1, name: "", colorCode: "", colorCodeValue: "'" });
   };
 
-  const init = () => {
-    console.log("init");
-    setSearchGrader("ALL");
-    setPlayerList([]);
-    setPlayerIdList([]);
-    setSelectCategory(-1);
-    setImageFiles([]);
-    setSearchKeyword("");
-    setImportantPlayer(false);
-    setCategory({ id: -1, name: "", colorCode: "", colorCodeValue: "'" });
-    //
-    // setSchedulePlayers({ ...initSchedulePlayersState });
+  const handleChangeGrade = (item: DropDownItemType) => {
+    setFormState({
+      ...formState,
+      grade: item.key as SearchCategoryKey,
+    });
+
+    setSchedulePlayers({
+      ...schedulePlayers,
+      checkedIds: [],
+    });
   };
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,6 +122,21 @@ const CreateSchedule: NextPage = () => {
     }));
   };
 
+  const handleClickImportant = () => {
+    setFormState((state) => ({
+      ...state,
+      isImportant: !state.isImportant,
+    }));
+  };
+
+  const handleSubmit = async () => {
+    if (id && id != "0") {
+      await editSchedule();
+    } else {
+      await addSchedule();
+    }
+  };
+
   const getSearchAddress = async () => {
     await Api.v1SearchAddress(debouncedQuery).then((res) => {
       const { items } = res.data;
@@ -158,10 +159,10 @@ const CreateSchedule: NextPage = () => {
       return false;
     }
 
-    if (playerIds.length === 0) {
-      showToast("선수를 선택해주세요.");
-      return false;
-    }
+    // if (playerIds.length === 0) {
+    //   showToast("선수를 선택해주세요.");
+    //   return false;
+    // }
 
     return true;
   };
@@ -169,11 +170,12 @@ const CreateSchedule: NextPage = () => {
   const createFormData = () => {
     const formData = new FormData();
 
-    if (imageFiles) {
-      imageFiles.forEach((image) => {
-        formData.append("file", image);
+    imageDatas
+      .map(({ file }) => file)
+      .filter((file) => file != undefined)
+      .forEach((file) => {
+        formData.append("file", file);
       });
-    }
 
     return formData;
   };
@@ -187,7 +189,7 @@ const CreateSchedule: NextPage = () => {
     const formData = createFormData();
 
     if (isFormDataEmpty(formData)) {
-      return null;
+      return [];
     }
 
     try {
@@ -201,27 +203,71 @@ const CreateSchedule: NextPage = () => {
       showToast("이미지 업로드 문제가 발생했습니다.");
     }
 
-    return null;
+    return [];
   };
 
-  const editSchedule = async () => {
+  const addSchedule = async () => {
     const newTitle = formState.name.trim();
-    if (!isValidationSchedule(newTitle, selectCategory, playerIdList)) return;
+    const playerIds = schedulePlayers.checkedIds;
+    if (!isValidationSchedule(newTitle, category.id, playerIds)) return;
 
-    const urls = await uploadImages();
+    const fileUrls = await uploadImages();
+    const urls: string[] = [
+      ...getImageUrlsFromImageDataType(imageDatas),
+      ...fileUrls,
+    ].filter((url) => url.trim() != "");
 
     const params = {
       name: formState.name,
       address: searchKeyword,
-      calendarCategoryId: selectCategory,
+      calendarCategoryId: category.id,
       content: formState.content,
       recordDate: getFullDateToString(formState.recordDate),
       startTime: `${formState.startTime}:00`,
       endTime: `${formState.endTime}:00`,
-      images: urls ? urls : [],
-      importantYn: importantPlayer,
-      playerGrade: searchGrader,
-      userIds: playerIdList,
+      images: urls,
+      importantYn: formState.isImportant,
+      playerGrade: formState.grade,
+      userIds: playerIds,
+    };
+
+    try {
+      await Api.v1AddSchedule(params).then((res) => {
+        const { status } = res;
+        if (status == 200) {
+          init();
+          router.push("/schedule");
+          showToast("일정이 정상 수정되었습니다.");
+        }
+      });
+    } catch {
+      showToast("일정 입력값을 확인해주세요.");
+    }
+  };
+
+  const editSchedule = async () => {
+    const newTitle = formState.name.trim();
+    const playerIds = schedulePlayers.checkedIds;
+    if (!isValidationSchedule(newTitle, category.id, playerIds)) return;
+
+    const fileUrls = await uploadImages();
+    const urls: string[] = [
+      ...getImageUrlsFromImageDataType(imageDatas),
+      ...fileUrls,
+    ].filter((url) => url.trim() != "");
+
+    const params = {
+      name: formState.name,
+      address: searchKeyword,
+      calendarCategoryId: category.id,
+      content: formState.content,
+      recordDate: getFullDateToString(formState.recordDate),
+      startTime: `${formState.startTime}:00`,
+      endTime: `${formState.endTime}:00`,
+      images: urls,
+      importantYn: formState.isImportant,
+      playerGrade: formState.grade,
+      userIds: playerIds,
     };
 
     try {
@@ -252,29 +298,15 @@ const CreateSchedule: NextPage = () => {
     }
   };
 
-  /**
-   * Player Id로 체크박스 설정
-   */
-  const checkById = (
-    checkboxes: CheckboxType[],
-    checkedIds: number[],
-  ): CheckboxType[] => {
-    const idSet = new Set(checkedIds);
-    return checkboxes.map((item) => ({
-      ...item,
-      check: idSet.has(item.id) ? true : item.check,
-    }));
-  };
-
   const getInitSchedule = async () => {
-    if (!id) {
-      router.replace("/schedule");
+    if (!id || id == "0") {
+      setIsLoaded(true);
       return;
     }
 
     const checkedIds: number[] = [];
 
-    await Api.v1GetScheduleDetail(Number(id)).then((res) => {
+    await Api.v1GetScheduleDetail(Number(id)).then(async (res) => {
       const {
         address,
         content,
@@ -287,6 +319,7 @@ const CreateSchedule: NextPage = () => {
         importantYn,
         categoryName,
         categoryColorCode,
+        playerGrade,
       } = res.data;
 
       userSimpleInfo.map((item: UserSimpleInfoType) => {
@@ -296,21 +329,17 @@ const CreateSchedule: NextPage = () => {
       const recordDateTimeStamp = Date.parse(recordDate);
 
       setFormState({
+        grade: playerGrade,
         name: name,
         recordDate: new Date(recordDateTimeStamp),
         startTime: getTimeFormat(startTime),
         endTime: getTimeFormat(endTime),
         content: content,
+        isImportant: importantYn,
       });
 
-      setSelectCategory(-1);
       setSearchKeyword(address);
-      setImportantPlayer(importantYn);
-
-      setImageUrls(images);
-
-      // TODO: 필요한 코드인지 검사
-      setCheckedPlayerIds(checkById(checkedPlayerIds, checkedIds));
+      setImageDatas(urlsToImageDataTypes(images));
 
       setCategory({
         id: -1,
@@ -319,14 +348,52 @@ const CreateSchedule: NextPage = () => {
         colorCodeValue: categoryColorCode,
       });
 
-      // setSchedulePlayers({
-      //   ...schedulePlayers,
-      //   checkedIds: playerIdArr,
-      // });
+      await getPlayers(true, getGrader(playerGrade), checkedIds);
     });
 
-    await getPlayers(true, checkedIds);
+    setIsLoaded(true);
   };
+
+  const getGrader = (grade: string) => {
+    return grade !== "ALL" ? grade : "";
+  };
+
+  const getPlayers = async (
+    isInit: boolean,
+    grade: string,
+    checkedIds: number[],
+  ) => {
+    const { currentPage, pageLength } = schedulePlayers;
+    const page = isInit ? 0 : currentPage;
+
+    await Api.v1GetPlayerList(grade, page, pageLength).then((response) => {
+      const { content, totalElements } = response.data;
+
+      const tempContent = content.map((item: PlayerSimpleResponseType) => {
+        const { playerGrade, positions } = item;
+
+        return {
+          position: positions.join("/"),
+          belongto: searchCategoryMap[playerGrade as SearchCategoryKey],
+          ...item,
+        };
+      });
+
+      setSchedulePlayers({
+        ...schedulePlayers,
+        items: tempContent,
+        currentPage: currentPage,
+        totalLength: totalElements,
+        checkedIds: checkedIds,
+      });
+    });
+  };
+
+  // 선수 목록 페이지네이션
+  useEffect(() => {
+    if (!isLoaded) return;
+    getPlayers(false, getGrader(formState.grade), schedulePlayers.checkedIds);
+  }, [schedulePlayers.currentPage, formState.grade]);
 
   useEffect(() => {
     init();
@@ -334,50 +401,8 @@ const CreateSchedule: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    setSelectCategory(category.id);
-  }, [category]);
-
-  useEffect(() => {
     if (debouncedQuery) getSearchAddress();
   }, [debouncedQuery]);
-
-  const getGrader = () => {
-    return searchGrader !== "ALL" ? searchGrader : "";
-  };
-
-  const getPlayers = async (isInit: boolean, checkedIds: number[]) => {
-    const { currentPage, pageLength } = schedulePlayers;
-    const page = isInit ? 0 : currentPage;
-
-    await Api.v1GetPlayerList(getGrader(), page, pageLength).then(
-      (response) => {
-        const { content, totalElements } = response.data;
-
-        const tempContent = content.map((item: PlayerSimpleResponseType) => {
-          const { playerGrade, positions } = item;
-
-          return {
-            position: positions.join("/"),
-            belongto: searchCategoryMap[playerGrade as SearchCategoryKey],
-            ...item,
-          };
-        });
-
-        setSchedulePlayers({
-          ...schedulePlayers,
-          items: tempContent,
-          currentPage: currentPage,
-          totalLength: 30,
-          checkedIds: checkedIds,
-        });
-      },
-    );
-  };
-
-  // 선수 목록 페이지네이션
-  useEffect(() => {
-    getPlayers(false, schedulePlayers.checkedIds);
-  }, [schedulePlayers.currentPage]);
 
   const getCheckedPlayerNames = (): string => {
     const { checkedIds } = schedulePlayers;
@@ -391,23 +416,23 @@ const CreateSchedule: NextPage = () => {
       <Layout>
         <div className="flex items-center space-x-[30px]">
           <h1 className="text-[28px] font-[700]">일정관리</h1>
-          <DropDown
-            text={searchGrader}
-            dropDownList={searchCategoryList}
-            changeText={onSearchGraderChange}
+          <DropDown2
+            items={searchCategoryList}
+            isSmall={false}
+            selectedItem={searchCategoryList.find(
+              (item) => item.key === formState.grade,
+            )}
+            onChanged={handleChangeGrade}
           />
         </div>
         <div className="flex mt-10 space-x-10">
           <div className="flex flex-col space-y-6 w-[624px]">
             <div className="flex items-center space-x-3">
               <h2 className="text-[20px] font-[700]">일정 기록하기</h2>
-              <div
-                className="cursor-pointer"
-                onClick={() => setImportantPlayer(!importantPlayer)}
-              >
+              <div className="cursor-pointer" onClick={handleClickImportant}>
                 <Image
                   src={
-                    importantPlayer
+                    formState.isImportant
                       ? "/images/star_checked.svg"
                       : "/images/star_unchecked.svg"
                   }
@@ -495,7 +520,7 @@ const CreateSchedule: NextPage = () => {
                   type="submit"
                   text="등록"
                   classnames="text-[#8DBE3D] text-[12px] font-[700]"
-                  onClick={editSchedule}
+                  onClick={handleSubmit}
                 />
               </div>
             </div>
