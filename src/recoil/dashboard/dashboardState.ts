@@ -106,19 +106,8 @@ const todayTrainingPlanSelector = selector<TodayTrainingPlanInfoType[]>({
 const weeklyWorkloadState = atom<WeeklyWorkLoadInfoType>({
   key: "weeklyWorkloadState",
   default: {
-    stringOfWeekly: "2024년 2월 7주차",
-    workloadInfoList: [
-      {
-        value: 480,
-        xvalue: "화(02월 13일)",
-        hooperIndex: 4,
-      },
-      {
-        value: 1080,
-        xvalue: "수(02월 14일)",
-        hooperIndex: 6,
-      },
-    ],
+    stringOfWeekly: "",
+    workloadInfoList: [],
   },
 });
 

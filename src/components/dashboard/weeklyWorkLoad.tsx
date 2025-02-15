@@ -65,7 +65,7 @@ const WeeklyWorkLoad = () => {
 
     setChartData(tempData);
     setYAxisInterval(tempYAxisInterval);
-  }, [chartType]);
+  }, [weeklyRpe, chartType]);
 
   return (
     <div className="flex flex-col">
