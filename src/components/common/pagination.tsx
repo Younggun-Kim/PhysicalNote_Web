@@ -7,6 +7,7 @@ interface PaginationProps {
   totalPage: number;
   onPageChange: (page: number) => void;
   setPage?: React.Dispatch<React.SetStateAction<number>>;
+  setNewPage?: (page: number) => void;
   next: () => void;
   prev: () => void;
 }
@@ -16,6 +17,7 @@ const Pagination: React.FC<PaginationProps> = ({
   totalPage,
   onPageChange,
   setPage,
+  setNewPage,
   next,
   prev,
 }) => {
@@ -23,6 +25,11 @@ const Pagination: React.FC<PaginationProps> = ({
     if (setPage) {
       setPage(page);
     }
+
+    if (setNewPage) {
+      setNewPage(page);
+    }
+
     onPageChange(page);
   };
 
@@ -38,11 +45,11 @@ const Pagination: React.FC<PaginationProps> = ({
             onClick={() => handlePageChange(i)}
             className={cls(
               "cursor-pointer mx-2",
-              currentPage === i ? "font-bold" : "text-black"
+              currentPage === i ? "font-bold" : "text-black",
             )}
           >
             {i + 1}
-          </span>
+          </span>,
         );
       }
     } else {
@@ -58,11 +65,11 @@ const Pagination: React.FC<PaginationProps> = ({
             onClick={() => handlePageChange(0)}
             className={cls(
               "cursor-pointer mx-2",
-              currentPage === 0 ? "font-bold" : "text-black"
+              currentPage === 0 ? "font-bold" : "text-black",
             )}
           >
             1
-          </span>
+          </span>,
         );
       }
 
@@ -70,7 +77,7 @@ const Pagination: React.FC<PaginationProps> = ({
         pageNumbers.push(
           <span key="ellipsis-start" className="mx-2">
             ...
-          </span>
+          </span>,
         );
       }
 
@@ -81,11 +88,11 @@ const Pagination: React.FC<PaginationProps> = ({
             onClick={() => handlePageChange(i)}
             className={cls(
               "cursor-pointer mx-2",
-              currentPage === i ? "font-bold" : "text-black"
+              currentPage === i ? "font-bold" : "text-black",
             )}
           >
             {i + 1}
-          </span>
+          </span>,
         );
       }
 
@@ -93,7 +100,7 @@ const Pagination: React.FC<PaginationProps> = ({
         pageNumbers.push(
           <span key="ellipsis" className="mx-2">
             ...
-          </span>
+          </span>,
         );
       }
 
@@ -106,7 +113,7 @@ const Pagination: React.FC<PaginationProps> = ({
             className={cls("cursor-pointer mx-2")}
           >
             {totalPage}
-          </span>
+          </span>,
         );
       }
     }

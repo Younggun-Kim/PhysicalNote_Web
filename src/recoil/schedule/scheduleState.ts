@@ -1,4 +1,9 @@
-import { CategoryListType, CategoryType, CheckboxType } from "@/types/schedule";
+import {
+  CategoryListType,
+  CategoryType,
+  CheckboxType,
+  PlayerSimpleListType,
+} from "@/types/schedule";
 import { atom, selector, RecoilEnv } from "recoil";
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
@@ -126,6 +131,30 @@ const imageUrlsSelector = selector<string[]>({
   },
 });
 
+const initSchedulePlayersState = {
+  items: [],
+  currentPage: 0,
+  totalLength: 0,
+  pageLength: 10,
+  checkedIds: [],
+};
+
+const schedulePlayersState = atom<PlayerSimpleListType>({
+  key: "schedulePlayersState",
+  default: initSchedulePlayersState,
+});
+
+/** 일정에 등록된 선수 목록 */
+const schedulePlayersSelector = selector<PlayerSimpleListType>({
+  key: "scheduelPlayersSelector",
+  get: ({ get }) => {
+    return get(schedulePlayersState);
+  },
+  set: ({ set }, newValue) => {
+    set(schedulePlayersState, newValue);
+  },
+});
+
 export {
   recordDateState,
   recordDateSelector,
@@ -141,4 +170,7 @@ export {
   imageFilesSelector,
   imageUrlsState,
   imageUrlsSelector,
+  initSchedulePlayersState,
+  schedulePlayersState,
+  schedulePlayersSelector,
 };

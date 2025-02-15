@@ -4,7 +4,11 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import Layout from "@/components/layout";
 import Button from "@/components/common/button";
-import { searchCategoryList } from "@/constants/mock/searchCategoryList";
+import {
+  SearchCategoryKey,
+  searchCategoryList,
+  searchCategoryMap,
+} from "@/constants/mock/searchCategoryList";
 import DropDown from "@/components/common/dropdown";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
@@ -14,6 +18,7 @@ import {
 import {
   AddressResponseType,
   CheckboxType,
+  PlayerSimpleResponseType,
   UserSimpleInfoType,
 } from "@/types/schedule";
 import DatePickerComponent from "@/components/common/datepicker";
@@ -28,12 +33,21 @@ import {
   imageFilesSelector,
   imageUrlsSelector,
   playerCheckSelector,
+  schedulePlayersSelector,
   selectCategorySelector,
 } from "@/recoil/schedule/scheduleState";
 import { getFullDateToString } from "@/utils/dateFormat";
 import { showToast } from "@/utils";
 import useDebounce from "@/utils/hooks/useDebounce";
 import { getTimeFormat } from "@/utils/strFormat";
+
+interface State {
+  name: string;
+  recordDate: Date;
+  startTime: string;
+  endTime: string;
+  content: string;
+}
 
 const CreateSchedule: NextPage = () => {
   const router = useRouter();
@@ -48,29 +62,29 @@ const CreateSchedule: NextPage = () => {
   const [selectCategory, setSelectCategory] = useRecoilState(
     selectCategorySelector,
   );
+  const [schedulePlayers, setSchedulePlayers] = useRecoilState(
+    schedulePlayersSelector,
+  );
   const [checkedPlayerIds, setCheckedPlayerIds] =
     useRecoilState(playerCheckSelector);
   const [imageFiles, setImageFiles] = useRecoilState(imageFilesSelector);
   const setImageUrls = useSetRecoilState(imageUrlsSelector);
 
-  const [initDate, setInitDate] = useState<Date>(new Date());
-  const [searchDate, setSearchDate] = useState<Date>(new Date());
-  const [initStartTime, setInitStartTime] = useState<string>("09:00");
-  const [initEndTime, setInitEndTime] = useState<string>("09:00");
-  const [startTime, setStartTime] = useState<string>("09:00");
-  const [endTime, setEndTime] = useState<string>("09:00");
-  const [title, setTitle] = useState<string>("");
-  const [titleTextCnt, setTitleTextCnt] = useState<number>(0);
+  const [formState, setFormState] = useState<State>({
+    name: "",
+    recordDate: new Date(),
+    startTime: "09:00",
+    endTime: "09:00",
+    content: "",
+  });
+
   const [previewList, setPreviewList] = useState<Array<AddressResponseType>>(
     [],
   );
   const [playerList, setPlayerList] = useState<Array<string>>([]);
   const [playerIdList, setPlayerIdList] = useState<Array<number>>([]);
   const [importantPlayer, setImportantPlayer] = useState<boolean>(false);
-  const [content, setContent] = useState<string>("");
-  const [players, setPlayers] = useState<string>("");
   const [checkbox, setCheckbox] = useState<CheckboxType[]>([]);
-  const [initPlayerIds, setInitPlayerIds] = useState<number[]>([]);
 
   const debouncedQuery = useDebounce(searchKeyword, 250);
 
@@ -78,11 +92,8 @@ const CreateSchedule: NextPage = () => {
     setSearchGrader(grader);
   };
 
-  const changeContent = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value);
-  };
-
   const init = () => {
+    console.log("init");
     setSearchGrader("ALL");
     setPlayerList([]);
     setPlayerIdList([]);
@@ -90,16 +101,39 @@ const CreateSchedule: NextPage = () => {
     setImageFiles([]);
     setSearchKeyword("");
     setImportantPlayer(false);
-    setPlayers("");
     setCategory({ id: -1, name: "", colorCode: "", colorCodeValue: "'" });
+    //
+    // setSchedulePlayers({ ...initSchedulePlayersState });
   };
 
-  const getTitleTextCnt = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    if (value.length <= 15) {
-      setTitle(value);
-      setTitleTextCnt(value.length);
-    }
+  const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.value.slice(0, 15);
+    setFormState((state) => ({
+      ...state,
+      name,
+    }));
+  };
+
+  const handleChangeStartTime = (startTime: string) => {
+    setFormState((state) => ({
+      ...state,
+      startTime,
+    }));
+  };
+
+  const handleChangeEndTime = (endTime: string) => {
+    setFormState((state) => ({
+      ...state,
+      endTime,
+    }));
+  };
+
+  const handleChangeContent = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const content = e.target.value;
+    setFormState((state) => ({
+      ...state,
+      content,
+    }));
   };
 
   const getSearchAddress = async () => {
@@ -107,22 +141,6 @@ const CreateSchedule: NextPage = () => {
       const { items } = res.data;
       setPreviewList([...items]);
     });
-  };
-
-  const checkPlayer = () => {
-    const checkedPlayers = checkbox
-      .filter((item) => item.check)
-      .map((item) => item.name);
-
-    const checkedPlayerIds = checkbox
-      .filter((item) => item.check)
-      .map((item) => item.id);
-
-    const newCheckedPlayerIds = [...checkedPlayerIds];
-    const newCheckedPlayers = [...checkedPlayers];
-
-    setPlayerIdList([...new Set(newCheckedPlayerIds)]);
-    setPlayerList([...new Set(newCheckedPlayers)]);
   };
 
   const isValidationSchedule = (
@@ -187,19 +205,19 @@ const CreateSchedule: NextPage = () => {
   };
 
   const editSchedule = async () => {
-    const newTitle = title.trim();
+    const newTitle = formState.name.trim();
     if (!isValidationSchedule(newTitle, selectCategory, playerIdList)) return;
 
     const urls = await uploadImages();
 
     const params = {
-      name: title,
+      name: formState.name,
       address: searchKeyword,
       calendarCategoryId: selectCategory,
-      content: content,
-      recordDate: getFullDateToString(searchDate),
-      startTime: `${startTime}:00`,
-      endTime: `${endTime}:00`,
+      content: formState.content,
+      recordDate: getFullDateToString(formState.recordDate),
+      startTime: `${formState.startTime}:00`,
+      endTime: `${formState.endTime}:00`,
       images: urls ? urls : [],
       importantYn: importantPlayer,
       playerGrade: searchGrader,
@@ -254,10 +272,13 @@ const CreateSchedule: NextPage = () => {
       return;
     }
 
+    const checkedIds: number[] = [];
+
     await Api.v1GetScheduleDetail(Number(id)).then((res) => {
       const {
         address,
         content,
+        recordDate,
         startTime,
         endTime,
         images,
@@ -268,31 +289,43 @@ const CreateSchedule: NextPage = () => {
         categoryColorCode,
       } = res.data;
 
-      // const playerArr: Array<string> = [];
-      const playerIdArr: Array<number> = [];
       userSimpleInfo.map((item: UserSimpleInfoType) => {
-        // playerArr.push(item.name);
-        playerIdArr.push(item.id);
+        checkedIds.push(item.id);
+      });
+
+      const recordDateTimeStamp = Date.parse(recordDate);
+
+      setFormState({
+        name: name,
+        recordDate: new Date(recordDateTimeStamp),
+        startTime: getTimeFormat(startTime),
+        endTime: getTimeFormat(endTime),
+        content: content,
       });
 
       setSelectCategory(-1);
       setSearchKeyword(address);
       setImportantPlayer(importantYn);
-      setTitle(name);
-      setContent(content);
-      setInitStartTime(getTimeFormat(startTime));
-      setInitEndTime(getTimeFormat(endTime));
-      setImageUrls(images);
-      setInitPlayerIds(playerIdArr);
 
-      setCheckedPlayerIds(checkById(checkedPlayerIds, playerIdArr));
+      setImageUrls(images);
+
+      // TODO: 필요한 코드인지 검사
+      setCheckedPlayerIds(checkById(checkedPlayerIds, checkedIds));
+
       setCategory({
         id: -1,
         name: categoryName,
         colorCode: "",
         colorCodeValue: categoryColorCode,
       });
+
+      // setSchedulePlayers({
+      //   ...schedulePlayers,
+      //   checkedIds: playerIdArr,
+      // });
     });
+
+    await getPlayers(true, checkedIds);
   };
 
   useEffect(() => {
@@ -305,17 +338,54 @@ const CreateSchedule: NextPage = () => {
   }, [category]);
 
   useEffect(() => {
-    setPlayers(playerList.join(", "));
-  }, [playerList]);
-
-  useEffect(() => {
-    checkPlayer();
-  }, [checkbox]);
-
-  useEffect(() => {
     if (debouncedQuery) getSearchAddress();
   }, [debouncedQuery]);
 
+  const getGrader = () => {
+    return searchGrader !== "ALL" ? searchGrader : "";
+  };
+
+  const getPlayers = async (isInit: boolean, checkedIds: number[]) => {
+    const { currentPage, pageLength } = schedulePlayers;
+    const page = isInit ? 0 : currentPage;
+
+    await Api.v1GetPlayerList(getGrader(), page, pageLength).then(
+      (response) => {
+        const { content, totalElements } = response.data;
+
+        const tempContent = content.map((item: PlayerSimpleResponseType) => {
+          const { playerGrade, positions } = item;
+
+          return {
+            position: positions.join("/"),
+            belongto: searchCategoryMap[playerGrade as SearchCategoryKey],
+            ...item,
+          };
+        });
+
+        setSchedulePlayers({
+          ...schedulePlayers,
+          items: tempContent,
+          currentPage: currentPage,
+          totalLength: 30,
+          checkedIds: checkedIds,
+        });
+      },
+    );
+  };
+
+  // 선수 목록 페이지네이션
+  useEffect(() => {
+    getPlayers(false, schedulePlayers.checkedIds);
+  }, [schedulePlayers.currentPage]);
+
+  const getCheckedPlayerNames = (): string => {
+    const { checkedIds } = schedulePlayers;
+    return schedulePlayers.items
+      .filter((item) => checkedIds.includes(item.id))
+      .map((item) => item.name)
+      .join(",");
+  };
   return (
     <div className="min-w-[1900px]">
       <Layout>
@@ -354,14 +424,14 @@ const CreateSchedule: NextPage = () => {
                 <span className="w-10 font-[700] text-[15px]">이름</span>
                 <input
                   type="text"
-                  value={title}
+                  value={formState.name}
                   placeholder="일정 이름을 입력하세요."
                   className="w-[684px] h-[36px] border-none placeholder:text-[#CBCCCD] placeholder:text-[12px] rounded-[5px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] focus:border-transparent focus:ring-0"
-                  onChange={getTitleTextCnt}
+                  onChange={handleChangeName}
                   maxLength={15}
                 />
                 <div className="absolute right-4 bottom-2 text-[14px] text-[#B9B9C3] font-[400]">
-                  <span>{titleTextCnt}</span>
+                  <span>{formState.name.length}</span>
                   <span>/15</span>
                 </div>
               </div>
@@ -377,18 +447,18 @@ const CreateSchedule: NextPage = () => {
                 <div className="flex items-center space-x-2">
                   <DatePickerComponent
                     calendarType="free"
-                    initDate={initDate}
-                    changeDate={setSearchDate}
+                    initDate={formState.recordDate}
+                    // changeDate={setSearchDate}
                   />
                   <div className="flex items-center space-x-1">
                     <TimePickerComponent
-                      initTime={initStartTime}
-                      changeTime={setStartTime}
+                      initTime={formState.startTime}
+                      onChange={handleChangeStartTime}
                     />
                     <span>~</span>
                     <TimePickerComponent
-                      initTime={initEndTime}
-                      changeTime={setEndTime}
+                      initTime={formState.endTime}
+                      onChange={handleChangeEndTime}
                     />
                   </div>
                 </div>
@@ -397,7 +467,7 @@ const CreateSchedule: NextPage = () => {
                 <span className="w-10 font-[700] text-[15px]">선수</span>
                 <input
                   type="text"
-                  value={players}
+                  value={getCheckedPlayerNames()}
                   placeholder="선수를 선택하세요."
                   className="w-[684px] h-[36px] border-none placeholder:text-[#CBCCCD] placeholder:text-[12px] rounded-[5px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] focus:border-transparent focus:ring-0"
                   readOnly
@@ -410,8 +480,8 @@ const CreateSchedule: NextPage = () => {
                   placeholder="훈련 내용을 입력하세요."
                   className="resize-none py-5 px-4 h-[324px] border-none shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] rounded-[5px] outline-none focus:border-transparent focus:ring-0 p-0 placeholder:text-[#CBCCCD]"
                   maxLength={1000}
-                  value={content}
-                  onChange={changeContent}
+                  value={formState.content}
+                  onChange={handleChangeContent}
                 ></textarea>
               </div>
               <div className="flex items-center space-x-2 justify-end py-4">
@@ -430,7 +500,7 @@ const CreateSchedule: NextPage = () => {
               </div>
             </div>
           </div>
-          <PlayerForm checkPlayer={setCheckbox} />
+          <PlayerForm />
         </div>
       </Layout>
     </div>

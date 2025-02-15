@@ -56,6 +56,7 @@ export interface TableType {
   onClickDelete?: (id: number) => void;
   onClickAllDelete?: () => void;
   checkPlayer?: Dispatch<React.SetStateAction<CheckboxType[]>>;
+  onChangeCheckId?: (id: number) => void;
 }
 
 export interface TableRowType {

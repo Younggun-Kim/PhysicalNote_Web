@@ -22,8 +22,6 @@ const DatePickerComponent = ({
   const [year, setYear] = useState<Date | null>(new Date());
 
   const today = new Date();
-  const yesterday = new Date(today.setDate(today.getDate() - 1));
-  const tomorrow = new Date(today.setDate(today.getDate() + 1));
 
   useEffect(() => {
     if (changeDate) changeDate(startDate);

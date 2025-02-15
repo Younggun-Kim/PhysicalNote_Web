@@ -78,6 +78,14 @@ export interface PlayerSimpleResponseType {
   playerGrade: string;
 }
 
+export interface PlayerSimpleListType {
+  items: PlayerSimpleDataType[];
+  currentPage: number;
+  totalLength: number;
+  pageLength: number;
+  checkedIds: number[];
+}
+
 export interface ImportantScheduleProps {
   id: number;
   name: string;

@@ -4,20 +4,27 @@ import { TimePicker } from "antd";
 
 interface TimePickerProps {
   initTime?: string;
-  changeTime: React.Dispatch<React.SetStateAction<string>>;
+  changeTime?: React.Dispatch<React.SetStateAction<string>>;
+  onChange?: (time: string) => void;
 }
 
-const TimePickerComponent = ({ initTime, changeTime }: TimePickerProps) => {
+const TimePickerComponent = ({
+  initTime,
+  changeTime,
+  onChange,
+}: TimePickerProps) => {
   const format = "HH:mm";
 
   const onChangeTime = (date: dayjs.Dayjs, dateString: string | string[]) => {
     const newTime = Array.isArray(dateString) ? dateString[0] : dateString;
-    changeTime(newTime);
+    changeTime && changeTime(newTime);
+    onChange && onChange(newTime);
   };
 
   return (
     <TimePicker
       defaultValue={dayjs(initTime, format)}
+      value={dayjs(initTime, format)}
       format={format}
       placeholder="시간을 입력해주세요"
       size="large"

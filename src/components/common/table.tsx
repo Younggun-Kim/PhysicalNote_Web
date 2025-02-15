@@ -7,7 +7,7 @@ import { playerCheckSelector } from "@/recoil/schedule/scheduleState";
 import { CheckboxType } from "@/types/schedule";
 import Button from "@/components/common/button";
 
-const TableRow = ({ column, data, onClick }: TableRowType) => {
+export const TableRow = ({ column, data, onClick }: TableRowType) => {
   const accessor = column?.accessor;
   if (!accessor) return null;
 

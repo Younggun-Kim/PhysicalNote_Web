@@ -1,37 +1,28 @@
-import React, { useState, useEffect, SetStateAction } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import {
-  PlayerSimpleResponseType,
-  PlayerSimpleDataType,
-  CheckboxType,
-} from "@/types/schedule";
+import React, { useState, useEffect } from "react";
+import { useRecoilState } from "recoil";
 import usePagination from "@/utils/hooks/usePagination";
 import Pagination from "@/components/common/pagination";
-import Table from "@/components/common/table";
 import { columnData } from "@/constants/mock/schedule";
-import { searchPlayerGraderSelector } from "@/recoil/search/searchState";
-import { playerCheckSelector } from "@/recoil/schedule/scheduleState";
-import Api from "@/api/schedule";
+import { schedulePlayersSelector } from "@/recoil/schedule/scheduleState";
+import CheckTable from "@/components/common/CheckTable";
 
-interface PlayerFormType {
-  checkPlayer: React.Dispatch<React.SetStateAction<CheckboxType[]>>;
-}
-
-const PlayerForm = ({ checkPlayer }: PlayerFormType) => {
-  const [searchGrader, setSearchGrader] = useRecoilState(
-    searchPlayerGraderSelector,
+const PlayerForm = () => {
+  const [schedulePlayers, setSchedulePlayers] = useRecoilState(
+    schedulePlayersSelector,
   );
-  const setCheckbox = useSetRecoilState(playerCheckSelector);
 
-  const [page, setPage] = useState<number>(0);
-  const [totalLen, setTotalLen] = useState<number>(1);
-  const [data, setData] = useState<PlayerSimpleDataType[]>([]);
-  const [playerGrader, setPlayerGrader] = useState<string>("");
+  const setPage = (page: number) => {
+    setSchedulePlayers({
+      ...schedulePlayers,
+      currentPage: page,
+    });
+  };
 
-  const itemPerPage = 10;
-  const totalItems = totalLen;
-  const { currentPage, totalPages, currentItems, handlePageChange } =
-    usePagination((page) => setPage(page), itemPerPage, totalItems);
+  const { currentPage, totalPages, handlePageChange } = usePagination(
+    (page) => setPage(page),
+    schedulePlayers.pageLength,
+    schedulePlayers.totalLength,
+  );
 
   const next = () => {
     if (currentPage + 1 < totalPages) {
@@ -45,77 +36,38 @@ const PlayerForm = ({ checkPlayer }: PlayerFormType) => {
     }
   };
 
-  const getPlayerSimpleList = async () => {
-    const getGrader = () => {
-      return playerGrader !== "ALL" ? playerGrader : "";
-    };
+  const handleChangeCheckIds = (ids: number[]) => {
+    const { checkedIds } = schedulePlayers;
 
-    await Api.v1GetPlayerList(getGrader(), currentPage, itemPerPage).then(
-      (res) => {
-        const { content, totalElements } = res.data;
+    const newCheckedIds = ids.reduce((acc: number[], id: number) => {
+      if (checkedIds.includes(id)) {
+        return acc.filter((checkedId) => checkedId !== id);
+      }
 
-        const tempContent: PlayerSimpleDataType[] = [];
-        const initCheckbox: CheckboxType[] = [];
-        content.map((item: PlayerSimpleResponseType) => {
-          const grade =
-            item.playerGrade === "FIRST"
-              ? "1군"
-              : item.playerGrade === "SECOND"
-                ? "2군"
-                : "부상자";
+      return [...acc, id];
+    }, checkedIds);
 
-          tempContent.push({
-            position: item.positions.join(" / "),
-            belongto: grade,
-            ...item,
-          });
-
-          initCheckbox.push({
-            id: item.id,
-            name: item.name,
-            check: false,
-          });
-        });
-
-        setCheckbox(initCheckbox);
-
-        setData([...tempContent]);
-        setTotalLen(totalElements);
-      },
-    );
+    setSchedulePlayers({
+      ...schedulePlayers,
+      checkedIds: newCheckedIds,
+    });
   };
-
-  useEffect(() => {
-    setPlayerGrader(searchGrader);
-  }, [searchGrader]);
-
-  useEffect(() => {
-    getPlayerSimpleList();
-  }, [page]);
-
-  useEffect(() => {
-    if (currentPage !== 0) {
-      handlePageChange(0);
-    } else {
-      getPlayerSimpleList();
-    }
-  }, [playerGrader]);
 
   return (
     <>
-      {data.length !== 0 ? (
+      {schedulePlayers.items.length !== 0 ? (
         <div className="w-full mt-32 bg-white py-4 my-4 px-4 rounded-[4px]">
-          <Table
+          <CheckTable
             columns={columnData}
-            data={data || []}
-            isCheckboxUse={true}
-            checkPlayer={checkPlayer}
+            data={schedulePlayers.items || []}
+            checkedIds={schedulePlayers.checkedIds}
+            onChangeCheckIds={handleChangeCheckIds}
           />
           <Pagination
             currentPage={currentPage}
             totalPage={totalPages}
             onPageChange={handlePageChange}
-            setPage={setPage}
+            setNewPage={setPage}
             next={next}
             prev={prev}
           />

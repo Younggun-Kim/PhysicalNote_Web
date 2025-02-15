@@ -336,7 +336,7 @@ const CreateSchedule: NextPage = () => {
               </div>
             </div>
           </div>
-          <PlayerForm checkPlayer={setCheckbox} />
+          <PlayerForm setCheckPlayer={setCheckbox} />
         </div>
       </Layout>
     </div>
