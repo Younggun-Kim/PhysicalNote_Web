@@ -17,7 +17,7 @@ export const isSeriesDataType = (data: any): data is SeriesDataType => {
 };
 
 export const getSeriesDataMaxvalue = (series: SeriesDataType) => {
-  return series.data.sort((a, b) => b - a).at(0);
+  return [...series.data].sort((a, b) => b - a).at(0);
 };
 
 export interface YAxisIds {

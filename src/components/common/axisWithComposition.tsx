@@ -24,7 +24,7 @@ const AxisWithComposition = ({
       return undefined;
     }
     /// 내림차순 정렬
-    return barData.data.sort((a, b) => b - a).at(0);
+    return [...barData.data].sort((a, b) => b - a).at(0);
   };
 
   const leftAxisInterval = (): any[] | undefined => {
@@ -72,7 +72,7 @@ const AxisWithComposition = ({
         }}
       >
         <ChartsGrid horizontal={true} />
-        <BarPlot />
+        <BarPlot borderRadius={8} />
         <LinePlot />
         <ChartsTooltip />
         <ChartsXAxis
