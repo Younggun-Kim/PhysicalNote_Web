@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRecoilValue } from "recoil";
@@ -22,9 +22,11 @@ const ImportantSchedule = () => {
 
   // pagination
   const itemPerPage = 2;
-  const totalItems = totalLength;
-  const { currentPage, totalPages, currentItems, handlePageChange } =
-    usePagination((page) => setPage(page), itemPerPage, totalItems);
+  const { currentPage, totalPages, handlePageChange } = usePagination(
+    (page) => setPage(page),
+    itemPerPage,
+    totalLength,
+  );
 
   const next = () => {
     if (currentPage + 1 < totalPages) {
@@ -105,7 +107,7 @@ const ImportantSchedule = () => {
               next={next}
               prev={prev}
             />
-            <Link href={`/schedule/create?important=true`}>
+            <Link href={`/schedule/create/0?important=true`}>
               <Button
                 text="기록하기"
                 type="button"

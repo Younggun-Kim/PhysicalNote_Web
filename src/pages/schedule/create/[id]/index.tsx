@@ -48,7 +48,7 @@ interface State {
 
 const CreateSchedule: NextPage = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { id, important } = router.query;
   const [searchKeyword, setSearchKeyword] = useRecoilState(
     addressKeywordSelector,
   );
@@ -66,7 +66,7 @@ const CreateSchedule: NextPage = () => {
     startTime: "09:00",
     endTime: "09:00",
     content: "",
-    isImportant: false,
+    isImportant: important === "true",
   });
   const [previewList, setPreviewList] = useState<Array<AddressResponseType>>(
     [],
@@ -301,6 +301,7 @@ const CreateSchedule: NextPage = () => {
   const getInitSchedule = async () => {
     if (!id || id == "0") {
       setIsLoaded(true);
+      await getPlayers(true, "ALL", []);
       return;
     }
 
