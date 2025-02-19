@@ -56,10 +56,6 @@ const WeeklyWorkLoad = () => {
   }, [weeklyWorkLoad, chartData]);
 
   useEffect(() => {
-    console.log(seriesData[0]);
-  }, [seriesData]);
-
-  useEffect(() => {
     let tempYAxisInterval = [0, 7, 14, 21, 28];
     let tempData: WeeklyWorkLoadInfoType = weeklyWorkLoad;
     if (chartType == "DR") {
