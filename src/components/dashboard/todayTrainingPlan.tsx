@@ -11,16 +11,17 @@ import {
 import Api from "@/api/alert";
 import { getFullDateToString } from "@/utils/dateFormat";
 import { showToast } from "@/utils";
+import { getDetailSchedulePath } from "@/pages/schedule/detail";
 
 const TodayTrainingPlan = ({ searchDate }: TodayTrainingPlanType) => {
   const router = useRouter();
   const todayTrainingPlan = useRecoilValue(todayTrainingPlanSelector);
   const [trainingPlan, setTrainingPlan] = useState<TodayTrainingPlanInfoType[]>(
-    []
+    [],
   );
 
   const goUpdateSchedule = (id: number) => {
-    router.push(`/schedule/create/${id}`);
+    router.push(getDetailSchedulePath(id));
   };
 
   const pushAlert = async () => {

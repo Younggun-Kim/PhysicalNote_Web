@@ -46,7 +46,18 @@ interface State {
   isImportant: boolean;
 }
 
-const CreateSchedule: NextPage = () => {
+const getDetailScheduleRoute = (id: number, isImportant: boolean): string =>
+  `/schedule/detail?id=${id}&important=${isImportant}`;
+
+export const getCreateImportantSchedulePath = () =>
+  getDetailScheduleRoute(0, true);
+
+export const getCreateSchedulePath = () => getDetailScheduleRoute(0, false);
+
+export const getDetailSchedulePath = (id: number) =>
+  getDetailScheduleRoute(id, false);
+
+const DetailSchedule: NextPage = () => {
   const router = useRouter();
   const { id, important } = router.query;
   const [searchKeyword, setSearchKeyword] = useRecoilState(
@@ -533,4 +544,4 @@ const CreateSchedule: NextPage = () => {
   );
 };
 
-export default CreateSchedule;
+export default DetailSchedule;

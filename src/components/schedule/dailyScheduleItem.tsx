@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { DailyScheduleProps } from "@/types/schedule";
 import MuiCarousel from "react-material-ui-carousel";
+import { getDetailSchedulePath } from "@/pages/schedule/detail";
 
 const DailyScheduleItem = ({
   id,
@@ -23,7 +24,7 @@ const DailyScheduleItem = ({
 
   const goEdit = () => {
     if (id) {
-      router.push(`/schedule/create/${id.toString()}`);
+      router.push(getDetailSchedulePath(id));
     }
   };
 

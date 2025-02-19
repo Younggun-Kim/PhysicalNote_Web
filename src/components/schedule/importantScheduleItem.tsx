@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ImportantScheduleProps } from "@/types/schedule";
-import Api from "@/api/schedule";
-import { showToast } from "@/utils";
+import { getDetailSchedulePath } from "@/pages/schedule/detail";
 
 const ImportantScheduleItem = ({
   id,
@@ -17,7 +16,7 @@ const ImportantScheduleItem = ({
 
   const goEdit = () => {
     if (id) {
-      router.push(`/schedule/create/${id.toString()}`);
+      router.push(getDetailSchedulePath(id));
     }
   };
 

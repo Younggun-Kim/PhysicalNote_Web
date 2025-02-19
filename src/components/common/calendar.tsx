@@ -20,6 +20,7 @@ import Api from "@/api/schedule";
 import { getDateToString } from "@/utils/dateFormat";
 import { searchPlayerGraderSelector } from "@/recoil/search/searchState";
 import { ScheduleResponseType } from "@/types/schedule";
+import { getDetailSchedulePath } from "@/pages/schedule/detail";
 
 const FullCalendarComponent = () => {
   const router = useRouter();
@@ -31,7 +32,7 @@ const FullCalendarComponent = () => {
 
   function handleEventClick(clickInfo: EventClickArg) {
     const id = clickInfo.event._def.publicId;
-    if (id) router.push(`schedule/create/${Number(id)}`);
+    if (id) router.push(getDetailSchedulePath(Number(id)));
   }
 
   const handleDateClick = (clickInfo: DateClickArg) => {
@@ -66,7 +67,7 @@ const FullCalendarComponent = () => {
         });
 
         setEvents(tempEvents);
-      }
+      },
     );
   };
 

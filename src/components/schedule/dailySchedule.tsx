@@ -16,6 +16,7 @@ import {
 } from "@/types/schedule";
 import { dailyDateSelector } from "@/recoil/schedule/scheduleState";
 import { showToast } from "@/utils";
+import { getCreateSchedulePath } from "@/pages/schedule/detail";
 
 const DailySchedule = () => {
   const dailyDate = useRecoilValue<Date>(dailyDateSelector);
@@ -150,7 +151,7 @@ const DailySchedule = () => {
               next={next}
               prev={prev}
             />
-            <Link href="/schedule/create/0">
+            <Link href={getCreateSchedulePath()}>
               <Button
                 text="기록하기"
                 type="button"
@@ -161,7 +162,7 @@ const DailySchedule = () => {
         ) : (
           <div className="h-full flex flex-col justify-center items-center space-y-4">
             <p className="text-[15px]">오늘 일정이 없습니다.</p>
-            <Link href="/schedule/create/0">
+            <Link href={getCreateSchedulePath()}>
               <Button
                 text="기록하기"
                 type="button"
