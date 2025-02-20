@@ -13,7 +13,9 @@ import { useRecoilState } from "recoil";
 import { addressKeywordSelector } from "@/recoil/search/searchState";
 import {
   AddressResponseType,
+  PlayerSimpleDataType,
   PlayerSimpleResponseType,
+  ScheduleRequestType,
   UserSimpleInfoType,
 } from "@/types/schedule";
 import DatePickerComponent from "@/components/common/datepicker";
@@ -99,7 +101,7 @@ const DetailSchedule: NextPage = () => {
 
     setSchedulePlayers({
       ...schedulePlayers,
-      checkedIds: [],
+      checkedPlayers: [],
     });
   };
 
@@ -141,10 +143,16 @@ const DetailSchedule: NextPage = () => {
   };
 
   const handleSubmit = async () => {
+    const params = await getRequestParams();
+
+    if (!params) {
+      return;
+    }
+
     if (id && id != "0") {
-      await editSchedule();
+      await editSchedule(params);
     } else {
-      await addSchedule();
+      await addSchedule(params);
     }
   };
 
@@ -217,10 +225,11 @@ const DetailSchedule: NextPage = () => {
     return [];
   };
 
-  const addSchedule = async () => {
+  /** 등록/수정 요청 파라미터 얻기 */
+  const getRequestParams = async (): Promise<ScheduleRequestType | null> => {
     const newTitle = formState.name.trim();
-    const playerIds = schedulePlayers.checkedIds;
-    if (!isValidationSchedule(newTitle, category.id, playerIds)) return;
+    const playerIds = schedulePlayers.checkedPlayers.map((p) => p.id);
+    if (!isValidationSchedule(newTitle, category.id, playerIds)) return null;
 
     const fileUrls = await uploadImages();
     const urls: string[] = [
@@ -228,7 +237,7 @@ const DetailSchedule: NextPage = () => {
       ...fileUrls,
     ].filter((url) => url.trim() != "");
 
-    const params = {
+    return {
       name: formState.name,
       address: searchKeyword,
       calendarCategoryId: category.id,
@@ -240,15 +249,17 @@ const DetailSchedule: NextPage = () => {
       importantYn: formState.isImportant,
       playerGrade: formState.grade,
       userIds: playerIds,
-    };
+    } as ScheduleRequestType;
+  };
 
+  const addSchedule = async (params: ScheduleRequestType) => {
     try {
       await Api.v1AddSchedule(params).then((res) => {
         const { status } = res;
         if (status == 200) {
           init();
           router.push("/schedule");
-          showToast("일정이 정상 수정되었습니다.");
+          showToast("일정이 정상 등록되었습니다.");
         }
       });
     } catch {
@@ -256,31 +267,7 @@ const DetailSchedule: NextPage = () => {
     }
   };
 
-  const editSchedule = async () => {
-    const newTitle = formState.name.trim();
-    const playerIds = schedulePlayers.checkedIds;
-    if (!isValidationSchedule(newTitle, category.id, playerIds)) return;
-
-    const fileUrls = await uploadImages();
-    const urls: string[] = [
-      ...getImageUrlsFromImageDataType(imageDatas),
-      ...fileUrls,
-    ].filter((url) => url.trim() != "");
-
-    const params = {
-      name: formState.name,
-      address: searchKeyword,
-      calendarCategoryId: category.id,
-      content: formState.content,
-      recordDate: getFullDateToString(formState.recordDate),
-      startTime: `${formState.startTime}:00`,
-      endTime: `${formState.endTime}:00`,
-      images: urls,
-      importantYn: formState.isImportant,
-      playerGrade: formState.grade,
-      userIds: playerIds,
-    };
-
+  const editSchedule = async (params: ScheduleRequestType) => {
     try {
       await Api.v1UpdateSchedule(Number(id), params).then((res) => {
         const { status } = res;
@@ -316,7 +303,7 @@ const DetailSchedule: NextPage = () => {
       return;
     }
 
-    const checkedIds: number[] = [];
+    const checkedIds: PlayerSimpleDataType[] = [];
 
     await Api.v1GetScheduleDetail(Number(id)).then(async (res) => {
       const {
@@ -335,7 +322,13 @@ const DetailSchedule: NextPage = () => {
       } = res.data;
 
       userSimpleInfo.map((item: UserSimpleInfoType) => {
-        checkedIds.push(item.id);
+        checkedIds.push({
+          id: item.id,
+          name: item.name,
+          phone: "",
+          position: "",
+          belongto: "",
+        });
       });
 
       const recordDateTimeStamp = Date.parse(recordDate);
@@ -373,7 +366,7 @@ const DetailSchedule: NextPage = () => {
   const getPlayers = async (
     isInit: boolean,
     grade: string,
-    checkedIds: number[],
+    checkedPlayers: PlayerSimpleDataType[],
   ) => {
     const { currentPage, pageLength } = schedulePlayers;
     const page = isInit ? 0 : currentPage;
@@ -396,7 +389,7 @@ const DetailSchedule: NextPage = () => {
         items: tempContent,
         currentPage: currentPage,
         totalLength: totalElements,
-        checkedIds: checkedIds,
+        checkedPlayers: checkedPlayers,
       });
     });
   };
@@ -404,7 +397,11 @@ const DetailSchedule: NextPage = () => {
   // 선수 목록 페이지네이션
   useEffect(() => {
     if (!isLoaded) return;
-    getPlayers(false, getGrader(formState.grade), schedulePlayers.checkedIds);
+    getPlayers(
+      false,
+      getGrader(formState.grade),
+      schedulePlayers.checkedPlayers,
+    );
   }, [schedulePlayers.currentPage, formState.grade]);
 
   useEffect(() => {
@@ -417,10 +414,8 @@ const DetailSchedule: NextPage = () => {
   }, [debouncedQuery]);
 
   const getCheckedPlayerNames = (): string => {
-    const { checkedIds } = schedulePlayers;
-    return schedulePlayers.items
-      .filter((item) => checkedIds.includes(item.id))
-      .map((item) => item.name)
+    return schedulePlayers.checkedPlayers
+      .map((player) => player.name)
       .join(",");
   };
   return (

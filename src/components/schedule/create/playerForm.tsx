@@ -3,13 +3,22 @@ import { useRecoilState } from "recoil";
 import usePagination from "@/utils/hooks/usePagination";
 import Pagination from "@/components/common/pagination";
 import { columnData } from "@/constants/mock/schedule";
-import { schedulePlayersSelector } from "@/recoil/schedule/scheduleState";
+import {
+  getPlayerIds,
+  schedulePlayersSelector,
+} from "@/recoil/schedule/scheduleState";
 import CheckTable from "@/components/common/CheckTable";
+import { PlayerSimpleDataType } from "@/types/schedule";
 
 const PlayerForm = () => {
+  const [checkIds, setCheckIds] = useState<number[]>([]);
   const [schedulePlayers, setSchedulePlayers] = useRecoilState(
     schedulePlayersSelector,
   );
+
+  useEffect(() => {
+    setCheckIds(getPlayerIds(schedulePlayers.checkedPlayers));
+  }, [schedulePlayers]);
 
   const setPage = (page: number) => {
     setSchedulePlayers({
@@ -36,22 +45,47 @@ const PlayerForm = () => {
     }
   };
 
-  const handleChangeCheckIds = (ids: number[]) => {
-    const { checkedIds } = schedulePlayers;
+  const handleCheckAll = (
+    newPlayers: PlayerSimpleDataType[],
+    newCheck: boolean,
+  ) => {
+    const { checkedPlayers } = schedulePlayers;
 
-    const newCheckedIds = ids.reduce((acc: number[], id: number) => {
-      if (checkedIds.includes(id)) {
-        return acc.filter((checkedId) => checkedId !== id);
-      }
+    const idsSet = new Set(getPlayerIds(newPlayers));
+    const filteredPlayers = checkedPlayers.filter((p) => !idsSet.has(p.id));
+    const tempPlayers: PlayerSimpleDataType[] = [...filteredPlayers];
 
-      return [...acc, id];
-    }, checkedIds);
+    if (newCheck) {
+      tempPlayers.push(...newPlayers);
+    }
 
     setSchedulePlayers({
       ...schedulePlayers,
-      checkedIds: newCheckedIds,
+      checkedPlayers: tempPlayers,
     });
   };
+
+  const handleCheck = (newPlayer: PlayerSimpleDataType) => {
+    const hasPlayer = getPlayerIds(schedulePlayers.checkedPlayers).includes(
+      newPlayer.id,
+    );
+
+    let newPlayers: PlayerSimpleDataType[];
+    if (hasPlayer) {
+      newPlayers = schedulePlayers.checkedPlayers.filter(
+        (p) => p.id != newPlayer.id,
+      );
+    } else {
+      newPlayers = [...schedulePlayers.checkedPlayers, newPlayer];
+    }
+
+    setSchedulePlayers({
+      ...schedulePlayers,
+      checkedPlayers: newPlayers,
+    });
+  };
+
+  const handleChangeCheckIds = (_: number[]) => {};
 
   return (
     <>
@@ -60,8 +94,10 @@ const PlayerForm = () => {
           <CheckTable
             columns={columnData}
             data={schedulePlayers.items || []}
-            checkedIds={schedulePlayers.checkedIds}
+            checkedIds={checkIds}
             onChangeCheckIds={handleChangeCheckIds}
+            onChangeCheckAll={handleCheckAll}
+            onChangeCheck={handleCheck}
           />
           <Pagination
             currentPage={currentPage}

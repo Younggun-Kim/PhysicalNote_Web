@@ -11,10 +11,7 @@ import ImportantScheduleItem from "./importantScheduleItem";
 import Pagination from "@/components/common/pagination";
 import usePagination from "@/utils/hooks/usePagination";
 import Button from "@/components/common/button";
-import {
-  getCreateImportantSchedulePath,
-  getCreateSchedulePath,
-} from "@/pages/schedule/detail";
+import { getCreateImportantSchedulePath } from "@/pages/schedule/detail";
 
 const ImportantSchedule = () => {
   const recordDate = useRecoilValue<Date>(recordDateSelector);
@@ -122,7 +119,7 @@ const ImportantSchedule = () => {
         ) : (
           <div className="h-full flex flex-col justify-center items-center space-y-4">
             <p className="text-[15px]">월간 주요 일정이 없습니다.</p>
-            <Link href={getCreateSchedulePath()}>
+            <Link href={getCreateImportantSchedulePath()}>
               <Button
                 text="기록하기"
                 type="button"

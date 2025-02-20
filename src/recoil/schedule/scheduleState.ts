@@ -1,10 +1,10 @@
 import {
   CategoryListType,
-  CategoryType,
   CheckboxType,
+  PlayerSimpleDataType,
   PlayerSimpleListType,
 } from "@/types/schedule";
-import { atom, selector, RecoilEnv } from "recoil";
+import { atom, RecoilEnv, selector } from "recoil";
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
@@ -16,8 +16,7 @@ const recordDateState = atom<Date>({
 const recordDateSelector = selector<Date>({
   key: "recordDateSelector",
   get: ({ get }) => {
-    const note = get(recordDateState);
-    return note;
+    return get(recordDateState);
   },
   set: ({ set }, newValue) => {
     set(recordDateState, newValue);
@@ -32,8 +31,7 @@ const dailyDateState = atom<Date>({
 const dailyDateSelector = selector<Date>({
   key: "dailyDateSelector",
   get: ({ get }) => {
-    const note = get(dailyDateState);
-    return note;
+    return get(dailyDateState);
   },
   set: ({ set }, newValue) => {
     set(dailyDateState, newValue);
@@ -53,8 +51,7 @@ const categoryState = atom<CategoryListType>({
 const categorySelector = selector<CategoryListType>({
   key: "categorySelector",
   get: ({ get }) => {
-    const category = get(categoryState);
-    return category;
+    return get(categoryState);
   },
   set: ({ set }, newValue) => {
     set(categoryState, newValue);
@@ -75,8 +72,7 @@ const playerCheckState = atom<CheckboxType[]>({
 const playerCheckSelector = selector<CheckboxType[]>({
   key: "playerCheckSelector",
   get: ({ get }) => {
-    const check = get(playerCheckState);
-    return check;
+    return get(playerCheckState);
   },
   set: ({ set }, newValue) => {
     set(playerCheckState, newValue);
@@ -91,8 +87,7 @@ const selectCategoryState = atom<number>({
 const selectCategorySelector = selector<number>({
   key: "selectCategorySelector",
   get: ({ get }) => {
-    const category = get(selectCategoryState);
-    return category;
+    return get(selectCategoryState);
   },
   set: ({ set }, newValue) => {
     set(selectCategoryState, newValue);
@@ -107,8 +102,7 @@ const imageFiles = atom<File[]>({
 const imageFilesSelector = selector<File[]>({
   key: "imageFileSelector",
   get: ({ get }) => {
-    const images = get(imageFiles);
-    return images;
+    return get(imageFiles);
   },
   set: ({ set }, newValue) => {
     set(imageFiles, newValue);
@@ -123,8 +117,7 @@ const imageUrlsState = atom<string[]>({
 const imageUrlsSelector = selector<string[]>({
   key: "imageUrlsSelector",
   get: ({ get }) => {
-    const images = get(imageUrlsState);
-    return images;
+    return get(imageUrlsState);
   },
   set: ({ set }, newValue) => {
     set(imageUrlsState, newValue);
@@ -166,7 +159,7 @@ const initSchedulePlayersState = {
   currentPage: 0,
   totalLength: 0,
   pageLength: 10,
-  checkedIds: [],
+  checkedPlayers: [],
 };
 
 const schedulePlayersState = atom<PlayerSimpleListType>({
@@ -184,6 +177,11 @@ const schedulePlayersSelector = selector<PlayerSimpleListType>({
     set(schedulePlayersState, newValue);
   },
 });
+
+/** 선수 Id 목록 */
+export const getPlayerIds = (players: PlayerSimpleDataType[]): number[] => {
+  return players.map((player) => player.id);
+};
 
 export {
   recordDateState,

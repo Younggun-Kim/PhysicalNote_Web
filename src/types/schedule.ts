@@ -83,7 +83,7 @@ export interface PlayerSimpleListType {
   currentPage: number;
   totalLength: number;
   pageLength: number;
-  checkedIds: number[];
+  checkedPlayers: PlayerSimpleDataType[];
 }
 
 export interface ImportantScheduleProps {

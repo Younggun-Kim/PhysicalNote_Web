@@ -10,15 +10,33 @@ interface Props {
   data: PlayerSimpleDataType[];
   checkedIds: number[];
   onChangeCheckIds: (id: number[]) => void;
+  onChangeCheckAll?: (
+    newPlayers: PlayerSimpleDataType[],
+    newCheck: boolean,
+  ) => void;
+  onChangeCheck?: (id: PlayerSimpleDataType) => void;
 }
 
-const CheckTable = ({ columns, data, checkedIds, onChangeCheckIds }: Props) => {
+const CheckTable = ({
+  columns,
+  data,
+  checkedIds,
+  onChangeCheckIds,
+  onChangeCheckAll,
+  onChangeCheck,
+}: Props) => {
   const handleCheckALl = () => {
     onChangeCheckIds(getDataIds());
+    onChangeCheckAll && onChangeCheckAll(data, !isCheckAll());
   };
 
   const handleCheck = (id: number) => {
     onChangeCheckIds([id]);
+
+    const player = data.find((p) => p.id == id);
+    if (player && onChangeCheck) {
+      onChangeCheck(player);
+    }
   };
 
   const getDataIds = (): number[] => data.map((e) => e.id);
