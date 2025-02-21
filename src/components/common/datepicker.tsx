@@ -3,10 +3,15 @@ import Image from "next/image";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/locale";
 
+type ChangeDateType = (date: Date) => void;
+
 interface CalendarProps {
   calendarType?: string;
   initDate?: Date;
-  changeDate?: React.Dispatch<React.SetStateAction<Date>> | undefined;
+  changeDate?:
+    | React.Dispatch<React.SetStateAction<Date>>
+    | ChangeDateType
+    | undefined;
   changeYear?: React.Dispatch<React.SetStateAction<Date | null>> | undefined;
   onClick?: () => void;
 }

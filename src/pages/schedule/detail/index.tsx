@@ -71,6 +71,7 @@ const DetailSchedule: NextPage = () => {
   );
 
   const [isLoaded, setIsLoaded] = useState(false);
+  const [initDate, setInitDate] = useState<Date>(new Date());
   const [imageDatas, setImageDatas] = useRecoilState(imageDataSelector);
   const [formState, setFormState] = useState<State>({
     grade: "ALL",
@@ -110,6 +111,17 @@ const DetailSchedule: NextPage = () => {
     setFormState((state) => ({
       ...state,
       name,
+    }));
+  };
+
+  const handleChangeRecordDate = (date: Date) => {
+    const { recordDate } = formState;
+    if (date === recordDate) {
+      return;
+    }
+    setFormState((state) => ({
+      ...state,
+      recordDate: date,
     }));
   };
 
@@ -342,7 +354,7 @@ const DetailSchedule: NextPage = () => {
         content: content,
         isImportant: importantYn,
       });
-
+      setInitDate(new Date(recordDateTimeStamp));
       setSearchKeyword(address);
       setImageDatas(urlsToImageDataTypes(images));
 
@@ -479,8 +491,8 @@ const DetailSchedule: NextPage = () => {
                 <div className="flex items-center space-x-2">
                   <DatePickerComponent
                     calendarType="free"
-                    initDate={formState.recordDate}
-                    // changeDate={setSearchDate}
+                    initDate={initDate}
+                    changeDate={handleChangeRecordDate}
                   />
                   <div className="flex items-center space-x-1">
                     <TimePickerComponent
