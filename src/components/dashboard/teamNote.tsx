@@ -13,7 +13,6 @@ const TeamNote = ({ searchDate }: TeamNoteType) => {
     content: "",
     recordDate: "",
   });
-  const [text, setText] = useState<string>(""); // type : textarea
   const [htmlContent, setHtmlContent] = useState<string>(""); // text -> html
   const [date, setDate] = useState<string>("");
 
@@ -22,17 +21,6 @@ const TeamNote = ({ searchDate }: TeamNoteType) => {
   const handleClick = () => {
     updateTeamNote();
   };
-
-  // textarea 이용할 경우
-  /*
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
-  };
-  
-  const convertTextToHtml = () => {
-    const santizedHtml = DOMPurify.sanitize(text.replace(/\n/g, "<br>"));
-    setHtmlContent(santizedHtml);
-  };*/
 
   useEffect(() => {
     if (debounceQuery) handleClick();
@@ -54,7 +42,6 @@ const TeamNote = ({ searchDate }: TeamNoteType) => {
   useEffect(() => {
     if (teamNote) {
       setNote(teamNote);
-      setText(teamNote.content);
     }
   }, [teamNote]);
 
@@ -69,7 +56,7 @@ const TeamNote = ({ searchDate }: TeamNoteType) => {
       <span className="text-[15px] font-[700]">■ 비고</span>
       <div className="flex flex-col justify-between w-full p-5 min-h-[260px] h-full rounded-[25px] shadow-[0_2px_10px_0px_rgba(0,0,0,0.25)] text-[15px] font-[400]">
         <div
-          className="w-full h-[180px] overflow-y-scroll bg-transparent border-none resize-none outline-none p-0 focus:border-transparent focus:ring-0"
+          className="w-full h-[560px] overflow-y-scroll bg-transparent border-none resize-none outline-none p-0 focus:border-transparent focus:ring-0"
           contentEditable
           onInput={handleContentChange}
           dangerouslySetInnerHTML={{ __html: note.content }}
