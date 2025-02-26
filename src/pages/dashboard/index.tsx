@@ -184,7 +184,7 @@ const Dashboard: NextPage = () => {
                   <TrainingBalance />
                 </div>
                 <div className="col-span-3 row-span-2">
-                  <TeamNote searchDate={searchDate} />
+                  <TeamNote />
                 </div>
 
                 <div className="flex flex-col col-span-9 row-span-1">

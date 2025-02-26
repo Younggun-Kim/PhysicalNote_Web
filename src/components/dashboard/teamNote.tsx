@@ -2,19 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { teamNoteSelector } from "@/recoil/dashboard/dashboardState";
 import { TeamNoteInfoType, TeamNoteType } from "@/types/dashboard";
-import { getFullDateToString } from "@/utils/dateFormat";
 import Api from "@/api/dashboard";
 import { showToast } from "@/utils";
 import useDebounce from "@/utils/hooks/useDebounce";
 
-const TeamNote = ({ searchDate }: TeamNoteType) => {
+const TeamNote = () => {
   const teamNote = useRecoilValue(teamNoteSelector);
   const [note, setNote] = useState<TeamNoteInfoType>({
     content: "",
     recordDate: "",
   });
   const [htmlContent, setHtmlContent] = useState<string>(""); // text -> html
-  const [date, setDate] = useState<string>("");
 
   const debounceQuery = useDebounce(htmlContent, 500);
 
@@ -27,7 +25,7 @@ const TeamNote = ({ searchDate }: TeamNoteType) => {
   }, [debounceQuery]);
 
   const updateTeamNote = async () => {
-    await Api.v1UpdateTeamNote(htmlContent, date).then((res) => {
+    await Api.v1UpdateTeamNote(htmlContent).then((res) => {
       const { status } = res;
       if (status === 200) {
         showToast("비고가 저장되었습니다.");
@@ -44,12 +42,6 @@ const TeamNote = ({ searchDate }: TeamNoteType) => {
       setNote(teamNote);
     }
   }, [teamNote]);
-
-  useEffect(() => {
-    if (searchDate) {
-      setDate(getFullDateToString(searchDate));
-    }
-  }, [searchDate]);
 
   return (
     <div className="w-full h-full flex flex-col gap-2.5">
