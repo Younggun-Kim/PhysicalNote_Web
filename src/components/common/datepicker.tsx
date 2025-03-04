@@ -58,11 +58,12 @@ const DatePickerComponent = ({
             />
           }
           locale={ko}
-          minDate={startDate}
+          // minDate={startDate}
           maxDate={today}
           selected={year}
           dateFormat="yyyy년 MM월"
           onChange={(date) => {
+            console.log(date);
             setYear(date);
           }}
           shouldCloseOnSelect={true}

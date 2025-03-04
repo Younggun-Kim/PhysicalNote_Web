@@ -60,7 +60,7 @@ const PrivateDataDetail: NextPage = () => {
       Number(id),
       getDateToString(searchYear || new Date()),
       currentPage,
-      itemPerPage
+      itemPerPage,
     ).then((res) => {
       const { content, totalElements } = res.data;
       if (content.length > 0) {
@@ -75,7 +75,7 @@ const PrivateDataDetail: NextPage = () => {
   const getTotalResult = (
     data: PlayerTotalInfoType,
     key: string,
-    word: string
+    word: string,
   ) => {
     let result = null;
     Object.keys(data).find((item) => {
@@ -215,7 +215,7 @@ const PrivateDataDetail: NextPage = () => {
                             ? getTotalResult(
                                 totalInfo,
                                 row.key,
-                                "Last30MonthAvg"
+                                "Last30MonthAvg",
                               )
                             : "-"}
                         </td>
