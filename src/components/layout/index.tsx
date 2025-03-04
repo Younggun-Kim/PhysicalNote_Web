@@ -39,7 +39,7 @@ const Layout = ({ children }: LayoutProps) => {
             alt="로고 이미지"
           />
         </div>
-        <div className="flex flex-col space-y-2 py-10 pl-12">
+        <div className="flex flex-col max-w-[180px] items-center space-y-2 py-10">
           <Image
             loader={imageLoader}
             src={data?.profile || "/images/profile_default.svg"}
@@ -68,8 +68,8 @@ const Layout = ({ children }: LayoutProps) => {
               </div>
             </Link>
           </div>
-          <div className="flex flex-col pl-1">
-            <span className="text-[11px] font-[400] pl-3">
+          <div className="flex flex-col pl-1 items-center">
+            <span className="text-[11px] font-[400] text-center">
               {data?.teamName}
             </span>
             <span className="text-[11px] font-[400]">
@@ -95,7 +95,7 @@ const Layout = ({ children }: LayoutProps) => {
                   router.pathname.startsWith("/dashboard/") ||
                   router.pathname === "/myInfo"
                   ? "bg-white"
-                  : ""
+                  : "",
               )}
             >
               <div>
@@ -134,7 +134,7 @@ const Layout = ({ children }: LayoutProps) => {
                   router.pathname === "/dashboard" ||
                     router.pathname === "/myInfo"
                     ? "text-black"
-                    : "text-white"
+                    : "text-white",
                 )}
               >
                 대시보드
@@ -148,7 +148,7 @@ const Layout = ({ children }: LayoutProps) => {
                 router.pathname === "/schedule" ||
                   router.pathname.startsWith("/schedule/")
                   ? "bg-white"
-                  : ""
+                  : "",
               )}
             >
               <div>
@@ -187,7 +187,7 @@ const Layout = ({ children }: LayoutProps) => {
                   router.pathname === "/schedule" ||
                     router.pathname.startsWith("/schedule/")
                     ? "text-black"
-                    : "text-white"
+                    : "text-white",
                 )}
               >
                 일정관리
@@ -201,7 +201,7 @@ const Layout = ({ children }: LayoutProps) => {
                 router.pathname === "/report" ||
                   router.pathname.startsWith("/report/")
                   ? "bg-white"
-                  : ""
+                  : "",
               )}
             >
               <div>
@@ -236,7 +236,7 @@ const Layout = ({ children }: LayoutProps) => {
               <div
                 className={cls(
                   "text-[14px] font-[700]",
-                  router.pathname === "/report" ? "text-black" : "text-white"
+                  router.pathname === "/report" ? "text-black" : "text-white",
                 )}
               >
                 리포트
@@ -250,7 +250,7 @@ const Layout = ({ children }: LayoutProps) => {
                 router.pathname === "/privateData" ||
                   router.pathname.startsWith("/privateData/")
                   ? "bg-white"
-                  : ""
+                  : "",
               )}
             >
               <div>
@@ -289,7 +289,7 @@ const Layout = ({ children }: LayoutProps) => {
                   router.pathname === "/privateData" ||
                     router.pathname.startsWith("/privateData/")
                     ? "text-black"
-                    : "text-white"
+                    : "text-white",
                 )}
               >
                 개인 데이터
@@ -303,7 +303,7 @@ const Layout = ({ children }: LayoutProps) => {
                 router.pathname === "/injuryProgress" ||
                   router.pathname.startsWith("/injuryProgress/")
                   ? "bg-white"
-                  : ""
+                  : "",
               )}
             >
               <div>
@@ -340,7 +340,7 @@ const Layout = ({ children }: LayoutProps) => {
                   "text-[14px] font-[700]",
                   router.pathname === "/injuryProgress"
                     ? "text-black"
-                    : "text-white"
+                    : "text-white",
                 )}
               >
                 부상추이
@@ -354,7 +354,7 @@ const Layout = ({ children }: LayoutProps) => {
                 router.pathname === "/player" ||
                   router.pathname.startsWith("/player/")
                   ? "bg-white"
-                  : ""
+                  : "",
               )}
             >
               <div>
@@ -393,7 +393,7 @@ const Layout = ({ children }: LayoutProps) => {
                   router.pathname === "/player" ||
                     router.pathname.startsWith("/player/")
                     ? "text-black"
-                    : "text-white"
+                    : "text-white",
                 )}
               >
                 선수관리
