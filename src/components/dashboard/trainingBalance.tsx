@@ -72,7 +72,7 @@ const TrainingBalance = () => {
       setTrainingBalance(trainingBalanceInfo);
       const {
         thisWeekValue,
-        lastTwoWeekValue,
+        lastWeekValue,
         lastFourWeekValue,
         lastEightWeekValue,
       } = trainingBalanceInfo;
@@ -86,7 +86,7 @@ const TrainingBalance = () => {
         },
         {
           name: "지난주",
-          value: lastTwoWeekValue,
+          value: lastWeekValue,
           fill: "#EDFBD5",
           labelColor: "#7d7d7d",
         },

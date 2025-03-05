@@ -1,15 +1,15 @@
-import { atom, selector, RecoilEnv } from "recoil";
+import { atom, RecoilEnv, selector } from "recoil";
 import {
-  TeamConditionInfoType,
   TeamCautionPageType,
+  TeamConditionInfoType,
   TeamInjuryInfoType,
   TeamNoteInfoType,
   TodayTrainingPlanInfoType,
   TrainingBalanceInfoType,
-  TrainingLoadGraphInfoType,
-  WeeklyWorkLoadInfoType,
-  WeeklyWorkAnalysisInfoType,
   TrainingDurationGraphInfoType,
+  TrainingLoadGraphInfoType,
+  WeeklyWorkAnalysisInfoType,
+  WeeklyWorkLoadInfoType,
 } from "@/types/dashboard";
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
@@ -32,8 +32,7 @@ const teamConditionState = atom<TeamConditionInfoType>({
 const teamConditionSelector = selector<TeamConditionInfoType>({
   key: "teamConditionSelector",
   get: ({ get }) => {
-    const note = get(teamConditionState);
-    return note;
+    return get(teamConditionState);
   },
   set: ({ set }, newValue) => {
     set(teamConditionState, newValue);
@@ -51,8 +50,7 @@ const teamHooperIndexState = atom<TeamCautionPageType>({
 const teamHooperIndexSelector = selector<TeamCautionPageType>({
   key: "teamHooperIndexSelector",
   get: ({ get }) => {
-    const note = get(teamHooperIndexState);
-    return note;
+    return get(teamHooperIndexState);
   },
   set: ({ set }, newValue) => {
     set(teamHooperIndexState, newValue);
@@ -70,8 +68,7 @@ const teamInjuryState = atom<TeamInjuryInfoType>({
 const teamInjurySelector = selector<TeamInjuryInfoType>({
   key: "teamInjurySelector",
   get: ({ get }) => {
-    const note = get(teamInjuryState);
-    return note;
+    return get(teamInjuryState);
   },
   set: ({ set }, newValue) => {
     set(teamInjuryState, newValue);
@@ -95,8 +92,7 @@ const todayTrainingPlanState = atom<TodayTrainingPlanInfoType[]>({
 const todayTrainingPlanSelector = selector<TodayTrainingPlanInfoType[]>({
   key: "todayTrainingPlanSelector",
   get: ({ get }) => {
-    const note = get(todayTrainingPlanState);
-    return note;
+    return get(todayTrainingPlanState);
   },
   set: ({ set }, newValue) => {
     set(todayTrainingPlanState, newValue);
@@ -114,8 +110,7 @@ const weeklyWorkloadState = atom<WeeklyWorkLoadInfoType>({
 const weeklyWorkloadSelector = selector<WeeklyWorkLoadInfoType>({
   key: "weeklyWorkloadSelector",
   get: ({ get }) => {
-    const note = get(weeklyWorkloadState);
-    return note;
+    return get(weeklyWorkloadState);
   },
   set: ({ set }, newValue) => {
     set(weeklyWorkloadState, newValue);
@@ -148,9 +143,7 @@ const trainingBalanceState = atom<TrainingBalanceInfoType>({
   default: {
     peekLoadValue: 0,
     thisWeekValue: 0,
-    lastTwoWeekValue: 0,
-    lastTwoWeekBalanceValue: 0,
-    lastTwoWeekValueOfString: "",
+    lastWeekValue: 0,
     lastFourWeekValue: 0,
     lastFourWeekBalanceValue: 0,
     lastFourWeekValueOfString: "",
@@ -166,8 +159,7 @@ const trainingBalanceState = atom<TrainingBalanceInfoType>({
 const trainingBalanceSelector = selector<TrainingBalanceInfoType>({
   key: "trainingBalanceSelector",
   get: ({ get }) => {
-    const note = get(trainingBalanceState);
-    return note;
+    return get(trainingBalanceState);
   },
   set: ({ set }, newValue) => {
     set(trainingBalanceState, newValue);
@@ -208,8 +200,7 @@ const trainingLoadGraphState = atom<TrainingLoadGraphInfoType[]>({
 const trainingLoadGraphSelector = selector<TrainingLoadGraphInfoType[]>({
   key: "trainingLoadGraphSelector",
   get: ({ get }) => {
-    const note = get(trainingLoadGraphState);
-    return note;
+    return get(trainingLoadGraphState);
   },
   set: ({ set }, newValue) => {
     set(trainingLoadGraphState, newValue);
@@ -251,8 +242,7 @@ const trainingDurationGraphSelector = selector<TrainingDurationGraphInfoType[]>(
   {
     key: "trainingDurationGraphSelector",
     get: ({ get }) => {
-      const note = get(trainingDurationGraphState);
-      return note;
+      return get(trainingDurationGraphState);
     },
     set: ({ set }, newValue) => {
       set(trainingDurationGraphState, newValue);
@@ -272,8 +262,7 @@ const teamNoteState = atom<TeamNoteInfoType>({
 const teamNoteSelector = selector<TeamNoteInfoType>({
   key: "teamNoteSelector",
   get: ({ get }) => {
-    const note = get(teamNoteState);
-    return note;
+    return get(teamNoteState);
   },
   set: ({ set }, newValue) => {
     set(teamNoteState, newValue);

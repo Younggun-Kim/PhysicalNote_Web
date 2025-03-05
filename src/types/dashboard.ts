@@ -128,9 +128,7 @@ export const workoutAnalysisToLoad = (
 // 트레이닝 밸런스 정보
 export interface TrainingBalanceInfoType {
   thisWeekValue: number; // 이번주
-  lastTwoWeekValue: number; // 지난 2주
-  lastTwoWeekBalanceValue: number; // 지난 2주 밸런스 값
-  lastTwoWeekValueOfString: string; // 지난 2주 문자열 값
+  lastWeekValue: number; // 지난 2주
   lastFourWeekValue: number;
   lastFourWeekBalanceValue: number;
   lastFourWeekValueOfString: string;
