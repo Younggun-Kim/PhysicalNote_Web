@@ -9,6 +9,7 @@ import { useSetRecoilState } from "recoil";
 import { playerCheckSelector } from "@/recoil/schedule/scheduleState";
 import { CheckboxType } from "@/types/schedule";
 import { getFullDateToString } from "@/utils/dateFormat";
+import { showToast } from "@/utils";
 
 interface SendWorkoutTimeModalProps {
   isOpen: boolean;
@@ -167,9 +168,10 @@ export const SendWorkoutTimeModal = ({
       recordDate,
       checkedIds,
       workoutTime,
-      workoutType
+      workoutType,
     ).then((res) => {
       onClickClose();
+      showToast("운동시간을 전송하였습니다.");
     });
   };
 
