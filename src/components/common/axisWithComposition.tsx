@@ -2,7 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import { ResponsiveChartContainer } from "@mui/x-charts/ResponsiveChartContainer";
 import { ChartsTooltip } from "@mui/x-charts/ChartsTooltip";
-import { LinePlot } from "@mui/x-charts/LineChart";
+import { LinePlot, MarkPlot } from "@mui/x-charts/LineChart";
 import { BarPlot } from "@mui/x-charts/BarChart";
 import { ChartsXAxis } from "@mui/x-charts/ChartsXAxis";
 import { ChartsYAxis } from "@mui/x-charts/ChartsYAxis";
@@ -69,11 +69,19 @@ const AxisWithComposition = ({
           [`.${axisClasses.right} .${axisClasses.label}`]: {
             transform: "translate(30px, 0)",
           },
+          "& .MuiLineElement-root": {
+            strokeDasharray: "6 3",
+            strokeWidth: 1,
+          },
+          "& .MuiMarkElement-root": {
+            fill: "#7d7d7d",
+          },
         }}
       >
         <ChartsGrid horizontal={true} />
         <BarPlot borderRadius={8} />
-        <LinePlot />
+        <LinePlot fill={"#7d7d7d"} />
+        <MarkPlot />
         <ChartsTooltip />
         <ChartsXAxis
           axisId="quarters"
