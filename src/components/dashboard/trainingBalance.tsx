@@ -15,11 +15,31 @@ interface BalanceChartType {
 
 const balanceToString = (value: number): string => {
   if (value < 0.8) {
-    return "낮습니다.";
-  } else if (value < 1.5) {
-    return "보통입니다.";
-  } else {
     return "높습니다.";
+  } else if (value < 1.5) {
+    return "낮습니다.";
+  } else {
+    return "매우 높습니다.";
+  }
+};
+
+const balanceToStrengthString = (value: number): string => {
+  if (value < 0.8) {
+    return "부족";
+  } else if (value < 1.5) {
+    return "충분";
+  } else {
+    return "과부하";
+  }
+};
+
+const balanceToPointColor = (value: number): string => {
+  if (value < 0.8) {
+    return "#4D73BA";
+  } else if (value < 1.5) {
+    return "#8DBE3D";
+  } else {
+    return "#E82E25";
   }
 };
 
@@ -44,16 +64,13 @@ const BalanceItem = ({ title, value }: BalanceItemProps) => {
   return (
     <div className="flex items-center gap-2.5">
       <span className="font-sans font-normal text-sm text-black">{title}</span>
-      <div
-        className={[
-          `w-[63px] h-[22px] flex justify-center items-center rounded-full`,
-          bgColor,
-        ].join(" ")}
-      >
-        {value.toFixed(1)}
-      </div>
       <p className="font-sans font-normal text-xs text-black">
-        <span>부상위험이</span>
+        <span>훈련 </span>
+        <span className={`text-[${balanceToPointColor(value)}] font-bold`}>
+          {balanceToStrengthString(value)}
+        </span>
+        <span>입니다. </span>
+        <span>상대적으로 부상위험이 </span>
         <span className="text-primary">{balanceToString(value)}</span>
       </p>
     </div>
