@@ -43,24 +43,12 @@ const balanceToPointColor = (value: number): string => {
   }
 };
 
-const balanceToColor = (value: number): string => {
-  if (value < 0.8) {
-    return "bg-tb-less";
-  } else if (value < 1.5) {
-    return "bg-tb-base";
-  } else {
-    return "bg-tb-over";
-  }
-};
-
 interface BalanceItemProps {
   title: string;
   value: number;
 }
 
 const BalanceItem = ({ title, value }: BalanceItemProps) => {
-  const bgColor = balanceToColor(value);
-
   return (
     <div className="flex items-center gap-2.5">
       <span className="font-sans font-normal text-sm text-black">{title}</span>
